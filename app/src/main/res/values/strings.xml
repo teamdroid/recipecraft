@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">Recipecraft</string>
+    <string name="dummy_text">Hello, Recipecraft!</string>
+</resources>
