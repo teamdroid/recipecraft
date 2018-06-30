@@ -1,4 +1,4 @@
 <resources>
     <string name="app_name">Recipecraft</string>
-    <string name="dummy_text">Hello, Recipecraft!</string>
+    <string name="menu_refresh">Refresh</string>
 </resources>

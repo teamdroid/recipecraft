@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import com.arellomobile.mvp.MvpAppCompatFragment
 import ru.aevseev.recipecraft.MainActivity
@@ -17,9 +18,9 @@ abstract class BaseMoxyFragment : MvpAppCompatFragment(), OnBackPressedListener 
 
     protected abstract val contentResId: Int
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?) = inflater.inflate(contentResId, container, false)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? = inflater.inflate(contentResId, container, false)
 
-    protected fun setupToolbar(toolbar: Toolbar, needsUpButton: Boolean) {
+    protected fun setupToolbar(toolbar: Toolbar, needsUpButton: Boolean, title: String) {
         val activity = activity as AppCompatActivity
         activity.setSupportActionBar(toolbar)
         val actionBar = activity.supportActionBar
@@ -32,6 +33,9 @@ abstract class BaseMoxyFragment : MvpAppCompatFragment(), OnBackPressedListener 
                 actionBar.setHomeButtonEnabled(true)
             }
         }
+
+        toolbar.title = title
+
     }
 
     override fun getContext(): Context {
