@@ -1,4 +1,4 @@
-package ru.aevseev.recipecraft
+package ru.teamdroid.recipecraft
 
 import android.support.test.InstrumentationRegistry
 import android.support.test.runner.AndroidJUnit4

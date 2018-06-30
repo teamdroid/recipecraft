@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="ru.aevseev.recipecraft">
+    package="ru.teamdroid.recipecraft">
 
     <application
         android:allowBackup="true"

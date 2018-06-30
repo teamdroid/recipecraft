@@ -1,4 +1,4 @@
-package ru.aevseev.recipecraft.base
+package ru.teamdroid.recipecraft.base
 
 object Screens {
     const val CRAFT = "CRAFT"

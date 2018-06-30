@@ -1,4 +1,4 @@
-package ru.aevseev.recipecraft.fragments
+package ru.teamdroid.recipecraft.fragments
 
 import android.graphics.PorterDuff
 import android.os.Bundle
@@ -13,10 +13,10 @@ import android.view.View
 import android.widget.Toast
 import com.arellomobile.mvp.presenter.InjectPresenter
 import kotlinx.android.synthetic.main.fragment_nagivation.*
-import ru.aevseev.recipecraft.R
-import ru.aevseev.recipecraft.base.*
-import ru.aevseev.recipecraft.presenters.NavigationPresenter
-import ru.aevseev.recipecraft.views.NavigationMvpView
+import ru.teamdroid.recipecraft.R
+import ru.teamdroid.recipecraft.base.*
+import ru.teamdroid.recipecraft.presenters.NavigationPresenter
+import ru.teamdroid.recipecraft.views.NavigationMvpView
 
 class NavigationFragment : BaseMoxyFragment(), NavigationMvpView {
 

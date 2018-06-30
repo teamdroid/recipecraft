@@ -1,4 +1,4 @@
-package ru.aevseev.recipecraft.views
+package ru.teamdroid.recipecraft.views
 
 import com.arellomobile.mvp.MvpView
 import com.arellomobile.mvp.viewstate.strategy.AddToEndSingleStrategy

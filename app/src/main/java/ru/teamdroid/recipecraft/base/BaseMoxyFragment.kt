@@ -1,4 +1,4 @@
-package ru.aevseev.recipecraft.base
+package ru.teamdroid.recipecraft.base
 
 import android.content.Context
 import android.os.Bundle
@@ -8,8 +8,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.arellomobile.mvp.MvpAppCompatFragment
-import ru.aevseev.recipecraft.MainActivity
-import ru.aevseev.recipecraft.base.interfaces.OnBackPressedListener
+import ru.teamdroid.recipecraft.MainActivity
+import ru.teamdroid.recipecraft.base.interfaces.OnBackPressedListener
 
 abstract class BaseMoxyFragment : MvpAppCompatFragment(), OnBackPressedListener {
 
