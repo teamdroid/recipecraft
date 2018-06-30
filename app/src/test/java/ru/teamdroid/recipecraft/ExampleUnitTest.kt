@@ -1,4 +1,4 @@
-package ru.aevseev.recipecraft
+package ru.teamdroid.recipecraft
 
 import org.junit.Assert.assertEquals
 import org.junit.Test

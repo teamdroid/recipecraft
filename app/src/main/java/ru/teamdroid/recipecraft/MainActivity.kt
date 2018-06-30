@@ -1,4 +1,4 @@
-package ru.aevseev.recipecraft
+package ru.teamdroid.recipecraft
 
 import android.content.Context
 import android.os.Bundle
@@ -7,9 +7,9 @@ import android.view.inputmethod.InputMethodManager
 import com.arellomobile.mvp.MvpAppCompatActivity
 import com.arellomobile.mvp.presenter.InjectPresenter
 import com.arellomobile.mvp.presenter.PresenterType
-import ru.aevseev.recipecraft.fragments.NavigationFragment
-import ru.aevseev.recipecraft.presenters.MainPresenter
-import ru.aevseev.recipecraft.views.MainMvpView
+import ru.teamdroid.recipecraft.fragments.NavigationFragment
+import ru.teamdroid.recipecraft.presenters.MainPresenter
+import ru.teamdroid.recipecraft.views.MainMvpView
 
 class MainActivity : MvpAppCompatActivity(), MainMvpView {
 

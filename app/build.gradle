@@ -7,7 +7,7 @@ apply plugin: 'kotlin-kapt'
 android {
     compileSdkVersion 27
     defaultConfig {
-        applicationId "ru.aevseev.recipecraft"
+        applicationId "ru.teamdroid.recipecraft"
         minSdkVersion 19
         targetSdkVersion 27
         versionCode 1

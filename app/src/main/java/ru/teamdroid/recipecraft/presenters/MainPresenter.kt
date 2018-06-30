@@ -1,8 +1,8 @@
-package ru.aevseev.recipecraft.presenters
+package ru.teamdroid.recipecraft.presenters
 
 import com.arellomobile.mvp.InjectViewState
 import com.arellomobile.mvp.MvpPresenter
-import ru.aevseev.recipecraft.views.MainMvpView
+import ru.teamdroid.recipecraft.views.MainMvpView
 
 @InjectViewState
 class MainPresenter : MvpPresenter<MainMvpView>()

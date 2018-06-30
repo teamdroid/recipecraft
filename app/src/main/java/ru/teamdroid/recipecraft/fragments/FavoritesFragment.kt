@@ -1,7 +1,7 @@
-package ru.aevseev.recipecraft.fragments
+package ru.teamdroid.recipecraft.fragments
 
-import ru.aevseev.recipecraft.R
-import ru.aevseev.recipecraft.base.BaseMoxyFragment
+import ru.teamdroid.recipecraft.R
+import ru.teamdroid.recipecraft.base.BaseMoxyFragment
 
 class FavoritesFragment : BaseMoxyFragment() {
 
