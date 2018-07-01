@@ -48,7 +48,6 @@ class NavigationFragment : BaseMoxyFragment(), NavigationMvpView {
     }
 
     private fun setupTabLayout() {
-
         with(tabLayout) {
 
             Screens.tabs.forEachIndexed { index, _ ->
@@ -70,9 +69,7 @@ class NavigationFragment : BaseMoxyFragment(), NavigationMvpView {
                     onTabSelected(tab)
                 }
             })
-
             getTabAt(Screens.tabs.indexOf(Screens.CRAFT))?.select()
-
         }
     }
 

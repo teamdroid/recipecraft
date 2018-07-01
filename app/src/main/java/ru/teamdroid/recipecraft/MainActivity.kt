@@ -5,19 +5,14 @@ import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.view.inputmethod.InputMethodManager
 import com.arellomobile.mvp.MvpAppCompatActivity
-import com.arellomobile.mvp.presenter.InjectPresenter
-import com.arellomobile.mvp.presenter.PresenterType
+import dagger.android.AndroidInjection
 import ru.teamdroid.recipecraft.fragments.NavigationFragment
-import ru.teamdroid.recipecraft.presenters.MainPresenter
-import ru.teamdroid.recipecraft.views.MainMvpView
 
-class MainActivity : MvpAppCompatActivity(), MainMvpView {
-
-    @InjectPresenter(type = PresenterType.GLOBAL)
-    lateinit var mainPresenter: MainPresenter
+class MainActivity : MvpAppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        AndroidInjection.inject(this)
         setContentView(R.layout.activity_main)
         replaceFragment(NavigationFragment.newInstance())
     }

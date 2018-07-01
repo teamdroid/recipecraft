@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
+    <!-- default size -->
+
     <dimen name="size_xxsmall">2dp</dimen>
     <dimen name="size_xsmall">4dp</dimen>
     <dimen name="size_small">8dp</dimen>
@@ -10,4 +13,5 @@
     <dimen name="size_xxlarge">48dp</dimen>
     <dimen name="size_xxxlarge">64dp</dimen>
     <dimen name="size_minus_medium">-16dp</dimen>
+
 </resources>
