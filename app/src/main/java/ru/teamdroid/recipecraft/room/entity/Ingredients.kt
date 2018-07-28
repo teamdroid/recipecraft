@@ -6,7 +6,7 @@ import android.arch.persistence.room.PrimaryKey
 import android.support.annotation.NonNull
 
 @Entity(tableName = "ingredients")
-data class Item(
+data class Ingredients(
         @PrimaryKey @NonNull @ColumnInfo(name = "id")
         val id: Int,
         @ColumnInfo(name = "title")

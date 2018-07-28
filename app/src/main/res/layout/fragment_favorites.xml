@@ -1,70 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/inputTextView"
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/appBarLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/size_small"
-        android:gravity="center"
-        android:text="@string/test_room_text"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/colorPrimary" />
+    </android.support.design.widget.AppBarLayout>
+
+    <TextView
+        android:id="@+id/placeholderTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:drawablePadding="@dimen/size_small"
+        android:drawableTop="@drawable/ic_placeholder"
+        android:text="@string/available_next_version_text"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
-    <EditText
-        android:id="@+id/editTextView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="@dimen/size_small"
-        android:layout_marginStart="@dimen/size_small"
-        android:hint="@string/placeholder_text"
-        android:inputType="textPersonName"
-        app:layout_constraintTop_toBottomOf="@+id/inputTextView" />
-
-    <Button
-        android:id="@+id/sendButton"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="@string/button_send_ingredient_text"
-        app:layout_constraintEnd_toStartOf="@+id/deleteAllButton"
-        app:layout_constraintHorizontal_bias="0.41"
-        app:layout_constraintHorizontal_chainStyle="spread"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextView" />
-
-    <Button
-        android:id="@+id/deleteAllButton"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="@string/button_delete_all_text"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/sendButton"
-        app:layout_constraintTop_toBottomOf="@+id/editTextView"
-        app:layout_constraintTop_toTopOf="@+id/sendButton" />
-
-    <TextView
-        android:id="@+id/resultTextView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="@dimen/size_small"
-        android:layout_marginStart="@dimen/size_small"
-        android:text="@string/textview_result_text"
-        android:textStyle="bold"
-        app:layout_constraintTop_toBottomOf="@+id/deleteAllButton" />
-
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/resultRecyclerView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="@dimen/size_medium"
-        android:layout_marginStart="@dimen/size_medium"
-        android:layout_marginTop="@dimen/size_medium"
-        app:layout_constraintTop_toBottomOf="@+id/resultTextView" />
 
 </android.support.constraint.ConstraintLayout>

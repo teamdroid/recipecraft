@@ -6,45 +6,21 @@ import android.support.annotation.ColorRes
 import android.support.design.widget.TabLayout
 import android.support.v4.app.Fragment
 import android.support.v4.content.ContextCompat
-import android.view.Menu
-import android.view.MenuInflater
-import android.view.MenuItem
 import android.view.View
-import android.widget.Toast
-import com.arellomobile.mvp.presenter.InjectPresenter
 import kotlinx.android.synthetic.main.fragment_nagivation.*
 import ru.teamdroid.recipecraft.R
 import ru.teamdroid.recipecraft.base.*
-import ru.teamdroid.recipecraft.presenters.NavigationPresenter
 import ru.teamdroid.recipecraft.views.NavigationMvpView
 
 class NavigationFragment : BaseMoxyFragment(), NavigationMvpView {
 
     override val contentResId = R.layout.fragment_nagivation
 
-    @InjectPresenter
-    lateinit var presenter: NavigationPresenter
+    private var currentScreen = Screens.CRAFT
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        setupToolbar(toolbar, false, getString(R.string.app_name))
         setupTabLayout()
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.menu_navigation, menu)
-        super.onCreateOptionsMenu(menu, inflater)
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
-            R.id.action_refresh -> {
-                Toast.makeText(context, getString(R.string.menu_refresh), Int.MAX_VALUE).show()
-                true
-            }
-            else -> super.onOptionsItemSelected(item)
-        }
     }
 
     private fun setupTabLayout() {
@@ -69,7 +45,7 @@ class NavigationFragment : BaseMoxyFragment(), NavigationMvpView {
                     onTabSelected(tab)
                 }
             })
-            getTabAt(Screens.tabs.indexOf(Screens.CRAFT))?.select()
+            getTabAt(Screens.tabs.indexOf(currentScreen))?.select()
         }
     }
 
@@ -77,19 +53,21 @@ class NavigationFragment : BaseMoxyFragment(), NavigationMvpView {
         tabLayout.getTabAt(position)?.let { tab -> tab.icon?.setColorFilter(ContextCompat.getColor(context, colorRes), PorterDuff.Mode.SRC_IN) }
     }
 
-    private fun replaceScreen(screenKey: String) {
-        val transaction = fragmentManager?.beginTransaction()
-        var fragment = fragmentManager?.findFragmentByTag(screenKey)
+    fun replaceScreen(screenKey: String) {
+        currentScreen = screenKey
+
+        val transaction = childFragmentManager?.beginTransaction()
+        var fragment = childFragmentManager?.findFragmentByTag(currentScreen)
 
         if (fragment == null) {
-            fragment = createFragment(screenKey, null)
+            fragment = createFragment(currentScreen)
         }
 
-        transaction?.replace(R.id.navigationContainer, fragment, screenKey)
-                ?.addToBackStack(screenKey)?.commit()
+        transaction?.replace(R.id.navigationContainer, fragment, currentScreen)
+                ?.addToBackStack(currentScreen)?.commit()
     }
 
-    private fun createFragment(screenKey: String, data: Any?): Fragment? {
+    private fun createFragment(screenKey: String): Fragment? {
         return when (screenKey) {
             Screens.CRAFT -> CraftFragment.newInstance()
             Screens.RECIPES -> RecipesFragment.newInstance()
@@ -101,5 +79,4 @@ class NavigationFragment : BaseMoxyFragment(), NavigationMvpView {
     companion object {
         fun newInstance() = NavigationFragment()
     }
-
 }

@@ -4,7 +4,7 @@ import android.arch.persistence.room.Room
 import android.content.Context
 import dagger.Module
 import dagger.Provides
-import ru.teamdroid.recipecraft.room.ItemRoomDatabase
+import ru.teamdroid.recipecraft.room.RecipecraftRoomDatabase
 
 @Module
 class AppModule(private val context: Context) {
@@ -13,9 +13,9 @@ class AppModule(private val context: Context) {
     fun providesAppContext() = context
 
     @Provides
-    fun providesAppDatabase(context: Context): ItemRoomDatabase =
-            Room.databaseBuilder(context, ItemRoomDatabase::class.java, "ItemRoomDatabase").build()
+    fun providesAppDatabase(context: Context): RecipecraftRoomDatabase =
+            Room.databaseBuilder(context, RecipecraftRoomDatabase::class.java, "RecipecraftRoomDatabase").build()
 
     @Provides
-    fun providesItemDao(database: ItemRoomDatabase) = database.itemDao()
+    fun providesItemDao(database: RecipecraftRoomDatabase) = database.itemDao()
 }

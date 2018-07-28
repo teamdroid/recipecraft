@@ -1,11 +1,20 @@
 <resources>
     <string name="app_name">Recipecraft</string>
     <string name="menu_refresh">Refresh</string>
-    <string name="test_room_text">Введите ингредиент</string>
-    <string name="placeholder_text">…</string>
-    <string name="button_send_ingredient_text">Отправить</string>
-    <string name="textview_result_text">Результат (id, title):</string>
-    <string name="room_error_text">Ошибка вставки записи</string>
-    <string name="warning_empty_field_text">Вы ввели пустое поле</string>
-    <string name="button_delete_all_text">Удалить всё</string>
+    <string name="available_next_version_text">Раздел будет доступен в следующих версиях</string>
+    <string name="fragment_craft_title">Создание рецепта</string>
+    <string name="fragment_favorites_title">Избранное</string>
+    <string name="fragment_recipes_title">Рецепты</string>
+    <string name="ok">Ок</string>
+    <string name="first_startup_title">Внимание</string>
+    <string name="first_startup_message">Спасибо за установку нашего приложения. \n\nВ данный момент проект находится в стадии альфы версии и не весь функционал может работать корректно. \n\nПожалуйста, в случае ошибки или пожелания дайте нам знать через обратную связь в верхнем правом углу экрана.</string>
+    <string name="menu_report">Report</string>
+    <string name="report_title">Если у вас есть какие-то замечания или пожелания, пожалуйста, заполните анкету внизу</string>
+    <string name="your_name_text">Ваше имя:</string>
+    <string name="your_email_text">Ваш e-mail:</string>
+    <string name="your_feedback_text">Ваше сообщение:</string>
+    <string name="send_feedback_button_text">Отправить</string>
+    <string name="fragment_report_title">Обратная связь</string>
+    <string name="error_input_text">Введите все поля</string>
+    <string name="thanks_feedback">Спасибо за ваше письмо</string>
 </resources>

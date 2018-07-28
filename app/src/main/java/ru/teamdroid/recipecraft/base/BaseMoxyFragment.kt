@@ -35,7 +35,6 @@ abstract class BaseMoxyFragment : MvpAppCompatFragment(), OnBackPressedListener 
         }
 
         toolbar.title = title
-
     }
 
     override fun getContext(): Context {
@@ -43,5 +42,4 @@ abstract class BaseMoxyFragment : MvpAppCompatFragment(), OnBackPressedListener 
     }
 
     override fun onBackPressed() = true
-
 }
