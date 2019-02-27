@@ -7,11 +7,11 @@ import android.support.annotation.NonNull
 
 @Entity(tableName = "Recipe")
 data class Recipe(
-        @PrimaryKey() @NonNull @ColumnInfo(name = "id")
+        @PrimaryKey @NonNull @ColumnInfo(name = "id")
         var id: Int = 0,
         @ColumnInfo(name = "title")
         var title: String = "",
-        @Ignore
+        @ColumnInfo(name = "isBookmarked")
         var isBookmarked: Boolean = false,
         @Ignore
         var ingredients: MutableList<Ingredients> = ArrayList()

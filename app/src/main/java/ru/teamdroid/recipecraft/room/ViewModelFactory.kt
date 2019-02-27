@@ -10,11 +10,10 @@ import ru.teamdroid.recipecraft.room.dao.RecipesDao
 
 class ViewModelFactory(private val dataSource: Any) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        if (modelClass.isAssignableFrom(RecipesViewModel::class.java)) {
-            return RecipesViewModel(dataSource as RecipesDao) as T
-        } else if (modelClass.isAssignableFrom(IngredientsViewModel::class.java)) {
-            return IngredientsViewModel(dataSource as IngredientsDao) as T
+        return when {
+            modelClass.isAssignableFrom(RecipesViewModel::class.java) -> RecipesViewModel(dataSource as RecipesDao) as T
+            modelClass.isAssignableFrom(IngredientsViewModel::class.java) -> IngredientsViewModel(dataSource as IngredientsDao) as T
+            else -> throw IllegalArgumentException("Unknown ViewModel class")
         }
-        throw IllegalArgumentException("Unknown ViewModel class")
     }
 }

@@ -15,10 +15,9 @@ import kotlinx.android.synthetic.main.fragment_favorites.*
 import ru.teamdroid.recipecraft.R
 import ru.teamdroid.recipecraft.adapters.RecipesAdapter
 import ru.teamdroid.recipecraft.base.BaseMoxyFragment
-import ru.teamdroid.recipecraft.room.models.RecipesViewModel
 import ru.teamdroid.recipecraft.room.Injection
-import ru.teamdroid.recipecraft.room.ViewModelFactory
 import ru.teamdroid.recipecraft.room.entity.Recipe
+import ru.teamdroid.recipecraft.room.models.RecipesViewModel
 
 class FavoritesFragment : BaseMoxyFragment() {
 
@@ -26,10 +25,9 @@ class FavoritesFragment : BaseMoxyFragment() {
 
     private var compositeDisposable: CompositeDisposable? = null
 
-    private lateinit var viewModelFactory: ViewModelFactory
-    private lateinit var recipesViewModel: RecipesViewModel
+    private lateinit var viewModelRecipes: RecipesViewModel
 
-    private val recipesAdapter by lazy {
+    private val bookmarkRecipesAdapter by lazy {
         RecipesAdapter(
                 onItemClickListener = {
                     onClick(it)
@@ -45,12 +43,17 @@ class FavoritesFragment : BaseMoxyFragment() {
         setupToolbar(toolbar, false, getString(R.string.fragment_favorites_title))
 
         with(recyclerView) {
-            adapter = recipesAdapter
+            adapter = bookmarkRecipesAdapter
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         }
 
-        viewModelFactory = Injection.provideRecipesViewModelFactory(context)
-        recipesViewModel = ViewModelProviders.of(this, viewModelFactory).get(RecipesViewModel::class.java)
+        viewModelRecipes = ViewModelProviders.of(this, Injection.provideRecipesViewModelFactory(context)).get(RecipesViewModel::class.java)
+
+        swipeRefreshLayout.setOnRefreshListener {
+            swipeRefreshLayout.isRefreshing = true
+            progressBar.visibility = View.VISIBLE
+            refresh()
+        }
 
         refresh()
     }
@@ -58,15 +61,15 @@ class FavoritesFragment : BaseMoxyFragment() {
     private fun refresh() {
         progressBar.visibility = View.VISIBLE
         swipeRefreshLayout.isRefreshing = false
-        recipesAdapter.recipes = ArrayList()
+        bookmarkRecipesAdapter.recipes = ArrayList()
 
         compositeDisposable = CompositeDisposable()
 
-        compositeDisposable?.add(recipesViewModel.getAllRecipes()
+        compositeDisposable?.add(viewModelRecipes.getAllBookmarkedRecipes()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
-                    recipesAdapter.recipes = it
+                    bookmarkRecipesAdapter.recipes = it
                     setInvisibleRefreshing()
                 }, { }))
     }
@@ -77,14 +80,15 @@ class FavoritesFragment : BaseMoxyFragment() {
     }
 
     private fun onClick(position: Int) {
-        baseActivity.replaceFragment(DetailRecipeFragment.newInstance(recipesAdapter.recipes[position]), NavigationFragment.TAG)
+        val currentRecipe = bookmarkRecipesAdapter.recipes[position]
+        baseActivity.replaceFragment(DetailRecipeFragment.newInstance(Recipe(currentRecipe.id, currentRecipe.title, currentRecipe.isBookmarked, currentRecipe.ingredients)), NavigationFragment.TAG)
     }
 
     private fun onFavoriteClick(recipe: Recipe) {
-        compositeDisposable?.add(recipesViewModel.update(recipe)
+        compositeDisposable?.add(viewModelRecipes.unbookmarkRecipe(recipe)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({ Log.d("dsfsdfsd", recipe.isBookmarked.toString())}, { }))
+                .subscribe({ refresh() }, { Log.d("resulting", "error") }))
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

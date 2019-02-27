@@ -31,10 +31,18 @@ class RecipesAdapter(
             setOnClickListener { onItemClickListener.invoke(position) }
             titleTextView.text = recipes[position].title
             infoTextView.text = resources.getString(R.string.info_recipes, recipes[position].ingredients.size.toString())
-            favoritesButton.setOnClickListener {
-                onFavoriteClickListener.invoke(recipes[position])
+            with(favoritesButton) {
+                text = checkBookmark(recipes[position])
+                setOnClickListener {
+                    onFavoriteClickListener.invoke(recipes[position])
+                    text = checkBookmark(recipes[position])
+                }
             }
         }
+    }
+
+    private fun checkBookmark(recipe: Recipe) : String {
+        return if (recipe.isBookmarked) "Удалить" else "В избранное"
     }
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view)

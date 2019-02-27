@@ -12,6 +12,9 @@ interface RecipesDao {
     @Query("SELECT * FROM recipe")
     fun getAllRecipes(): Flowable<MutableList<Recipe>>
 
+    @Query("SELECT * FROM recipe WHERE recipe.isBookmarked == 1")
+    fun getAllBookmarkedRecipes(): Flowable<MutableList<Recipe>>
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertRecipes(listRecipe:MutableList<Recipe>)
 
