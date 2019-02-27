@@ -24,7 +24,7 @@
         android:layout_height="wrap_content"
         android:drawablePadding="@dimen/size_small"
         android:drawableTop="@drawable/ic_placeholder"
-        android:text="@string/available_next_version_text"
+        android:text="@string/available_section_next_version_text"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"

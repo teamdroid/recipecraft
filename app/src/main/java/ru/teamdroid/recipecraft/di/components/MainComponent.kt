@@ -4,6 +4,8 @@ import dagger.Subcomponent
 import dagger.android.AndroidInjector
 import ru.teamdroid.recipecraft.MainActivity
 
-@Subcomponent interface MainComponent : AndroidInjector<MainActivity> {
-    @Subcomponent.Builder abstract class Builder : AndroidInjector.Builder<MainActivity>()
+@Subcomponent
+interface MainComponent : AndroidInjector<MainActivity> {
+    @Subcomponent.Builder
+    abstract class Builder : AndroidInjector.Builder<MainActivity>()
 }

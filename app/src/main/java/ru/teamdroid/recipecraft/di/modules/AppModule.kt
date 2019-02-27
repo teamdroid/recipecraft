@@ -15,7 +15,4 @@ class AppModule(private val context: Context) {
     @Provides
     fun providesAppDatabase(context: Context): RecipecraftRoomDatabase =
             Room.databaseBuilder(context, RecipecraftRoomDatabase::class.java, "RecipecraftRoomDatabase").build()
-
-    @Provides
-    fun providesItemDao(database: RecipecraftRoomDatabase) = database.itemDao()
 }

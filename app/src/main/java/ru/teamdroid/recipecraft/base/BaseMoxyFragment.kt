@@ -1,5 +1,6 @@
 package ru.teamdroid.recipecraft.base
 
+import android.app.AlertDialog
 import android.content.Context
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
@@ -9,6 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.arellomobile.mvp.MvpAppCompatFragment
 import ru.teamdroid.recipecraft.MainActivity
+import ru.teamdroid.recipecraft.R
 import ru.teamdroid.recipecraft.base.interfaces.OnBackPressedListener
 
 abstract class BaseMoxyFragment : MvpAppCompatFragment(), OnBackPressedListener {
@@ -35,6 +37,18 @@ abstract class BaseMoxyFragment : MvpAppCompatFragment(), OnBackPressedListener 
         }
 
         toolbar.title = title
+    }
+
+    open fun showStartup() {
+        AlertDialog.Builder(this.context)
+                .setTitle(R.string.first_startup_title)
+                .setPositiveButton(R.string.ok) { dialog, _ -> dialog.dismiss() }
+                .setMessage(R.string.first_startup_message)
+                .show()
+    }
+
+    fun onBack() {
+        fragmentManager.popBackStack()
     }
 
     override fun getContext(): Context {
