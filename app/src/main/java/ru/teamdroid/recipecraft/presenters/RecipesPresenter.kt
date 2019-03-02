@@ -11,6 +11,8 @@ import ru.teamdroid.recipecraft.room.entity.Recipe
 import ru.teamdroid.recipecraft.views.RecipesView
 import android.util.Log
 import ru.teamdroid.recipecraft.fragments.NavigationFragment
+import ru.teamdroid.recipecraft.room.entity.Ingredients
+import ru.teamdroid.recipecraft.room.entity.Instruction
 import ru.teamdroid.recipecraft.room.models.RecipesViewModel
 
 @InjectViewState
@@ -45,11 +47,27 @@ class RecipesPresenter : MvpPresenter<RecipesView>() {
                 .subscribe({ Log.d(NavigationFragment.TAG, "Success") }, { }))
     }
 
-    fun insertRecipes(list: MutableList<Recipe>) {
-        compositeDisposable.add(viewModelRecipes.insertRecipes(list)
+    private fun insertRecipes(listRecipe : MutableList<Recipe>) {
+
+        val listIngredients : MutableList<Ingredients> = arrayListOf()
+
+        listRecipe.forEach { recipe ->
+            recipe.ingredients.forEach {
+                listIngredients.add(it)
+            }
+        }
+
+        val disposableInsertRecipes = viewModelRecipes.insertRecipes(listRecipe)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({ Log.d(NavigationFragment.TAG, "Success") }, { }))
+                .subscribe({ Log.d(NavigationFragment.TAG, "Success") }, { })
+
+        val disposableInsertIngredients = viewModelRecipes.insertIngredients(listIngredients)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({ Log.d(NavigationFragment.TAG, "Success") }, { })
+
+        compositeDisposable.addAll(disposableInsertIngredients, disposableInsertRecipes)
     }
 
     override fun onDestroy() {

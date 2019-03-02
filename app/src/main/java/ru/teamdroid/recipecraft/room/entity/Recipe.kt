@@ -14,7 +14,9 @@ data class Recipe(
         @ColumnInfo(name = "isBookmarked")
         var isBookmarked: Boolean = false,
         @Ignore
-        var ingredients: MutableList<Ingredients> = ArrayList()
+        var ingredients: MutableList<Ingredients> = ArrayList(),
+        @Ignore
+        var insctructions: MutableList<Instruction> = ArrayList()
 ) : Parcelable {
 
     constructor(parcel: Parcel) : this(parcel.readInt(), parcel.readString(), parcel.readInt() == 0, mutableListOf<Ingredients>().apply {

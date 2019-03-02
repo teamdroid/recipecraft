@@ -26,4 +26,6 @@
     <string name="info_recipes">%s ингредиентов(а) | 0 порции | 0 минут</string>
     <string name="category_recipes">Еда | Завтраки</string>
     <string name="placeholder_detail_recipe">Detail Recipe</string>
+    <string name="save">Сохранить</string>
+    <string name="Delete">Удалить</string>
 </resources>

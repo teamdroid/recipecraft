@@ -6,7 +6,6 @@ import android.content.Context
  * Enables injection of data sources.
  */
 object Injection {
-
     fun provideRecipesViewModelFactory(context: Context): ViewModelFactory {
         val dataSource = RecipecraftRoomDatabase.getInstance(context).recipesDao()
         return ViewModelFactory(dataSource)

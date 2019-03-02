@@ -2,6 +2,7 @@ package ru.teamdroid.recipecraft.room.dao
 
 import android.arch.persistence.room.*
 import io.reactivex.Flowable
+import ru.teamdroid.recipecraft.room.entity.Ingredients
 import ru.teamdroid.recipecraft.room.entity.Recipe
 
 @Dao
@@ -17,6 +18,9 @@ interface RecipesDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertRecipes(listRecipe:MutableList<Recipe>)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertIngredients(listIngredients:MutableList<Ingredients>)
 
     @Delete
     fun deleteRecipe(recipe: Recipe)

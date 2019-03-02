@@ -32,7 +32,7 @@ class RecipesAdapter(
             titleTextView.text = recipes[position].title
             infoTextView.text = resources.getString(R.string.info_recipes, recipes[position].ingredients.size.toString())
             with(favoritesButton) {
-                text = recipes[position].isBookmarked.toString()
+                text = if (!recipes[position].isBookmarked) context.getString(R.string.save) else context.getString(R.string.Delete)
                 setOnClickListener {
                     onFavoriteClickListener.invoke(recipes[position])
                 }

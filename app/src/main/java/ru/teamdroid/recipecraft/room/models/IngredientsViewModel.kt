@@ -9,11 +9,6 @@ import ru.teamdroid.recipecraft.room.entity.Ingredients
 
 class IngredientsViewModel(private val dataSource: IngredientsDao) : ViewModel() {
 
-    fun getTitleIngredients(id: Int): Single<String> {
-        return dataSource.getByIdIngredients(id)
-                .map { ingredient -> ingredient.title }
-    }
-
     fun getAllIngredients(): Flowable<MutableList<Ingredients>> {
         return dataSource.getAllIngredients()
     }
