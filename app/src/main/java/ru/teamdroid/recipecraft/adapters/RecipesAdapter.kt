@@ -31,8 +31,11 @@ class RecipesAdapter(
             setOnClickListener { onItemClickListener.invoke(position) }
             titleTextView.text = recipes[position].title
             infoTextView.text = resources.getString(R.string.info_recipes, recipes[position].ingredients.size.toString())
-            favoritesButton.setOnClickListener {
-                onFavoriteClickListener.invoke(recipes[position])
+            with(favoritesButton) {
+                text = recipes[position].isBookmarked.toString()
+                setOnClickListener {
+                    onFavoriteClickListener.invoke(recipes[position])
+                }
             }
         }
     }

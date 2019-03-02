@@ -3,16 +3,12 @@ package ru.teamdroid.recipecraft.fragments
 import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
-import android.util.Log
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
 import com.arellomobile.mvp.presenter.InjectPresenter
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.fragment_recipes.*
 import ru.teamdroid.recipecraft.R
 import ru.teamdroid.recipecraft.adapters.RecipesAdapter
@@ -20,7 +16,6 @@ import ru.teamdroid.recipecraft.base.BaseMoxyFragment
 import ru.teamdroid.recipecraft.room.models.RecipesViewModel
 import ru.teamdroid.recipecraft.presenters.RecipesPresenter
 import ru.teamdroid.recipecraft.room.Injection
-import ru.teamdroid.recipecraft.room.ViewModelFactory
 import ru.teamdroid.recipecraft.room.entity.Recipe
 import ru.teamdroid.recipecraft.views.RecipesView
 
@@ -29,15 +24,9 @@ class RecipesFragment : BaseMoxyFragment(), RecipesView {
     @InjectPresenter
     lateinit var presenter: RecipesPresenter
 
-    private var compositeDisposable: CompositeDisposable? = null
-
-    private lateinit var viewModelFactory: ViewModelFactory
-
-    private lateinit var viewModel: RecipesViewModel
+    private lateinit var viewModelRecipes: RecipesViewModel
 
     override val contentResId = R.layout.fragment_recipes
-
-    private var isCreate = false
 
     private val recipesAdapter by lazy {
         RecipesAdapter(
@@ -50,44 +39,53 @@ class RecipesFragment : BaseMoxyFragment(), RecipesView {
         )
     }
 
-    private fun onClick(position: Int) {
-        baseActivity.replaceFragment(DetailRecipeFragment.newInstance(recipesAdapter.recipes[position]), NavigationFragment.TAG)
-    }
-
-    private fun onFavoriteClick(recipe: Recipe) {
-        compositeDisposable = CompositeDisposable()
-        compositeDisposable?.add(viewModel.update(recipe)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({ Log.d(TAG, "Resulting is "+recipesAdapter.recipes[recipe.id].isBookmarked.toString()) }, { Log.d("resulting", "error") }))
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        viewModelRecipes = ViewModelProviders.of(this, Injection.provideRecipesViewModelFactory(context)).get(RecipesViewModel::class.java)
+        presenter.onCreate(viewModelRecipes)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupToolbar(toolbar, false, getString(R.string.fragment_recipes_title))
 
-        viewModelFactory = Injection.provideRecipesViewModelFactory(context)
-        viewModel = ViewModelProviders.of(this, viewModelFactory).get(RecipesViewModel::class.java)
-
         with(recyclerView) {
             adapter = recipesAdapter
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         }
 
-        swipeRefreshLayout.setOnRefreshListener {
-            swipeRefreshLayout.isRefreshing = true
-            progressBar.visibility = View.VISIBLE
-            loadRemote()
-        }
+        if (recipesAdapter.recipes.isEmpty()) loadLocal()
 
-        // fix it
-        if (!isCreate) loadRemote()
-        isCreate = true
+        swipeRefreshLayout.setOnRefreshListener {
+            progressBar.visibility = View.VISIBLE
+            swipeRefreshLayout.isRefreshing = false
+            progressBar.visibility = View.VISIBLE
+            refresh()
+        }
+    }
+
+    private fun onClick(position: Int) {
+        baseActivity.replaceFragment(DetailRecipeFragment.newInstance(recipesAdapter.recipes[position]), NavigationFragment.TAG)
+    }
+
+    private fun onFavoriteClick(recipe: Recipe) {
+        presenter.bookmarkRecipe(recipe)
+    }
+
+    private fun refresh() {
+        progressBar.visibility = View.VISIBLE
+        swipeRefreshLayout.isRefreshing = false
+        recipesAdapter.recipes = ArrayList()
+        loadRemote()
+    }
+
+    private fun loadLocal() {
+        viewModelRecipes = ViewModelProviders.of(this, Injection.provideRecipesViewModelFactory(context)).get(RecipesViewModel::class.java)
+        presenter.getAllRecipe(viewModelRecipes)
+        if (recipesAdapter.recipes.isEmpty()) loadRemote()
     }
 
     private fun loadRemote() {
-        progressBar.visibility = View.VISIBLE
-        swipeRefreshLayout.isRefreshing = false
         recipesAdapter.recipes = ArrayList()
         presenter.loadRemote(getString(R.string.language))
     }
@@ -99,17 +97,7 @@ class RecipesFragment : BaseMoxyFragment(), RecipesView {
 
     override fun onSuccessLoad(list: MutableList<Recipe>) {
         recipesAdapter.recipes = list
-
-
-        compositeDisposable?.add(viewModel.insertRecipes(list)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({ Log.d(TAG, "cashed") }, { Log.d("resulting", "error") }))
-
         setInvisibleRefreshing()
-
-        Log.d(TAG, list.toString())
-
     }
 
     override fun onErrorLoad(error: Throwable) {
@@ -130,11 +118,6 @@ class RecipesFragment : BaseMoxyFragment(), RecipesView {
             }
             else -> super.onOptionsItemSelected(item)
         }
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        compositeDisposable?.dispose()
     }
 
     companion object {

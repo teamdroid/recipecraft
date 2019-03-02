@@ -11,10 +11,4 @@ object Injection {
         val dataSource = RecipecraftRoomDatabase.getInstance(context).recipesDao()
         return ViewModelFactory(dataSource)
     }
-
-    fun provideIngredientsViewModelFactory(context: Context): ViewModelFactory {
-        val dataSource = RecipecraftRoomDatabase.getInstance(context).ingredientsDao()
-        return ViewModelFactory(dataSource)
-    }
-
 }
