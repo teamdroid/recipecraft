@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/cardView"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="@dimen/size_small"
     android:layout_marginLeft="@dimen/size_small"
-    android:layout_marginRight="@dimen/size_small">
+    android:layout_marginRight="@dimen/size_small"
+    android:layout_marginBottom="@dimen/size_small">
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
@@ -26,16 +27,15 @@
             android:id="@+id/titleTextView"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginRight="@dimen/text_size_medium"
             android:layout_marginLeft="@dimen/text_size_medium"
-            android:layout_marginTop="@dimen/size_xsmall"
+            android:layout_marginRight="@dimen/text_size_medium"
             android:layout_marginBottom="@dimen/size_xsmall"
             android:gravity="center"
-            android:text="dfsdfsdfs"
-            app:autoSizeTextType="uniform"
+            android:maxLines="1"
             android:textSize="@dimen/text_size_large"
             android:textStyle="bold"
-            android:maxLines="1"
+            app:autoSizeTextType="uniform"
+            app:layout_constraintBottom_toTopOf="@+id/categoryTextView"
             app:layout_constraintLeft_toRightOf="@+id/imageView"
             app:layout_constraintRight_toRightOf="parent" />
 
@@ -67,13 +67,12 @@
             android:layout_width="175dp"
             android:layout_height="30dp"
             android:layout_margin="@dimen/size_xsmall"
-            android:layout_marginBottom="@dimen/size_xlarge"
-            android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="@dimen/size_medium"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="@dimen/size_xlarge"
             android:background="@drawable/button"
             android:gravity="center"
-            android:text="@string/favoriteButton"
             android:textColor="@color/textWhite"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

@@ -3,27 +3,30 @@ package ru.teamdroid.recipecraft.fragments
 import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
-import android.util.Log
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
-import io.reactivex.android.schedulers.AndroidSchedulers
+import com.arellomobile.mvp.presenter.InjectPresenter
 import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.fragment_favorites.*
 import ru.teamdroid.recipecraft.R
 import ru.teamdroid.recipecraft.adapters.RecipesAdapter
 import ru.teamdroid.recipecraft.base.BaseMoxyFragment
+import ru.teamdroid.recipecraft.presenters.FavoritesPresenter
 import ru.teamdroid.recipecraft.room.Injection
 import ru.teamdroid.recipecraft.room.entity.Recipe
 import ru.teamdroid.recipecraft.room.models.RecipesViewModel
+import ru.teamdroid.recipecraft.views.FavoritesView
 
-class FavoritesFragment : BaseMoxyFragment() {
+class FavoritesFragment : BaseMoxyFragment(), FavoritesView {
+
+    @InjectPresenter
+    lateinit var presenter: FavoritesPresenter
 
     override val contentResId = R.layout.fragment_favorites
 
-    private var compositeDisposable: CompositeDisposable? = null
+    private var compositeDisposable = CompositeDisposable()
 
     private lateinit var viewModelRecipes: RecipesViewModel
 
@@ -47,31 +50,23 @@ class FavoritesFragment : BaseMoxyFragment() {
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         }
 
-        viewModelRecipes = ViewModelProviders.of(this, Injection.provideRecipesViewModelFactory(context)).get(RecipesViewModel::class.java)
+        if (bookmarkRecipesAdapter.recipes.isEmpty()) {
+            viewModelRecipes = ViewModelProviders.of(this, Injection.provideRecipesViewModelFactory(context)).get(RecipesViewModel::class.java)
+            refresh()
+        }
 
         swipeRefreshLayout.setOnRefreshListener {
             swipeRefreshLayout.isRefreshing = true
             progressBar.visibility = View.VISIBLE
             refresh()
         }
-
-        refresh()
     }
 
     private fun refresh() {
         progressBar.visibility = View.VISIBLE
         swipeRefreshLayout.isRefreshing = false
         bookmarkRecipesAdapter.recipes = ArrayList()
-
-        compositeDisposable = CompositeDisposable()
-
-        compositeDisposable?.add(viewModelRecipes.getAllBookmarkedRecipes()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({
-                    bookmarkRecipesAdapter.recipes = it
-                    setInvisibleRefreshing()
-                }, { }))
+        presenter.getAllBookmarkedRecipes(viewModelRecipes)
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -85,10 +80,7 @@ class FavoritesFragment : BaseMoxyFragment() {
     }
 
     private fun onFavoriteClick(recipe: Recipe) {
-        compositeDisposable?.add(viewModelRecipes.unbookmarkRecipe(recipe)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({ refresh() }, { Log.d("resulting", "error") }))
+        presenter.bookmarkRecipe(recipe, viewModelRecipes)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -101,6 +93,11 @@ class FavoritesFragment : BaseMoxyFragment() {
         }
     }
 
+    override fun onSuccessLoad(list: MutableList<Recipe>) {
+        bookmarkRecipesAdapter.recipes = list
+        setInvisibleRefreshing()
+    }
+
     private fun setInvisibleRefreshing() {
         progressBar.visibility = View.GONE
         swipeRefreshLayout.isRefreshing = false
@@ -108,7 +105,7 @@ class FavoritesFragment : BaseMoxyFragment() {
 
     override fun onDestroy() {
         super.onDestroy()
-        compositeDisposable?.dispose()
+        compositeDisposable.clear()
     }
 
     companion object {

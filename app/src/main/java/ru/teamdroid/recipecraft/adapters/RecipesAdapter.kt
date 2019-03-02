@@ -32,17 +32,12 @@ class RecipesAdapter(
             titleTextView.text = recipes[position].title
             infoTextView.text = resources.getString(R.string.info_recipes, recipes[position].ingredients.size.toString())
             with(favoritesButton) {
-                text = checkBookmark(recipes[position])
+                text = recipes[position].isBookmarked.toString()
                 setOnClickListener {
                     onFavoriteClickListener.invoke(recipes[position])
-                    text = checkBookmark(recipes[position])
                 }
             }
         }
-    }
-
-    private fun checkBookmark(recipe: Recipe) : String {
-        return if (recipe.isBookmarked) "Удалить" else "В избранное"
     }
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view)
