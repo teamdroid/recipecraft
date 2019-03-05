@@ -7,6 +7,7 @@ import io.reactivex.Single
 import ru.teamdroid.recipecraft.room.dao.RecipesDao
 import ru.teamdroid.recipecraft.room.entity.Ingredients
 import ru.teamdroid.recipecraft.room.entity.Recipe
+import ru.teamdroid.recipecraft.room.entity.RecipeIngredients
 
 class RecipesViewModel(private val dataSource: RecipesDao) : ViewModel() {
 
@@ -24,6 +25,12 @@ class RecipesViewModel(private val dataSource: RecipesDao) : ViewModel() {
     fun insertIngredients(listIngredients : MutableList<Ingredients>) : Single<Ingredients> {
         return Single.fromObservable {
             dataSource.insertIngredients(listIngredients)
+        }
+    }
+
+    fun insertRecipeIngredients(listRecipeIngredients : MutableList<RecipeIngredients>) : Single<RecipeIngredients> {
+        return Single.fromObservable {
+            dataSource.insertRecipeIngredients(listRecipeIngredients)
         }
     }
 

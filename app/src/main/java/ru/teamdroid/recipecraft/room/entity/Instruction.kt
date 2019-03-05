@@ -8,7 +8,7 @@ import android.support.annotation.NonNull
 @Entity(tableName = "instruction")
 data class Instruction(
         @PrimaryKey @NonNull @ColumnInfo(name = "id")
-        val idI: Int,
+        val id: Int,
         @ColumnInfo(name = "title")
         val title: String,
         @ColumnInfo(name = "amount")

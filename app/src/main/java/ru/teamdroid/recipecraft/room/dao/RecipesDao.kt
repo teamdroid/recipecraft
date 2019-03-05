@@ -4,6 +4,7 @@ import android.arch.persistence.room.*
 import io.reactivex.Flowable
 import ru.teamdroid.recipecraft.room.entity.Ingredients
 import ru.teamdroid.recipecraft.room.entity.Recipe
+import ru.teamdroid.recipecraft.room.entity.RecipeIngredients
 
 @Dao
 interface RecipesDao {
@@ -17,10 +18,13 @@ interface RecipesDao {
     fun getAllBookmarkedRecipes(): Flowable<MutableList<Recipe>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertRecipes(listRecipe:MutableList<Recipe>)
+    fun insertRecipes(listRecipe: MutableList<Recipe>)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertIngredients(listIngredients:MutableList<Ingredients>)
+    fun insertIngredients(listIngredients: MutableList<Ingredients>)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertRecipeIngredients(listRecipeIngredients: MutableList<RecipeIngredients>)
 
     @Delete
     fun deleteRecipe(recipe: Recipe)

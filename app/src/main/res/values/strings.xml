@@ -28,4 +28,5 @@
     <string name="placeholder_detail_recipe">Detail Recipe</string>
     <string name="save">Сохранить</string>
     <string name="Delete">Удалить</string>
+    <string name="error_remote_load">Не удалось обновить данные из сервера</string>
 </resources>

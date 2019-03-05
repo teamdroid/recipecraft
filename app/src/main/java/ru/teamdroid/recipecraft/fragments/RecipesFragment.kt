@@ -101,7 +101,7 @@ class RecipesFragment : BaseMoxyFragment(), RecipesView {
     }
 
     override fun onErrorLoad(error: Throwable) {
-        Toast.makeText(context, error.message, Int.MAX_VALUE).show()
+        Toast.makeText(context, getString(R.string.error_remote_load), Int.MAX_VALUE).show()
         setInvisibleRefreshing()
     }
 
