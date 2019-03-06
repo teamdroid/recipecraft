@@ -1,4 +1,4 @@
-package ru.teamdroid.recipecraft.models
+package ru.teamdroid.recipecraft.room.models
 
 import android.arch.lifecycle.ViewModel
 import io.reactivex.Completable
@@ -9,12 +9,7 @@ import ru.teamdroid.recipecraft.room.entity.Ingredients
 
 class IngredientsViewModel(private val dataSource: IngredientsDao) : ViewModel() {
 
-    fun getTitleIngredients(id: Int): Single<String> {
-        return dataSource.getByIdIngredients(id)
-                .map { ingredient -> ingredient.title }
-    }
-
-    fun getAllIngredients() : Flowable<MutableList<Ingredients>> {
+    fun getAllIngredients(): Flowable<MutableList<Ingredients>> {
         return dataSource.getAllIngredients()
     }
 

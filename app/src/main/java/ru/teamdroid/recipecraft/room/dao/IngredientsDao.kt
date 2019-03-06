@@ -10,9 +10,6 @@ interface IngredientsDao {
     @Query("SELECT * FROM ingredients")
     fun getAllIngredients(): Flowable<MutableList<Ingredients>>
 
-    @Query("SELECT * FROM ingredients WHERE id = :id")
-    fun getByIdIngredients(id: Int): Single<Ingredients>
-
     @Query("DELETE FROM ingredients")
     fun clearAllIngredients()
 
@@ -23,5 +20,5 @@ interface IngredientsDao {
     fun updateIngredients(ingredients: Ingredients)
 
     @Delete
-    fun deleteIngredients(iem: Ingredients)
+    fun deleteIngredients(item: Ingredients)
 }

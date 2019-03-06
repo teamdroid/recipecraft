@@ -8,6 +8,7 @@ import android.support.v4.app.Fragment
 import android.support.v4.content.ContextCompat
 import android.view.View
 import kotlinx.android.synthetic.main.fragment_nagivation.*
+import org.jetbrains.anko.bundleOf
 import ru.teamdroid.recipecraft.R
 import ru.teamdroid.recipecraft.base.*
 import ru.teamdroid.recipecraft.views.NavigationMvpView
@@ -16,7 +17,14 @@ class NavigationFragment : BaseMoxyFragment(), NavigationMvpView {
 
     override val contentResId = R.layout.fragment_nagivation
 
-    private var currentScreen = Screens.CRAFT
+    private var currentScreen = Screens.RECIPES
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        arguments?.let {
+            if (it.getBoolean(NavigationFragment.IS_FIRST_STARTUP)) showStartup()
+        }
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -77,6 +85,10 @@ class NavigationFragment : BaseMoxyFragment(), NavigationMvpView {
     }
 
     companion object {
-        fun newInstance() = NavigationFragment()
+        private const val IS_FIRST_STARTUP = "isFirstStartup"
+        const val TAG = "NavigationFragment"
+        fun newInstance(isFirstStartup: Boolean) = NavigationFragment().apply {
+            arguments = bundleOf(IS_FIRST_STARTUP to isFirstStartup)
+        }
     }
 }

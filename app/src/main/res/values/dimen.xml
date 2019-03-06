@@ -14,4 +14,7 @@
     <dimen name="size_xxxlarge">64dp</dimen>
     <dimen name="size_minus_medium">-16dp</dimen>
 
+    <dimen name="text_size_medium">16sp</dimen>
+    <dimen name="text_size_large">24sp</dimen>
+
 </resources>

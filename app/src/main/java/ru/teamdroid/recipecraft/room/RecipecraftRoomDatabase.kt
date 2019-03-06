@@ -5,11 +5,16 @@ import android.arch.persistence.room.Room
 import android.arch.persistence.room.RoomDatabase
 import android.content.Context
 import ru.teamdroid.recipecraft.room.dao.IngredientsDao
+import ru.teamdroid.recipecraft.room.dao.RecipesDao
 import ru.teamdroid.recipecraft.room.entity.Ingredients
+import ru.teamdroid.recipecraft.room.entity.Recipe
+import ru.teamdroid.recipecraft.room.entity.RecipeIngredients
 
-@Database(entities = [(Ingredients::class)], version = 1, exportSchema = false)
+@Database(entities = [(Ingredients::class), (Recipe::class), (RecipeIngredients::class)], version = 1, exportSchema = false)
 abstract class RecipecraftRoomDatabase : RoomDatabase() {
-    abstract fun itemDao(): IngredientsDao
+
+    abstract fun ingredientsDao(): IngredientsDao
+    abstract fun recipesDao(): RecipesDao
 
     companion object {
 

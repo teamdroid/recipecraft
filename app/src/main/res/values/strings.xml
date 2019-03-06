@@ -1,7 +1,9 @@
 <resources>
     <string name="app_name">Recipecraft</string>
+    <string name="base_domain">https:/teamdroid.ru/api/</string>
     <string name="menu_refresh">Refresh</string>
-    <string name="available_next_version_text">Раздел будет доступен в следующих версиях</string>
+    <string name="available_section_next_version_text">Раздел будет доступен в следующих версиях</string>
+    <string name="available_feature_next_version_text">Функционал будет доступен в следующих версиях</string>
     <string name="fragment_craft_title">Создание рецепта</string>
     <string name="fragment_favorites_title">Избранное</string>
     <string name="fragment_recipes_title">Рецепты</string>
@@ -17,4 +19,14 @@
     <string name="fragment_report_title">Обратная связь</string>
     <string name="error_input_text">Введите все поля</string>
     <string name="thanks_feedback">Спасибо за ваше письмо</string>
+    <string name="error_feedback">К сожалению, ваще сообщение не отправилось</string>
+    <string name="watch_button">Посмотреть</string>
+    <string name="favoriteButton">В избранное</string>
+    <string name="language">ru</string>
+    <string name="info_recipes">%s ингредиентов(а) | 0 порции | 0 минут</string>
+    <string name="category_recipes">Еда | Завтраки</string>
+    <string name="placeholder_detail_recipe">Detail Recipe</string>
+    <string name="save">Сохранить</string>
+    <string name="Delete">Удалить</string>
+    <string name="error_remote_load">Не удалось обновить данные из сервера</string>
 </resources>

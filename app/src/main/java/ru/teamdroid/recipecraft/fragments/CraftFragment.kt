@@ -26,7 +26,7 @@ class CraftFragment : BaseMoxyFragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.action_report -> {
-                baseActivity.replaceFragment(ReportFragment.newInstance())
+                baseActivity.replaceFragment(ReportFragment.newInstance(), NavigationFragment.TAG)
                 true
             }
             else -> super.onOptionsItemSelected(item)

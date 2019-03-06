@@ -25,13 +25,25 @@
                 android:background="@color/colorPrimary" />
         </android.support.design.widget.AppBarLayout>
 
+        <ProgressBar
+            android:id="@+id/progressBar"
+            style="@android:style/Widget.Holo.Light.ProgressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:indeterminate="true"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
         <TextView
             android:id="@+id/reportTitleTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/size_small"
-            android:layout_marginRight="@dimen/size_small"
             android:layout_marginTop="@dimen/size_medium"
+            android:layout_marginRight="@dimen/size_small"
             android:gravity="center"
             android:text="@string/report_title"
             app:layout_constraintLeft_toLeftOf="parent"
@@ -43,10 +55,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/size_small"
-            android:layout_marginRight="@dimen/size_small"
-            android:textStyle="bold"
             android:layout_marginTop="@dimen/size_medium"
+            android:layout_marginRight="@dimen/size_small"
             android:text="@string/your_name_text"
+            android:textStyle="bold"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toBottomOf="@id/reportTitleTextView" />
 
@@ -67,10 +79,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/size_small"
-            android:layout_marginRight="@dimen/size_small"
             android:layout_marginTop="@dimen/size_medium"
-            android:textStyle="bold"
+            android:layout_marginRight="@dimen/size_small"
             android:text="@string/your_email_text"
+            android:textStyle="bold"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toBottomOf="@id/nameEditText" />
 
@@ -91,10 +103,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/size_small"
-            android:layout_marginRight="@dimen/size_small"
             android:layout_marginTop="@dimen/size_medium"
-            android:textStyle="bold"
+            android:layout_marginRight="@dimen/size_small"
             android:text="@string/your_feedback_text"
+            android:textStyle="bold"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@id/emailEditText" />
@@ -116,7 +128,7 @@
             android:id="@+id/submitFeedbackButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/button"
+            android:background="@drawable/flat_button"
             android:text="@string/send_feedback_button_text"
             android:textColor="@color/textWhite"
             app:layout_constraintBottom_toBottomOf="parent"
