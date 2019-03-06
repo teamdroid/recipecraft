@@ -3,9 +3,9 @@ package ru.teamdroid.recipecraft.views
 import com.arellomobile.mvp.MvpView
 import com.arellomobile.mvp.viewstate.strategy.AddToEndSingleStrategy
 import com.arellomobile.mvp.viewstate.strategy.StateStrategyType
-import ru.teamdroid.recipecraft.room.entity.Recipe
+import ru.teamdroid.recipecraft.room.entity.Recipes
 
 @StateStrategyType(AddToEndSingleStrategy::class)
 interface FavoritesView : MvpView {
-    fun onSuccessLoad(list: MutableList<Recipe>)
+    fun onSuccessLoad(list: MutableList<Recipes>)
 }

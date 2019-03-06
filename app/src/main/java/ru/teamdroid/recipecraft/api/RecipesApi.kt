@@ -3,9 +3,9 @@ package ru.teamdroid.recipecraft.api
 import io.reactivex.Observable
 import retrofit2.http.GET
 import retrofit2.http.Query
-import ru.teamdroid.recipecraft.room.entity.Recipe
+import ru.teamdroid.recipecraft.room.entity.Recipes
 
 interface RecipesApi {
     @GET("getRecipes?")
-    fun getAllRecipes(@Query("lang") language: String): Observable<MutableList<Recipe>>
+    fun getAllRecipes(@Query("lang") language: String): Observable<MutableList<Recipes>>
 }

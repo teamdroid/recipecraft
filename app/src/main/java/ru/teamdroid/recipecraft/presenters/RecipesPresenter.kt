@@ -7,84 +7,109 @@ import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import ru.teamdroid.recipecraft.api.RecipesApi
 import ru.teamdroid.recipecraft.api.RequestInterface
-import ru.teamdroid.recipecraft.room.entity.Recipe
+import ru.teamdroid.recipecraft.room.entity.Recipes
 import ru.teamdroid.recipecraft.views.RecipesView
 import android.util.Log
 import ru.teamdroid.recipecraft.fragments.NavigationFragment
 import ru.teamdroid.recipecraft.room.entity.Ingredients
 import ru.teamdroid.recipecraft.room.entity.RecipeIngredients
+import ru.teamdroid.recipecraft.room.models.IngredientsViewModel
 import ru.teamdroid.recipecraft.room.models.RecipesViewModel
 
 @InjectViewState
 class RecipesPresenter : MvpPresenter<RecipesView>() {
 
     private var compositeDisposable = CompositeDisposable()
-    private lateinit var viewModelRecipes : RecipesViewModel
+    private lateinit var viewModelRecipes: RecipesViewModel
+    private lateinit var viewModelIngredients: IngredientsViewModel
 
-    fun onCreate(viewModelRecipes : RecipesViewModel) {
+    private var listIngredients: MutableList<Ingredients> = arrayListOf()
+    private var listRecipeIngredients: MutableList<RecipeIngredients> = arrayListOf()
+
+    private var listRecipes: MutableList<Recipes> = arrayListOf()
+
+    fun onCreate(viewModelRecipes: RecipesViewModel, viewModelIngredients: IngredientsViewModel) {
         this.viewModelRecipes = viewModelRecipes
+        this.viewModelIngredients = viewModelIngredients
     }
 
     fun loadRemote(lang: String) {
         compositeDisposable.add(RequestInterface.getRetrofitService(RecipesApi::class.java).getAllRecipes(lang)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
-                .subscribe(({ insertRecipes(it) }), ({ onFailure(it) })
-                ))
+                .subscribe(({ insertRecipes(it) }), ({ onFailure(it) })))
     }
 
-    fun getAllRecipe(viewModelRecipes: RecipesViewModel) {
+    fun getAllRecipe() {
         compositeDisposable.add(viewModelRecipes.getAllRecipes()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({ onSuccess(it) }, { onFailure(it) }))
+                .subscribe({
+                    listRecipes = it
+                }, {
+                    onFailure(it)
+                }))
+
+        if (listRecipeIngredients.isEmpty()) getRecipeIngredients()
     }
 
-    fun bookmarkRecipe(recipe: Recipe) {
-        compositeDisposable.add(viewModelRecipes.bookmarkRecipe(recipe)
+    fun bookmarkRecipe(recipes: Recipes) {
+        compositeDisposable.add(viewModelRecipes.bookmarkRecipe(recipes)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({ Log.d(NavigationFragment.TAG, "Success") }, { }))
     }
 
-    private fun insertRecipes(listRecipe : MutableList<Recipe>) {
-
-        val listIngredients : MutableList<Ingredients> = arrayListOf()
-        val listRecipeIngredients : MutableList<RecipeIngredients> = arrayListOf()
-
-        listRecipe.forEach { recipe ->
+    private fun insertRecipes(listRecipes: MutableList<Recipes>) {
+        listRecipes.forEach { recipe ->
             recipe.ingredients.forEach {
-                listIngredients.add(Ingredients(idIngredient = it.idIngredient, title = it.title))
-            }
-            recipe.ingredients.forEach {
-                listRecipeIngredients.add(RecipeIngredients(id = recipe.id, idIngredient = it.idIngredient, idRecipe = recipe.id ))
+                listIngredients.add(Ingredients(it.idIngredient, it.title, it.amount))
+                listRecipeIngredients.add(RecipeIngredients(id = it.id, idRecipe = recipe.idRecipe, idIngredient = it.idIngredient, amount = it.amount))
             }
         }
 
-        val disposableInsertRecipes = viewModelRecipes.insertRecipes(listRecipe)
+        compositeDisposable.add(viewModelRecipes.insertRecipes(listRecipes)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({ }, { })
+                .subscribe({ insertIngredients(listIngredients) }, { }))
+    }
 
-        val disposableInsertIngredients = viewModelRecipes.insertIngredients(listIngredients)
+    private fun insertRecipeIngredients(listRecipeIngredients: MutableList<RecipeIngredients>) {
+        compositeDisposable.add(viewModelRecipes.insertRecipeIngredients(listRecipeIngredients)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({ }, { })
+                .subscribe({ getAllRecipe() }, { Log.d("Error", it.message) }))
+    }
 
-        val disposableInsertRecipeIngredients = viewModelRecipes.insertRecipeIngredients(listRecipeIngredients)
+    private fun insertIngredients(listIngredients: MutableList<Ingredients>) {
+        compositeDisposable.add(viewModelRecipes.insertIngredients(listIngredients)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({  }, { })
+                .subscribe({ insertRecipeIngredients(listRecipeIngredients) }, { Log.d("Error", it.message) }))
+    }
 
-        compositeDisposable.addAll(disposableInsertIngredients, disposableInsertRecipes, disposableInsertRecipeIngredients)
+    private fun getRecipeIngredients() {
+        compositeDisposable.add(viewModelIngredients.getAllRecipeIngredients()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({
+                    listRecipes.forEach { recipe ->
+                        it.forEach {
+                            if (recipe.idRecipe == it.idRecipe) {
+                                recipe.ingredients.add(Ingredients(idIngredient = it.idIngredient, title = it.title))
+                            }
+                        }
+                    }
+                    onSuccess()
+                }, { Log.d("Error", it.stackTrace.toString()) }))
     }
 
     override fun onDestroy() {
         compositeDisposable.dispose()
     }
 
-    private fun onSuccess(list: MutableList<Recipe>) {
-        viewState.onSuccessLoad(list)
+    private fun onSuccess() {
+        viewState.onSuccessLoad(listRecipes)
     }
 
     private fun onFailure(error: Throwable) {

@@ -16,7 +16,8 @@ import ru.teamdroid.recipecraft.base.BaseMoxyFragment
 import ru.teamdroid.recipecraft.room.models.RecipesViewModel
 import ru.teamdroid.recipecraft.presenters.RecipesPresenter
 import ru.teamdroid.recipecraft.room.Injection
-import ru.teamdroid.recipecraft.room.entity.Recipe
+import ru.teamdroid.recipecraft.room.entity.Recipes
+import ru.teamdroid.recipecraft.room.models.IngredientsViewModel
 import ru.teamdroid.recipecraft.views.RecipesView
 
 class RecipesFragment : BaseMoxyFragment(), RecipesView {
@@ -25,6 +26,7 @@ class RecipesFragment : BaseMoxyFragment(), RecipesView {
     lateinit var presenter: RecipesPresenter
 
     private lateinit var viewModelRecipes: RecipesViewModel
+    private lateinit var viewModelIngredient: IngredientsViewModel
 
     override val contentResId = R.layout.fragment_recipes
 
@@ -42,7 +44,8 @@ class RecipesFragment : BaseMoxyFragment(), RecipesView {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModelRecipes = ViewModelProviders.of(this, Injection.provideRecipesViewModelFactory(context)).get(RecipesViewModel::class.java)
-        presenter.onCreate(viewModelRecipes)
+        viewModelIngredient = ViewModelProviders.of(this, Injection.provideIngredientsViewModelFactory(context)).get(IngredientsViewModel::class.java)
+        presenter.onCreate(viewModelRecipes, viewModelIngredient)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -68,8 +71,8 @@ class RecipesFragment : BaseMoxyFragment(), RecipesView {
         baseActivity.replaceFragment(DetailRecipeFragment.newInstance(recipesAdapter.recipes[position]), NavigationFragment.TAG)
     }
 
-    private fun onFavoriteClick(recipe: Recipe) {
-        presenter.bookmarkRecipe(recipe)
+    private fun onFavoriteClick(recipes: Recipes) {
+        presenter.bookmarkRecipe(recipes)
     }
 
     private fun refresh() {
@@ -80,8 +83,7 @@ class RecipesFragment : BaseMoxyFragment(), RecipesView {
     }
 
     private fun loadLocal() {
-        viewModelRecipes = ViewModelProviders.of(this, Injection.provideRecipesViewModelFactory(context)).get(RecipesViewModel::class.java)
-        presenter.getAllRecipe(viewModelRecipes)
+        presenter.getAllRecipe()
         if (recipesAdapter.recipes.isEmpty()) loadRemote()
     }
 
@@ -95,7 +97,7 @@ class RecipesFragment : BaseMoxyFragment(), RecipesView {
         super.onCreateOptionsMenu(menu, inflater)
     }
 
-    override fun onSuccessLoad(list: MutableList<Recipe>) {
+    override fun onSuccessLoad(list: MutableList<Recipes>) {
         recipesAdapter.recipes = list
         setInvisibleRefreshing()
     }

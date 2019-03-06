@@ -15,7 +15,7 @@ import ru.teamdroid.recipecraft.adapters.RecipesAdapter
 import ru.teamdroid.recipecraft.base.BaseMoxyFragment
 import ru.teamdroid.recipecraft.presenters.FavoritesPresenter
 import ru.teamdroid.recipecraft.room.Injection
-import ru.teamdroid.recipecraft.room.entity.Recipe
+import ru.teamdroid.recipecraft.room.entity.Recipes
 import ru.teamdroid.recipecraft.room.models.RecipesViewModel
 import ru.teamdroid.recipecraft.views.FavoritesView
 
@@ -76,11 +76,11 @@ class FavoritesFragment : BaseMoxyFragment(), FavoritesView {
 
     private fun onClick(position: Int) {
         val currentRecipe = bookmarkRecipesAdapter.recipes[position]
-        baseActivity.replaceFragment(DetailRecipeFragment.newInstance(Recipe(currentRecipe.id, currentRecipe.title, currentRecipe.isBookmarked, currentRecipe.ingredients)), NavigationFragment.TAG)
+        //baseActivity.replaceFragment(DetailRecipeFragment.newInstance(Recipes(currentRecipe.idRecipe, currentRecipe.title, currentRecipe.isBookmarked, currentRecipe.ingredients)), NavigationFragment.TAG)
     }
 
-    private fun onFavoriteClick(recipe: Recipe) {
-        presenter.bookmarkRecipe(recipe, viewModelRecipes)
+    private fun onFavoriteClick(recipes: Recipes) {
+        presenter.bookmarkRecipe(recipes, viewModelRecipes)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -93,7 +93,7 @@ class FavoritesFragment : BaseMoxyFragment(), FavoritesView {
         }
     }
 
-    override fun onSuccessLoad(list: MutableList<Recipe>) {
+    override fun onSuccessLoad(list: MutableList<Recipes>) {
         bookmarkRecipesAdapter.recipes = list
         setInvisibleRefreshing()
     }

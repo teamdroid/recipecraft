@@ -19,6 +19,7 @@ class MainActivity : MvpAppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         AndroidInjection.inject(this)
+
         Stetho.initializeWithDefaults(this)
 
         with(baseContext) {

@@ -2,23 +2,22 @@ package ru.teamdroid.recipecraft.room.dao
 
 import android.arch.persistence.room.*
 import io.reactivex.Flowable
+import io.reactivex.Single
 import ru.teamdroid.recipecraft.room.entity.Ingredients
-import ru.teamdroid.recipecraft.room.entity.Recipe
+import ru.teamdroid.recipecraft.room.entity.Recipes
 import ru.teamdroid.recipecraft.room.entity.RecipeIngredients
 
 @Dao
 interface RecipesDao {
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertRecipe(recipe: Recipe)
 
-    @Query("SELECT * FROM recipe")
-    fun getAllRecipes(): Flowable<MutableList<Recipe>>
+    @Query("SELECT * FROM Recipes")
+    fun getAllRecipes(): Flowable<MutableList<Recipes>>
 
-    @Query("SELECT * FROM recipe WHERE recipe.isBookmarked == 1")
-    fun getAllBookmarkedRecipes(): Flowable<MutableList<Recipe>>
+    @Query("SELECT * FROM recipes WHERE recipes.isBookmarked == 1")
+    fun getAllBookmarkedRecipes(): Flowable<MutableList<Recipes>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertRecipes(listRecipe: MutableList<Recipe>)
+    fun insertRecipes(listRecipes: MutableList<Recipes>)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertIngredients(listIngredients: MutableList<Ingredients>)
@@ -27,9 +26,9 @@ interface RecipesDao {
     fun insertRecipeIngredients(listRecipeIngredients: MutableList<RecipeIngredients>)
 
     @Delete
-    fun deleteRecipe(recipe: Recipe)
+    fun deleteRecipe(recipes: Recipes)
 
     @Update
-    fun updateRecipe(recipe: Recipe)
+    fun updateRecipe(recipes: Recipes)
 
 }

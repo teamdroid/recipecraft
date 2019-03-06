@@ -23,8 +23,8 @@
     <string name="watch_button">Посмотреть</string>
     <string name="favoriteButton">В избранное</string>
     <string name="language">ru</string>
-    <string name="info_recipes">%s ингредиентов(а) | 0 порции | 0 минут</string>
-    <string name="category_recipes">Еда | Завтраки</string>
+    <string name="info_recipes">%s ингредиентов(а) | %s порции | %s минут</string>
+    <string name="category_recipes">%s | %s</string>
     <string name="placeholder_detail_recipe">Detail Recipe</string>
     <string name="save">Сохранить</string>
     <string name="Delete">Удалить</string>

@@ -7,7 +7,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import ru.teamdroid.recipecraft.fragments.NavigationFragment
-import ru.teamdroid.recipecraft.room.entity.Recipe
+import ru.teamdroid.recipecraft.room.entity.Recipes
 import ru.teamdroid.recipecraft.room.models.RecipesViewModel
 import ru.teamdroid.recipecraft.views.FavoritesView
 
@@ -25,8 +25,8 @@ class FavoritesPresenter : MvpPresenter<FavoritesView>() {
                 }, { }))
     }
 
-    fun bookmarkRecipe(recipe: Recipe, viewModelRecipes: RecipesViewModel) {
-        compositeDisposable.add(viewModelRecipes.bookmarkRecipe(recipe)
+    fun bookmarkRecipe(recipes: Recipes, viewModelRecipes: RecipesViewModel) {
+        compositeDisposable.add(viewModelRecipes.bookmarkRecipe(recipes)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({ Log.d(NavigationFragment.TAG, "Success") }, { }))

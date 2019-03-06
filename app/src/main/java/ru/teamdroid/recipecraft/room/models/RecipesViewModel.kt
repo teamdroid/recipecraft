@@ -1,47 +1,46 @@
 package ru.teamdroid.recipecraft.room.models
 
 import android.arch.lifecycle.ViewModel
+
 import io.reactivex.Completable
 import io.reactivex.Flowable
-import io.reactivex.Single
 import ru.teamdroid.recipecraft.room.dao.RecipesDao
 import ru.teamdroid.recipecraft.room.entity.Ingredients
-import ru.teamdroid.recipecraft.room.entity.Recipe
+import ru.teamdroid.recipecraft.room.entity.Recipes
 import ru.teamdroid.recipecraft.room.entity.RecipeIngredients
 
 class RecipesViewModel(private val dataSource: RecipesDao) : ViewModel() {
 
-    fun getAllBookmarkedRecipes(): Flowable<MutableList<Recipe>> {
+    fun getAllBookmarkedRecipes(): Flowable<MutableList<Recipes>> {
         return dataSource.getAllBookmarkedRecipes()
     }
 
-
-    fun insertRecipes(listRecipe : MutableList<Recipe>) : Single<Recipe> {
-        return Single.fromObservable {
-            dataSource.insertRecipes(listRecipe)
+    fun insertRecipes(listRecipes: MutableList<Recipes>): Completable {
+        return Completable.fromAction {
+            dataSource.insertRecipes(listRecipes)
         }
     }
 
-    fun insertIngredients(listIngredients : MutableList<Ingredients>) : Single<Ingredients> {
-        return Single.fromObservable {
+    fun insertIngredients(listIngredients: MutableList<Ingredients>): Completable {
+        return Completable.fromAction {
             dataSource.insertIngredients(listIngredients)
         }
     }
 
-    fun insertRecipeIngredients(listRecipeIngredients : MutableList<RecipeIngredients>) : Single<RecipeIngredients> {
-        return Single.fromObservable {
+    fun insertRecipeIngredients(listRecipeIngredients: MutableList<RecipeIngredients>): Completable {
+        return Completable.fromAction {
             dataSource.insertRecipeIngredients(listRecipeIngredients)
         }
     }
 
-    fun bookmarkRecipe(recipe: Recipe) : Completable {
-        recipe.isBookmarked = !recipe.isBookmarked
+    fun bookmarkRecipe(recipes: Recipes): Completable {
+        recipes.isBookmarked = !recipes.isBookmarked
         return Completable.fromAction {
-            dataSource.updateRecipe(recipe)
+            dataSource.updateRecipe(recipes)
         }
     }
 
-    fun getAllRecipes(): Flowable<MutableList<Recipe>> {
+    fun getAllRecipes(): Flowable<MutableList<Recipes>> {
         return dataSource.getAllRecipes()
     }
 }
