@@ -17,7 +17,6 @@ import ru.teamdroid.recipecraft.room.models.RecipesViewModel
 import ru.teamdroid.recipecraft.presenters.RecipesPresenter
 import ru.teamdroid.recipecraft.room.Injection
 import ru.teamdroid.recipecraft.room.entity.Recipes
-import ru.teamdroid.recipecraft.room.models.IngredientsViewModel
 import ru.teamdroid.recipecraft.views.RecipesView
 
 class RecipesFragment : BaseMoxyFragment(), RecipesView {
@@ -26,7 +25,6 @@ class RecipesFragment : BaseMoxyFragment(), RecipesView {
     lateinit var presenter: RecipesPresenter
 
     private lateinit var viewModelRecipes: RecipesViewModel
-    private lateinit var viewModelIngredient: IngredientsViewModel
 
     override val contentResId = R.layout.fragment_recipes
 
@@ -44,8 +42,7 @@ class RecipesFragment : BaseMoxyFragment(), RecipesView {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModelRecipes = ViewModelProviders.of(this, Injection.provideRecipesViewModelFactory(context)).get(RecipesViewModel::class.java)
-        viewModelIngredient = ViewModelProviders.of(this, Injection.provideIngredientsViewModelFactory(context)).get(IngredientsViewModel::class.java)
-        presenter.onCreate(viewModelRecipes, viewModelIngredient)
+        presenter.onCreate(viewModelRecipes)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

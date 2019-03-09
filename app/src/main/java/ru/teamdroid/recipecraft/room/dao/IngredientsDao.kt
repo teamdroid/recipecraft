@@ -18,7 +18,7 @@ interface IngredientsDao {
     @Query("SELECT recipes.idRecipe, recipe_ingredients.id, recipe_ingredients.idIngredient, recipes.time, recipes.portion, ingredients.title, recipe_ingredients.amount FROM recipes " +
             "LEFT JOIN recipe_ingredients ON recipes.idRecipe = recipe_ingredients.idRecipe " +
             "LEFT JOIN ingredients ON recipe_ingredients.idIngredient = ingredients.idIngredient")
-    fun getAllIngredientsById(): Single<MutableList<RecipeIngredients>>
+    fun getAllIngredientsById(): Flowable<MutableList<RecipeIngredients>>
 
     @Query("DELETE FROM ingredients")
     fun clearAllIngredients()
