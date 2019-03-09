@@ -4,7 +4,7 @@
 ### Architectural Pattern
 *  MVP
 ### Libraries Used: 
-* Architecture Components: Room + Lifecycle
+* Architecture Components: Room + Lifecycle, Moxy
 * RxJava2
 * Dagger
 * Retrofit
