@@ -1,6 +1,7 @@
 ## Recipecraft
-
-### Libraries: 
+### Language
+* Kotlin
+### Libraries Used: 
 * Architecture Components: Room + Lifecycle
 * RxJava2
 * Dagger
