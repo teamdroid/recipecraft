@@ -1,6 +1,8 @@
 ## Recipecraft
 ### Language
 * Kotlin
+### Architectural Pattern
+*  MVP
 ### Libraries Used: 
 * Architecture Components: Room + Lifecycle
 * RxJava2
