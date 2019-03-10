@@ -1,8 +1,9 @@
-package ru.teamdroid.recipecraft.base
+package ru.teamdroid.recipecraft.concept.ui.base
 
 import android.app.AlertDialog
 import android.content.Context
 import android.os.Bundle
+import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
 import android.view.LayoutInflater
@@ -13,7 +14,7 @@ import ru.teamdroid.recipecraft.R
 import ru.teamdroid.recipecraft.base.interfaces.OnBackPressedListener
 import ru.teamdroid.recipecraft.concept.ui.MainActivity
 
-abstract class BaseMoxyFragment : MvpAppCompatFragment(), OnBackPressedListener {
+abstract class BaseFragment : Fragment(), OnBackPressedListener {
 
     protected val baseActivity: MainActivity
         get() = activity as MainActivity

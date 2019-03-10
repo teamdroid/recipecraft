@@ -1,4 +1,4 @@
-package ru.teamdroid.recipecraft.fragments
+package ru.teamdroid.recipecraft.concept.ui.navigation.fragments
 
 import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
@@ -8,22 +8,27 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
-import com.arellomobile.mvp.presenter.InjectPresenter
 import kotlinx.android.synthetic.main.fragment_recipes.*
 import ru.teamdroid.recipecraft.R
 import ru.teamdroid.recipecraft.adapters.RecipesAdapter
-import ru.teamdroid.recipecraft.base.BaseMoxyFragment
-import ru.teamdroid.recipecraft.room.models.RecipesViewModel
-import ru.teamdroid.recipecraft.presenters.RecipesPresenter
-import ru.teamdroid.recipecraft.room.Injection
-import ru.teamdroid.recipecraft.room.entity.Recipes
-import ru.teamdroid.recipecraft.views.RecipesView
+import ru.teamdroid.recipecraft.concept.data.model.Recipes
+import ru.teamdroid.recipecraft.concept.ui.base.BaseFragment
+import ru.teamdroid.recipecraft.concept.ui.navigation.DaggerRecipesComponent
+import ru.teamdroid.recipecraft.concept.ui.navigation.RecipesContract
+import ru.teamdroid.recipecraft.concept.ui.navigation.modules.RecipesPresenterModule
+import ru.teamdroid.recipecraft.concept.ui.navigation.presenters.RecipesPresenter
 
-class RecipesFragment : BaseMoxyFragment(), RecipesView {
+import javax.inject.Inject
 
 
+class RecipesFragment : BaseFragment(), RecipesContract.View {
 
-    private lateinit var viewModelRecipes: RecipesViewModel
+    override fun showRecipes(recipes: MutableList<Recipes>) {
+
+    }
+
+    @Inject
+    internal lateinit var presenter: RecipesPresenter
 
     override val contentResId = R.layout.fragment_recipes
 
@@ -33,15 +38,22 @@ class RecipesFragment : BaseMoxyFragment(), RecipesView {
                     onClick(it)
                 },
                 onFavoriteClickListener = {
-                    onFavoriteClick(it)
+                    //onFavoriteClick(it)
                 }
         )
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModelRecipes = ViewModelProviders.of(this, Injection.provideRecipesViewModelFactory(context)).get(RecipesViewModel::class.java)
-       // presenter.onCreate(viewModelRecipes)
+        initializePresenter()
+    }
+
+    private fun initializePresenter() {
+        DaggerRecipesComponent.builder()
+                .recipesPresenterModule(RecipesPresenterModule(this))
+                .recipeRepositoryComponent(baseActivity.recipeRepositoryComponent)
+                .build()
+                .inject(this)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -68,7 +80,7 @@ class RecipesFragment : BaseMoxyFragment(), RecipesView {
     }
 
     private fun onFavoriteClick(recipes: Recipes) {
-        //presenter.bookmarkRecipe(recipes)
+       // presenter.bookmarkRecipe(recipes)
     }
 
     private fun refresh() {
@@ -79,13 +91,13 @@ class RecipesFragment : BaseMoxyFragment(), RecipesView {
     }
 
     private fun loadLocal() {
-        //presenter.getAllRecipe()
+        presenter.getAllRecipe()
         if (recipesAdapter.recipes.isEmpty()) loadRemote()
     }
 
     private fun loadRemote() {
         recipesAdapter.recipes = ArrayList()
-       // presenter.loadRemote(getString(R.string.language))
+        presenter.loadRemote(getString(R.string.language))
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -93,19 +105,19 @@ class RecipesFragment : BaseMoxyFragment(), RecipesView {
         super.onCreateOptionsMenu(menu, inflater)
     }
 
-    override fun onSuccessLoad(list: MutableList<Recipes>) {
-        recipesAdapter.recipes = list
+    fun onSuccessLoad(list: MutableList<Recipes>) {
+      //  recipesAdapter.recipes = list
         setInvisibleRefreshing()
     }
 
-    override fun onErrorLoad(error: Throwable) {
+    fun onErrorLoad(error: Throwable) {
         Toast.makeText(context, getString(R.string.error_remote_load), Int.MAX_VALUE).show()
         setInvisibleRefreshing()
     }
 
-    override fun setInvisibleRefreshing() {
-        progressBar.visibility = View.GONE
-        swipeRefreshLayout.isRefreshing = false
+    fun setInvisibleRefreshing() {
+//        progressBar.visibility = View.GONE
+//        swipeRefreshLayout.isRefreshing = false
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

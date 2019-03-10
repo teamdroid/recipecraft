@@ -5,10 +5,11 @@ import com.arellomobile.mvp.MvpPresenter
 import ru.teamdroid.recipecraft.room.entity.Recipes
 import ru.teamdroid.recipecraft.views.RecipesView
 import android.util.Log
+import ru.teamdroid.recipecraft.concept.ui.navigation.RecipesContract
 import ru.teamdroid.recipecraft.room.models.RecipesViewModel
 
-@InjectViewState
-class RecipesPresenter : MvpPresenter<RecipesView>() {
+
+class RecipesPresenter : MvpPresenter<RecipesContract.View>() {
 
     private lateinit var viewModelRecipes: RecipesViewModel
 
@@ -32,7 +33,7 @@ class RecipesPresenter : MvpPresenter<RecipesView>() {
             getAllRecipes()
             localLoadListener = { listRecipes, checkedState ->
                 if (checkedState) {
-                    viewState.onSuccessLoad(listRecipes)
+                  //  viewState.onSuccessLoad(listRecipes)
                 } else if (!checkedState) {
 
                 }
