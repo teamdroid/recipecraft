@@ -116,8 +116,8 @@ class RecipesFragment : BaseFragment(), RecipesContract.View {
     }
 
     fun setInvisibleRefreshing() {
-//        progressBar.visibility = View.GONE
-//        swipeRefreshLayout.isRefreshing = false
+       progressBar.visibility = View.GONE
+       swipeRefreshLayout.isRefreshing = false
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
