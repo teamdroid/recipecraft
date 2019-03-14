@@ -2,7 +2,7 @@ package ru.teamdroid.recipecraft.data
 
 import dagger.Component
 import ru.teamdroid.recipecraft.AppModule
-import ru.teamdroid.recipecraft.repository.RecipeRepository
+import ru.teamdroid.recipecraft.data.repository.RecipeRepository
 import javax.inject.Singleton
 
 @Singleton

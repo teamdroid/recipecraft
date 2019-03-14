@@ -8,7 +8,7 @@ import android.util.Log
 import io.reactivex.Scheduler
 import io.reactivex.disposables.CompositeDisposable
 import ru.teamdroid.recipecraft.data.model.Recipes
-import ru.teamdroid.recipecraft.repository.RecipeRepository
+import ru.teamdroid.recipecraft.data.repository.RecipeRepository
 import ru.teamdroid.recipecraft.ui.navigation.RecipesContract
 import ru.teamdroid.recipecraft.util.schedulers.RunOn
 

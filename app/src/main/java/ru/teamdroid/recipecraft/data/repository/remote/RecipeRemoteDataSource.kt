@@ -1,9 +1,9 @@
-package ru.teamdroid.recipecraft.repository.remote
+package ru.teamdroid.recipecraft.data.repository.remote
 
 import io.reactivex.Flowable
 import ru.teamdroid.recipecraft.data.api.RecipeService
 import ru.teamdroid.recipecraft.data.model.Recipes
-import ru.teamdroid.recipecraft.repository.RecipesDataSource
+import ru.teamdroid.recipecraft.data.repository.RecipesDataSource
 import javax.inject.Inject
 
 class RecipeRemoteDataSource @Inject constructor(private val recipeService: RecipeService) : RecipesDataSource {

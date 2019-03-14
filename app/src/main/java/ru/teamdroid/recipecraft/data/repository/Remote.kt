@@ -1,4 +1,4 @@
-package ru.teamdroid.recipecraft.repository
+package ru.teamdroid.recipecraft.data.repository
 
 import javax.inject.Qualifier
 import kotlin.annotation.MustBeDocumented

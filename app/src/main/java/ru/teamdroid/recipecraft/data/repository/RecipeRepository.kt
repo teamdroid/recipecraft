@@ -1,7 +1,6 @@
-package ru.teamdroid.recipecraft.repository
+package ru.teamdroid.recipecraft.data.repository
 
 import android.support.annotation.VisibleForTesting
-import android.util.Log
 import io.reactivex.Flowable
 import ru.teamdroid.recipecraft.data.model.Recipes
 import javax.inject.Inject

@@ -1,9 +1,9 @@
-package ru.teamdroid.recipecraft.repository.local
+package ru.teamdroid.recipecraft.data.repository.local
 
 import io.reactivex.Flowable
 import ru.teamdroid.recipecraft.data.database.RecipesDao
 import ru.teamdroid.recipecraft.data.model.Recipes
-import ru.teamdroid.recipecraft.repository.RecipesDataSource
+import ru.teamdroid.recipecraft.data.repository.RecipesDataSource
 import javax.inject.Inject
 
 class RecipeLocalDataSource @Inject constructor(private val recipeDao: RecipesDao) : RecipesDataSource {

@@ -1,4 +1,4 @@
-package ru.teamdroid.recipecraft.repository
+package ru.teamdroid.recipecraft.data.repository
 
 import io.reactivex.Flowable
 import ru.teamdroid.recipecraft.data.model.Recipes
