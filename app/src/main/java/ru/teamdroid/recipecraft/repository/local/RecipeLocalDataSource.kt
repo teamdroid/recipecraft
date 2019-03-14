@@ -8,13 +8,16 @@ import javax.inject.Inject
 
 class RecipeLocalDataSource @Inject constructor(private val recipeDao: RecipesDao) : RecipesDataSource {
 
-    override fun loadRecipe(forceRemote: Boolean): Flowable<MutableList<Recipes>> {
+    override fun addRecipe(recipes: Recipes) {
+        recipeDao.insertRecipe(recipes)
+    }
+
+    override fun loadRecipe(forceRemote: Boolean): Flowable<List<Recipes>> {
         return recipeDao.getAllRecipes()
     }
 
     override fun clearData() {
-        //Currently, we do not need this for remote source.
-        throw UnsupportedOperationException("Unsupported operation")
+        //recipeDao.deleteRecipes()
     }
 
 }

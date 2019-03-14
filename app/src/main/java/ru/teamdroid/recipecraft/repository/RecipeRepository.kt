@@ -1,42 +1,33 @@
 package ru.teamdroid.recipecraft.repository
 
 import android.support.annotation.VisibleForTesting
+import android.util.Log
 import io.reactivex.Flowable
 import ru.teamdroid.recipecraft.data.model.Recipes
 import javax.inject.Inject
 
-class RecipeRepository @Inject constructor(@param:Local private val localDataSource: RecipesDataSource,
-                                           @param:Remote private val remoteDataSource: RecipesDataSource) : RecipesDataSource {
-
-    override fun loadRecipe(forceRemote: Boolean): Flowable<MutableList<Recipes>> {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
+class RecipeRepository @Inject constructor(@Local private val localDataSource: RecipesDataSource,
+                                           @Remote private val remoteDataSource: RecipesDataSource) : RecipesDataSource {
 
     @VisibleForTesting
     var caches: MutableList<Recipes> = arrayListOf()
 
+    override fun loadRecipe(forceRemote: Boolean): Flowable<List<Recipes>> {
+        return if (forceRemote) {
+            refreshData()
+        } else {
+            if (caches.size > 0) {
+                Flowable.just<List<Recipes>>(caches)
+            } else {
+                localDataSource.loadRecipe(false)
+                        .take(1)
+                        .flatMap { numberList -> Flowable.fromIterable(numberList) }
+                        .toList().toFlowable()
+                        .filter { !it.isEmpty() }.switchIfEmpty(refreshData())
+            }
+        }
+    }
 
-//    fun loadQuestions(forceRemote: Boolean): Flowable<List<Question>> {
-//        if (forceRemote) {
-//            return refreshData()
-//        } else {
-//            if (caches.size > 0) {
-//                // if cache is available, return it immediately
-//                return Flowable.just<List<Question>>(caches)
-//            } else {
-//                // else return data from local storage
-//                return localDataSource.loadQuestions(false)
-//                        .take(1)
-//                        .flatMap(???({ Flowable.fromIterable(it) }))
-//                .doOnNext { question -> caches.add(question) }
-//                        .toList()
-//                        .toFlowable()
-//                        .filter({ list -> !list.isEmpty() })
-//                        .switchIfEmpty(
-//                                refreshData()) // If local data is empty, fetch from remote source instead.
-//            }
-//        }
-//    }
 
     /**
      * Fetches data from remote source.
@@ -44,17 +35,16 @@ class RecipeRepository @Inject constructor(@param:Local private val localDataSou
      *
      * @return the Flowable of newly fetched data.
      */
-//    internal fun refreshData(): Flowable<List<Question>> {
-//        return remoteDataSource.loadQuestions(true).doOnNext({ list ->
-//            // Clear cache
-//            caches.clear()
-//            // Clear data in local storage
-//            localDataSource.clearData()
-//        }).flatMap(???({ Flowable.fromIterable(it) })).doOnNext({ question ->
-//            caches.add(question)
-//            localDataSource.addQuestion(question)
-//        }).toList().toFlowable()
-//    }
+    private fun refreshData(): Flowable<List<Recipes>> {
+        return remoteDataSource.loadRecipe(true).doOnNext{
+            caches.clear()
+            localDataSource.clearData()
+        }.flatMap { Flowable.fromIterable(it) }.doOnNext {
+            caches.add(it)
+            localDataSource.addRecipe(it)
+        }.toList().toFlowable()
+    }
+
 
     /**
      * Loads a question by its question id.
@@ -66,10 +56,10 @@ class RecipeRepository @Inject constructor(@param:Local private val localDataSou
 //        return Flowable.fromIterable<Question>(caches).filter { question -> question.getId() === questionId }
 //    }
 //
-//    fun addQuestion(question: Question) {
-//        //Currently, we do not need this.
-//        throw UnsupportedOperationException("Unsupported operation")
-//    }
+
+    override fun addRecipe(recipes: Recipes) {
+        throw UnsupportedOperationException("Unsupported operation")
+    }
 
     override fun clearData() {
         caches.clear()

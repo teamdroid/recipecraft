@@ -4,7 +4,9 @@ import android.arch.lifecycle.Lifecycle
 import android.arch.lifecycle.LifecycleObserver
 import android.arch.lifecycle.LifecycleOwner
 import android.arch.lifecycle.OnLifecycleEvent
+import android.util.Log
 import io.reactivex.Scheduler
+import io.reactivex.disposables.CompositeDisposable
 import ru.teamdroid.recipecraft.data.model.Recipes
 import ru.teamdroid.recipecraft.repository.RecipeRepository
 import ru.teamdroid.recipecraft.ui.navigation.RecipesContract
@@ -18,53 +20,55 @@ import ru.teamdroid.recipecraft.util.schedulers.SchedulerType.UI
 class RecipesPresenter @Inject constructor(private var repository: RecipeRepository,
                                            private var view: RecipesContract.View,
                                            @RunOn(IO) private var ioScheduler: Scheduler,
-                                           @RunOn(UI) private var uiScheduler: Scheduler) : RecipesContract.View, LifecycleObserver {
+                                           @RunOn(UI) private var uiScheduler: Scheduler) : RecipesContract.Presenter, LifecycleObserver {
+
+    private var compositeDisposable: CompositeDisposable
 
     init {
         if (view is LifecycleOwner) {
             (view as LifecycleOwner).lifecycle.addObserver(this)
         }
+        compositeDisposable = CompositeDisposable()
     }
 
-    fun loadRemote(lang: String) {
-//        viewModelRecipes.getRemoteData(lang)
-//        viewModelRecipes.remoteLoadListener = { checkedState ->
-//            if (checkedState) {
-//                getAllRecipe()
-//            } else if (!checkedState) {
-//                Log.d("Error", "Error")
-//            }
-//        }
-    }
 
-    fun getAllRecipe() {
-//        with(viewModelRecipes) {
-//            getAllRecipes()
-//            localLoadListener = { listRecipes, checkedState ->
-//                if (checkedState) {
-//                  //  viewState.onSuccessLoad(listRecipes)
-//                } else if (!checkedState) {
-//
-//                }
-//            }
-//        }
+    override fun loadRecipes(onlineRequired: Boolean) {
+        val disposable = repository.loadRecipe(false)
+                .subscribeOn(ioScheduler)
+                .observeOn(uiScheduler)
+                .subscribe({ handleReturnedData(it) }, { handleError(it) }, {  })
+        compositeDisposable.add(disposable)
     }
 
     fun bookmarkRecipe(recipes: Recipes) {
         //viewModelRecipes.bookmarkRecipe(recipes)
     }
 
-    override fun showRecipes(recipes: MutableList<Recipes>) {}
+
+    private fun handleReturnedData(list: List<Recipes>) {
+        if (!list.isEmpty()) {
+          view.showRecipes(list)
+        } else {
+
+        }
+    }
+
+    private fun handleError(error: Throwable) {
+        Log.d("Error", error.message)
+    }
+
+    override fun showRecipes(recipes: List<Recipes>) {
+
+    }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
     fun onAttach() {
-        //loadQuestions(false)
+        //loadRecipes("ru")
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_PAUSE)
     fun onDetach() {
-        // Clean up any no-longer-use resources here
-        //disposeBag.clear()
+        compositeDisposable.clear()
     }
 
 }

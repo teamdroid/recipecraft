@@ -10,10 +10,13 @@ import ru.teamdroid.recipecraft.data.model.Recipes
 interface RecipesDao {
 
     @Query("SELECT * FROM Recipes")
-    fun getAllRecipes(): Flowable<MutableList<Recipes>>
+    fun getAllRecipes(): Flowable<List<Recipes>>
 
     @Query("SELECT * FROM recipes WHERE recipes.isBookmarked == 1")
     fun getAllBookmarkedRecipes(): Flowable<MutableList<Recipes>>
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertRecipe(recipe: Recipes)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertRecipes(listRecipes: MutableList<Recipes>)

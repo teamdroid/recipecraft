@@ -4,6 +4,7 @@ import io.reactivex.Flowable
 import ru.teamdroid.recipecraft.data.model.Recipes
 
 interface RecipesDataSource {
-    fun loadRecipe(forceRemote: Boolean): Flowable<MutableList<Recipes>>
+    fun loadRecipe(forceRemote: Boolean): Flowable<List<Recipes>>
+    fun addRecipe(recipes: Recipes)
     fun clearData()
 }

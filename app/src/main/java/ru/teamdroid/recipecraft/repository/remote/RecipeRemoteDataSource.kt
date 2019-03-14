@@ -8,7 +8,7 @@ import javax.inject.Inject
 
 class RecipeRemoteDataSource @Inject constructor(private val recipeService: RecipeService) : RecipesDataSource {
 
-    override fun loadRecipe(forceRemote: Boolean): Flowable<MutableList<Recipes>> {
+    override fun loadRecipe(forceRemote: Boolean): Flowable<List<Recipes>> {
         return recipeService.getAllRecipes("ru")
     }
 
@@ -16,10 +16,9 @@ class RecipeRemoteDataSource @Inject constructor(private val recipeService: Reci
 //        return questionService.loadQuestionsByTag(Config.ANDROID_QUESTION_TAG).map(???({ QuestionResponse.getQuestions() }))
 //    }
 //
-//    fun addQuestion(question: Question) {
-//        //Currently, we do not need this for remote source.
-//        throw UnsupportedOperationException("Unsupported operation")
-//    }
+    override fun addRecipe(recipes: Recipes) {
+        throw UnsupportedOperationException("Unsupported operation")
+    }
 
     override fun clearData() {
         //Currently, we do not need this for remote source.

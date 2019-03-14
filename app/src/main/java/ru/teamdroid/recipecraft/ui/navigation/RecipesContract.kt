@@ -5,14 +5,10 @@ import ru.teamdroid.recipecraft.data.model.Recipes
 interface RecipesContract {
 
     interface View  {
-        fun showRecipes(recipes: MutableList<Recipes>)
+        fun showRecipes(recipes: List<Recipes>)
     }
 
     interface Presenter : View {
-        fun loadQuestions(onlineRequired: Boolean)
-
-        fun getQuestion(questionId: Long)
-
-        fun search(questionTitle: String)
+        fun loadRecipes(onlineRequired: Boolean)
     }
 }

@@ -1,11 +1,10 @@
 package ru.teamdroid.recipecraft.repository
 
-import java.lang.annotation.Documented
-import java.lang.annotation.Retention
-import java.lang.annotation.RetentionPolicy
 import javax.inject.Qualifier
+import kotlin.annotation.MustBeDocumented
 
 @Qualifier
-@Documented
-@Retention(RetentionPolicy.RUNTIME)
+@MustBeDocumented
+@Retention(AnnotationRetention.RUNTIME)
 annotation class Local
+

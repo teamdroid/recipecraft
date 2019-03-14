@@ -21,10 +21,6 @@ import javax.inject.Inject
 
 class RecipesFragment : BaseFragment(), RecipesContract.View {
 
-    override fun showRecipes(recipes: MutableList<Recipes>) {
-
-    }
-
     @Inject
     internal lateinit var presenter: RecipesPresenter
 
@@ -63,7 +59,7 @@ class RecipesFragment : BaseFragment(), RecipesContract.View {
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         }
 
-        if (recipesAdapter.recipes.isEmpty()) loadLocal()
+        if (recipesAdapter.recipes.isEmpty()) refresh()
 
         swipeRefreshLayout.setOnRefreshListener {
             progressBar.visibility = View.VISIBLE
@@ -85,18 +81,9 @@ class RecipesFragment : BaseFragment(), RecipesContract.View {
         progressBar.visibility = View.VISIBLE
         swipeRefreshLayout.isRefreshing = false
         recipesAdapter.recipes = ArrayList()
-        loadRemote()
+        presenter.loadRecipes(false)
     }
 
-    private fun loadLocal() {
-        presenter.getAllRecipe()
-        if (recipesAdapter.recipes.isEmpty()) loadRemote()
-    }
-
-    private fun loadRemote() {
-        recipesAdapter.recipes = ArrayList()
-        presenter.loadRemote(getString(R.string.language))
-    }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.menu_navigation, menu)
@@ -113,7 +100,12 @@ class RecipesFragment : BaseFragment(), RecipesContract.View {
         setInvisibleRefreshing()
     }
 
-    fun setInvisibleRefreshing() {
+    override fun showRecipes(recipes: List<Recipes>) {
+        recipesAdapter.recipes = recipes
+        setInvisibleRefreshing()
+    }
+
+    private fun setInvisibleRefreshing() {
        progressBar.visibility = View.GONE
        swipeRefreshLayout.isRefreshing = false
     }

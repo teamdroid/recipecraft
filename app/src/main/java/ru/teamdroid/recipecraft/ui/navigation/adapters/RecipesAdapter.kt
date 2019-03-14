@@ -13,7 +13,7 @@ class RecipesAdapter(
         var onFavoriteClickListener: (recipes: Recipes) -> Unit)
     : RecyclerView.Adapter<RecipesAdapter.ViewHolder>() {
 
-    var recipes: MutableList<Recipes> = ArrayList()
+    var recipes: List<Recipes> = ArrayList()
         set(value) {
             field = value
             notifyDataSetChanged()

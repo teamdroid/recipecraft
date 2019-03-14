@@ -7,5 +7,5 @@ import ru.teamdroid.recipecraft.data.model.Recipes
 
 interface RecipeService {
     @GET("getRecipes?")
-    fun getAllRecipes(@Query("lang") language: String): Flowable<MutableList<Recipes>>
+    fun getAllRecipes(@Query("lang") language: String): Flowable<List<Recipes>>
 }

@@ -33,7 +33,6 @@ class MainActivity : BaseActivity() {
         replaceFragment(NavigationFragment.newInstance(isFirstStartup), NavigationFragment.TAG)
     }
 
-
     override fun onBackPressed() {
         if (supportFragmentManager.backStackEntryCount > 1)
             supportFragmentManager.popBackStack()
