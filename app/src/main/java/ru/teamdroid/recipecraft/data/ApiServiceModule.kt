@@ -3,10 +3,10 @@ package ru.teamdroid.recipecraft.data
 import dagger.Module
 import dagger.Provides
 import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.CallAdapter
 import retrofit2.Converter
 import retrofit2.Retrofit
-import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 import ru.teamdroid.recipecraft.data.api.HeaderInterceptor
@@ -69,7 +69,7 @@ class ApiServiceModule {
 
     @Provides
     @Singleton
-    fun provideQuestionService(retrofit: Retrofit): RecipeService {
+    fun provideRecipeService(retrofit: Retrofit): RecipeService {
         return retrofit.create<RecipeService>(RecipeService::class.java)
     }
 

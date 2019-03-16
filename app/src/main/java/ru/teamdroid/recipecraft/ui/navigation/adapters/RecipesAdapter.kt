@@ -6,20 +6,20 @@ import android.view.View
 import android.view.ViewGroup
 import kotlinx.android.synthetic.main.layout_list_recipes_item.view.*
 import ru.teamdroid.recipecraft.R
-import ru.teamdroid.recipecraft.data.model.Recipes
+import ru.teamdroid.recipecraft.data.model.Recipe
 
 class RecipesAdapter(
         var onItemClickListener: (position: Int) -> Unit,
-        var onFavoriteClickListener: (recipes: Recipes) -> Unit)
+        var onFavoriteClickListener: (recipes: Recipe) -> Unit)
     : RecyclerView.Adapter<RecipesAdapter.ViewHolder>() {
 
-    var recipes: List<Recipes> = ArrayList()
+    var recipes: List<Recipe> = ArrayList()
         set(value) {
             field = value
             notifyDataSetChanged()
         }
 
-    private lateinit var currentRecipe: Recipes
+    private lateinit var currentRecipe: Recipe
 
     override fun getItemCount() = recipes.size
 

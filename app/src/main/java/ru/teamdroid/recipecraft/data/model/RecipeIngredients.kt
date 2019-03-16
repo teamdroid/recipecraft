@@ -1,33 +1,16 @@
 package ru.teamdroid.recipecraft.data.model
 
-import android.arch.persistence.room.*
 import android.os.Parcel
 import android.os.Parcelable
 
-@Entity(tableName = "recipe_ingredients", foreignKeys = [
-    ForeignKey(entity = Recipes::class,
-            parentColumns = arrayOf("idRecipe"),
-            childColumns = arrayOf("idRecipe"),
-            onDelete = ForeignKey.CASCADE),
-    ForeignKey(entity = Ingredients::class,
-            parentColumns = arrayOf("idIngredient"),
-            childColumns = arrayOf("idIngredient"),
-            onDelete = ForeignKey.CASCADE)])
-data class RecipeIngredients(
-        @PrimaryKey @ColumnInfo(name = "id")
+class RecipeIngredients(
         var id: Int = 0,
-        @ColumnInfo(name = "idRecipe")
         var idRecipe: Int = 0,
-        @ColumnInfo(name = "idIngredient")
         var idIngredient: Int = 0,
-        @ColumnInfo(name = "amount")
         var amount: Int = 0,
-        @ColumnInfo(name = "title")
         var title: String = "",
-        @Ignore
-        val time: Long = 0,
-        @Ignore
-        val portion: Int = 0
+        var time: Long = 0,
+        var portion: Int = 0
 ) : Parcelable {
 
     constructor(parcel: Parcel) : this(parcel.readInt(), parcel.readInt(), parcel.readInt(), parcel.readInt(), parcel.readString(), parcel.readLong(), parcel.readInt())

@@ -5,9 +5,9 @@ import android.support.v7.widget.LinearLayoutManager
 import android.view.MenuItem
 import android.view.View
 import kotlinx.android.synthetic.main.fragment_detail_recipe.*
-import ru.teamdroid.recipecraft.R
 import org.jetbrains.anko.bundleOf
-import ru.teamdroid.recipecraft.data.model.Recipes
+import ru.teamdroid.recipecraft.R
+import ru.teamdroid.recipecraft.data.model.Recipe
 import ru.teamdroid.recipecraft.ui.base.BaseFragment
 import ru.teamdroid.recipecraft.ui.navigation.adapters.IngredientsAdapter
 
@@ -15,7 +15,7 @@ class DetailRecipeFragment : BaseFragment() {
 
     override val contentResId = R.layout.fragment_detail_recipe
 
-    private var recipes: Recipes? = null
+    private var recipes: Recipe? = null
 
     private val ingredientsAdapter by lazy {
         IngredientsAdapter(
@@ -55,7 +55,7 @@ class DetailRecipeFragment : BaseFragment() {
     companion object {
         private const val RECIPE = "recipes"
 
-        fun newInstance(recipes: Recipes) = DetailRecipeFragment().apply {
+        fun newInstance(recipes: Recipe) = DetailRecipeFragment().apply {
             arguments = bundleOf(RECIPE to recipes)
         }
     }

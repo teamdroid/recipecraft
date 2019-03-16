@@ -1,67 +1,46 @@
 package ru.teamdroid.recipecraft.data.repository
 
-import android.support.annotation.VisibleForTesting
 import io.reactivex.Flowable
-import ru.teamdroid.recipecraft.data.model.Recipes
+import ru.teamdroid.recipecraft.data.model.Ingredient
+import ru.teamdroid.recipecraft.data.model.Recipe
+import ru.teamdroid.recipecraft.data.model.RecipeIngredients
 import javax.inject.Inject
 
-class RecipeRepository @Inject constructor(@Local private val localDataSource: RecipesDataSource,
-                                           @Remote private val remoteDataSource: RecipesDataSource) : RecipesDataSource {
+class RecipeRepository @Inject constructor(private val localDataSource: RecipesDataSource, private val remoteDataSource: RecipesDataSource) {
 
-    @VisibleForTesting
-    var caches: MutableList<Recipes> = arrayListOf()
 
-    override fun loadRecipe(forceRemote: Boolean): Flowable<List<Recipes>> {
-        return if (forceRemote) {
-            refreshData()
+    fun loadRecipe(forceRemote: Boolean): Flowable<MutableList<Recipe>> {
+        return if (true) {
+            loadRemoteData()
         } else {
-            if (caches.size > 0) {
-                Flowable.just<List<Recipes>>(caches)
-            } else {
-                localDataSource.loadRecipe(false)
-                        .take(1)
-                        .flatMap { numberList -> Flowable.fromIterable(numberList) }
-                        .toList().toFlowable()
-                        .filter { !it.isEmpty() }.switchIfEmpty(refreshData())
-            }
+            localDataSource.loadLocalRecipe(false).filter { !it.isEmpty() }.switchIfEmpty(loadRemoteData())
         }
     }
 
+    private fun loadRemoteData(): Flowable<MutableList<Recipe>> {
 
-    /**
-     * Fetches data from remote source.
-     * Save it into both local database and cache.
-     *
-     * @return the Flowable of newly fetched data.
-     */
-    private fun refreshData(): Flowable<List<Recipes>> {
-        return remoteDataSource.loadRecipe(true).doOnNext{
-            caches.clear()
-            localDataSource.clearData()
-        }.flatMap { Flowable.fromIterable(it) }.doOnNext {
-            caches.add(it)
-            localDataSource.addRecipe(it)
-        }.toList().toFlowable()
-    }
+        val listRecipes: MutableList<Recipe> = arrayListOf()
+        val listRecipeIngredients: MutableList<RecipeIngredients> = arrayListOf()
+        val listIngredients: MutableList<Ingredient> = arrayListOf()
 
+        return remoteDataSource.loadRemoteRecipe(true)
 
-    /**
-     * Loads a question by its question id.
-     *
-     * @param questionId question's id.
-     * @return a corresponding question from cache.
-     */
-//    fun getQuestion(questionId: Long): Flowable<Question> {
-//        return Flowable.fromIterable<Question>(caches).filter { question -> question.getId() === questionId }
-//    }
 //
+//        listRecipes.add(recipe)
+//
+//        recipe.ingredients.forEach {
+//            listIngredients.add(Ingredient(it.idIngredient, it.title, it.amount))
+//            listRecipeIngredients.add(RecipeIngredients(id = it.id, idRecipe = recipe.idRecipe, idIngredient = it.idIngredient))
+//        }
+//
+//
+//
+//        with(localDataSource) {
+//            addRecipe(recipe)
+//            addIngredients(listIngredients)
+//            addRecipeIngredients(listRecipeIngredients)
+//        }
 
-    override fun addRecipe(recipes: Recipes) {
-        throw UnsupportedOperationException("Unsupported operation")
-    }
 
-    override fun clearData() {
-        caches.clear()
-        localDataSource.clearData()
     }
 }

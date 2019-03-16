@@ -9,7 +9,7 @@ import android.view.View
 import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.fragment_favorites.*
 import ru.teamdroid.recipecraft.R
-import ru.teamdroid.recipecraft.data.model.Recipes
+import ru.teamdroid.recipecraft.data.model.Recipe
 import ru.teamdroid.recipecraft.ui.base.BaseFragment
 import ru.teamdroid.recipecraft.ui.navigation.adapters.RecipesAdapter
 
@@ -65,10 +65,10 @@ class FavoritesFragment : BaseFragment() {
 
     private fun onClick(position: Int) {
         val currentRecipe = bookmarkRecipesAdapter.recipes[position]
-        //baseActivity.replaceFragment(DetailRecipeFragment.newInstance(Recipes(currentRecipe.idRecipe, currentRecipe.title, currentRecipe.isBookmarked, currentRecipe.ingredients)), NavigationFragment.TAG)
+        //baseActivity.replaceFragment(DetailRecipeFragment.newInstance(RecipeEntity(currentRecipe.idRecipe, currentRecipe.title, currentRecipe.isBookmarked, currentRecipe.ingredients)), NavigationFragment.TAG)
     }
 
-    private fun onFavoriteClick(recipes: Recipes) {
+    private fun onFavoriteClick(recipes: Recipe) {
 
     }
 
@@ -82,7 +82,7 @@ class FavoritesFragment : BaseFragment() {
         }
     }
 
-    fun onSuccessLoad(list: MutableList<Recipes>) {
+    fun onSuccessLoad(list: MutableList<Recipe>) {
         bookmarkRecipesAdapter.recipes = list
         setInvisibleRefreshing()
     }

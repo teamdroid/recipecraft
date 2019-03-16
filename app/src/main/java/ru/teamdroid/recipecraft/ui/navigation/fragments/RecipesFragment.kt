@@ -9,11 +9,11 @@ import android.view.View
 import android.widget.Toast
 import kotlinx.android.synthetic.main.fragment_recipes.*
 import ru.teamdroid.recipecraft.R
-import ru.teamdroid.recipecraft.data.model.Recipes
+import ru.teamdroid.recipecraft.data.model.Recipe
 import ru.teamdroid.recipecraft.ui.base.BaseFragment
-import ru.teamdroid.recipecraft.ui.navigation.DaggerRecipesComponent
 import ru.teamdroid.recipecraft.ui.navigation.RecipesContract
 import ru.teamdroid.recipecraft.ui.navigation.adapters.RecipesAdapter
+import ru.teamdroid.recipecraft.ui.navigation.components.DaggerRecipesComponent
 import ru.teamdroid.recipecraft.ui.navigation.modules.RecipesPresenterModule
 import ru.teamdroid.recipecraft.ui.navigation.presenters.RecipesPresenter
 
@@ -73,7 +73,7 @@ class RecipesFragment : BaseFragment(), RecipesContract.View {
         baseActivity.replaceFragment(DetailRecipeFragment.newInstance(recipesAdapter.recipes[position]), NavigationFragment.TAG)
     }
 
-    private fun onFavoriteClick(recipes: Recipes) {
+    private fun onFavoriteClick(recipes: Recipe) {
        // presenter.bookmarkRecipe(recipes)
     }
 
@@ -84,13 +84,12 @@ class RecipesFragment : BaseFragment(), RecipesContract.View {
         presenter.loadRecipes(false)
     }
 
-
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.menu_navigation, menu)
         super.onCreateOptionsMenu(menu, inflater)
     }
 
-    fun onSuccessLoad(list: MutableList<Recipes>) {
+    fun onSuccessLoad(list: MutableList<Recipe>) {
       //  recipesAdapter.recipes = list
         setInvisibleRefreshing()
     }
@@ -100,7 +99,7 @@ class RecipesFragment : BaseFragment(), RecipesContract.View {
         setInvisibleRefreshing()
     }
 
-    override fun showRecipes(recipes: List<Recipes>) {
+    override fun showRecipes(recipes: List<Recipe>) {
         recipesAdapter.recipes = recipes
         setInvisibleRefreshing()
     }

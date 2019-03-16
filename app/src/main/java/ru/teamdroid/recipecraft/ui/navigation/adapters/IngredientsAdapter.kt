@@ -6,13 +6,13 @@ import android.view.View
 import android.view.ViewGroup
 import kotlinx.android.synthetic.main.layout_list_ingredients_item.view.*
 import ru.teamdroid.recipecraft.R
-import ru.teamdroid.recipecraft.data.model.Ingredients
+import ru.teamdroid.recipecraft.data.model.Ingredient
 
 class IngredientsAdapter(
         var onItemClickListener: (position: Int) -> Unit)
     : RecyclerView.Adapter<IngredientsAdapter.ViewHolder>() {
 
-    var items: MutableList<Ingredients> = arrayListOf()
+    var items: MutableList<Ingredient> = arrayListOf()
         set(value) {
             field = value
             notifyDataSetChanged()

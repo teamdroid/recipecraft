@@ -2,39 +2,38 @@ package ru.teamdroid.recipecraft.data.database
 
 import android.arch.persistence.room.*
 import io.reactivex.Flowable
-import ru.teamdroid.recipecraft.data.model.Ingredients
-import ru.teamdroid.recipecraft.data.model.RecipeIngredients
-import ru.teamdroid.recipecraft.data.model.Recipes
+import ru.teamdroid.recipecraft.data.model.IngredientEntity
+import ru.teamdroid.recipecraft.data.model.RecipeEntity
+import ru.teamdroid.recipecraft.data.model.RecipeIngredientsEntity
 
 @Dao
 interface RecipesDao {
 
-    @Query("SELECT * FROM Recipes")
-    fun getAllRecipes(): Flowable<List<Recipes>>
+    @Query("SELECT * FROM Recipe")
+    fun getAllRecipes(): Flowable<MutableList<RecipeEntity>>
 
-    @Query("SELECT * FROM recipes WHERE recipes.isBookmarked == 1")
-    fun getAllBookmarkedRecipes(): Flowable<MutableList<Recipes>>
-
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertRecipe(recipe: Recipes)
+    @Query("SELECT * FROM recipe WHERE recipe.isBookmarked == 1")
+    fun getAllBookmarkedRecipes(): Flowable<MutableList<RecipeEntity>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertRecipes(listRecipes: MutableList<Recipes>)
+    fun insertRecipe(recipe: RecipeEntity)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertIngredients(listIngredients: MutableList<Ingredients>)
+    fun insertRecipes(listRecipes: MutableList<RecipeEntity>)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertRecipeIngredients(listRecipeIngredients: MutableList<RecipeIngredients>)
+    fun insertIngredients(listIngredients: MutableList<IngredientEntity>)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertRecipeIngredients(listRecipeIngredients: MutableList<RecipeIngredientsEntity>)
 
     @Delete
-    fun deleteRecipe(recipes: Recipes)
+    fun deleteRecipe(recipes: RecipeEntity)
 
     @Update
-    fun updateRecipe(recipes: Recipes)
+    fun updateRecipe(recipes: RecipeEntity)
 
-    @Query("SELECT recipes.idRecipe, recipe_ingredients.id, recipe_ingredients.idIngredient, recipes.time, recipes.portion, ingredients.title, recipe_ingredients.amount FROM recipes " +
-            "LEFT JOIN recipe_ingredients ON recipes.idRecipe = recipe_ingredients.idRecipe " +
-            "LEFT JOIN ingredients ON recipe_ingredients.idIngredient = ingredients.idIngredient")
-    fun getAllIngredientsById(): Flowable<MutableList<RecipeIngredients>>
+    @Query("SELECT * FROM recipe INNER JOIN recipe_ingredients ON recipe.idRecipe = recipe_ingredients.idRecipe")
+    fun getAllRecipeIngredients(): List<IngredientEntity>
+
 }

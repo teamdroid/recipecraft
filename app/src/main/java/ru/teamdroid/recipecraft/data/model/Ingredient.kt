@@ -1,22 +1,12 @@
 package ru.teamdroid.recipecraft.data.model
 
-import android.arch.persistence.room.ColumnInfo
-import android.arch.persistence.room.Entity
-import android.arch.persistence.room.Ignore
-import android.arch.persistence.room.PrimaryKey
 import android.os.Parcel
 import android.os.Parcelable
-import android.support.annotation.NonNull
 
-@Entity(tableName = "ingredients")
-data class Ingredients(
-        @PrimaryKey @NonNull @ColumnInfo(name = "idIngredient")
+class Ingredient(
         var idIngredient: Int = 0,
-        @ColumnInfo(name = "title")
         var title: String = "",
-        @Ignore
         var amount: Int = 0,
-        @Ignore
         var id: Int = 0
 ) : Parcelable {
 
@@ -35,12 +25,12 @@ data class Ingredients(
 
     companion object {
         @JvmField
-        val CREATOR: Parcelable.Creator<Ingredients> = object : Parcelable.Creator<Ingredients> {
-            override fun createFromParcel(parcel: Parcel): Ingredients {
-                return Ingredients(parcel)
+        val CREATOR: Parcelable.Creator<Ingredient> = object : Parcelable.Creator<Ingredient> {
+            override fun createFromParcel(parcel: Parcel): Ingredient {
+                return Ingredient(parcel)
             }
 
-            override fun newArray(size: Int): Array<Ingredients?> {
+            override fun newArray(size: Int): Array<Ingredient?> {
                 return arrayOfNulls(size)
             }
         }

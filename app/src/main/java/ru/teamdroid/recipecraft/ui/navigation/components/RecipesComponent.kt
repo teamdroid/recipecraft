@@ -1,4 +1,4 @@
-package ru.teamdroid.recipecraft.ui.navigation
+package ru.teamdroid.recipecraft.ui.navigation.components
 
 import dagger.Component
 import ru.teamdroid.recipecraft.data.RecipeRepositoryComponent

@@ -17,7 +17,7 @@ class FavoritesPresenter  {
 //        }
 //    }
 //
-//    fun bookmarkRecipe(recipes: Recipes, viewModelRecipes: RecipesViewModel) {
+//    fun bookmarkRecipe(recipes: RecipeEntity, viewModelRecipes: RecipesViewModel) {
 //        viewModelRecipes.bookmarkRecipe(recipes)
 //    }
 //

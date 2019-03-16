@@ -7,15 +7,13 @@ import android.arch.lifecycle.OnLifecycleEvent
 import android.util.Log
 import io.reactivex.Scheduler
 import io.reactivex.disposables.CompositeDisposable
-import ru.teamdroid.recipecraft.data.model.Recipes
+import ru.teamdroid.recipecraft.data.model.Recipe
 import ru.teamdroid.recipecraft.data.repository.RecipeRepository
 import ru.teamdroid.recipecraft.ui.navigation.RecipesContract
 import ru.teamdroid.recipecraft.util.schedulers.RunOn
-
-import javax.inject.Inject
-
 import ru.teamdroid.recipecraft.util.schedulers.SchedulerType.IO
 import ru.teamdroid.recipecraft.util.schedulers.SchedulerType.UI
+import javax.inject.Inject
 
 class RecipesPresenter @Inject constructor(private var repository: RecipeRepository,
                                            private var view: RecipesContract.View,
@@ -40,12 +38,11 @@ class RecipesPresenter @Inject constructor(private var repository: RecipeReposit
         compositeDisposable.add(disposable)
     }
 
-    fun bookmarkRecipe(recipes: Recipes) {
+    fun bookmarkRecipe(recipes: Recipe) {
         //viewModelRecipes.bookmarkRecipe(recipes)
     }
 
-
-    private fun handleReturnedData(list: List<Recipes>) {
+    private fun handleReturnedData(list: List<Recipe>) {
         if (!list.isEmpty()) {
           view.showRecipes(list)
         } else {
@@ -57,7 +54,7 @@ class RecipesPresenter @Inject constructor(private var repository: RecipeReposit
         Log.d("Error", error.message)
     }
 
-    override fun showRecipes(recipes: List<Recipes>) {
+    override fun showRecipes(recipes: List<Recipe>) {
 
     }
 

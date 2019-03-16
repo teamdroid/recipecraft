@@ -10,7 +10,6 @@ import ru.teamdroid.recipecraft.ui.base.BaseFragment
 
 class ReportFragment : BaseFragment() {
 
-
     override val contentResId = R.layout.fragment_report
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
