@@ -1,7 +1,5 @@
 package ru.teamdroid.recipecraft.ui.navigation.presenters
 
-import io.reactivex.schedulers.Schedulers
-
 class ReportPresenter  {
 
 //    private var compositeDisposable = CompositeDisposable()

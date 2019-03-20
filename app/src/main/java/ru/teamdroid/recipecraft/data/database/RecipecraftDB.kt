@@ -1,7 +1,7 @@
 package ru.teamdroid.recipecraft.data.database
 
-import android.arch.persistence.room.Database
-import android.arch.persistence.room.RoomDatabase
+import androidx.room.Database
+import androidx.room.RoomDatabase
 import ru.teamdroid.recipecraft.data.model.IngredientEntity
 import ru.teamdroid.recipecraft.data.model.RecipeEntity
 import ru.teamdroid.recipecraft.data.model.RecipeIngredientsEntity

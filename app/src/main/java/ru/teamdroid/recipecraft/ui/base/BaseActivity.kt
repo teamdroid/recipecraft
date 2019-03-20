@@ -1,7 +1,7 @@
 package ru.teamdroid.recipecraft.ui.base
 
-import android.arch.lifecycle.LifecycleRegistry
-import android.support.v7.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.LifecycleRegistry
 
 abstract class BaseActivity : AppCompatActivity() {
     private val lifecycleRegistry = LifecycleRegistry(this)

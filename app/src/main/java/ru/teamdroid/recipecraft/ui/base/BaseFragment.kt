@@ -3,12 +3,12 @@ package ru.teamdroid.recipecraft.ui.base
 import android.app.AlertDialog
 import android.content.Context
 import android.os.Bundle
-import android.support.v4.app.Fragment
-import android.support.v7.app.AppCompatActivity
-import android.support.v7.widget.Toolbar
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
+import androidx.fragment.app.Fragment
 import ru.teamdroid.recipecraft.R
 import ru.teamdroid.recipecraft.ui.MainActivity
 
@@ -47,7 +47,7 @@ abstract class BaseFragment : Fragment(), OnBackPressedListener {
     }
 
     fun onBack() {
-        fragmentManager.popBackStack()
+        fragmentManager?.popBackStack()
     }
 
     override fun getContext(): Context {

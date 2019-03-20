@@ -2,11 +2,11 @@ package ru.teamdroid.recipecraft.ui.navigation.fragments
 
 import android.graphics.PorterDuff
 import android.os.Bundle
-import android.support.annotation.ColorRes
-import android.support.design.widget.TabLayout
-import android.support.v4.app.Fragment
-import android.support.v4.content.ContextCompat
 import android.view.View
+import androidx.annotation.ColorRes
+import androidx.core.content.ContextCompat
+import androidx.fragment.app.Fragment
+import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.fragment_nagivation.*
 import org.jetbrains.anko.bundleOf
 import ru.teamdroid.recipecraft.R
@@ -64,18 +64,15 @@ class NavigationFragment : BaseFragment() {
     fun replaceScreen(screenKey: String) {
         currentScreen = screenKey
 
-        val transaction = childFragmentManager?.beginTransaction()
-        var fragment = childFragmentManager?.findFragmentByTag(currentScreen)
+        val transaction = childFragmentManager.beginTransaction()
+        val fragment = childFragmentManager.findFragmentByTag(currentScreen)
+                ?: createFragment(currentScreen)
 
-        if (fragment == null) {
-            fragment = createFragment(currentScreen)
-        }
-
-        transaction?.replace(R.id.navigationContainer, fragment, currentScreen)
-                ?.addToBackStack(currentScreen)?.commit()
+        transaction.replace(R.id.navigationContainer, fragment, currentScreen)
+                .addToBackStack(currentScreen).commit()
     }
 
-    private fun createFragment(screenKey: String): Fragment? {
+    private fun createFragment(screenKey: String): Fragment {
         return when (screenKey) {
             Screens.CRAFT -> CraftFragment.newInstance()
             Screens.RECIPES -> RecipesFragment.newInstance()

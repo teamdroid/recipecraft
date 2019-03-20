@@ -9,7 +9,9 @@ class RecipeDetailEntityToRecipe : Mapper<Recipe, RecipeEntity>() {
 
     fun mapDetailRecipe(value: List<RecipeEntity>, ingredientEntities: List<IngredientEntity>): MutableList<Recipe> {
 
-        val f: MutableList<Recipe> = arrayListOf()
+        if (value.isEmpty()) return arrayListOf()
+
+        val listRecipes: MutableList<Recipe> = arrayListOf()
 
         val ingredients = ArrayList<Ingredient>(ingredientEntities.size)
 
@@ -21,20 +23,38 @@ class RecipeDetailEntityToRecipe : Mapper<Recipe, RecipeEntity>() {
             ingredientEntities.forEach {
                 ingredients.add(Ingredient(it.idIngredient, it.title))
             }
-            f.add(recipe1)
+            listRecipes.add(recipe1)
         }
 
-
-        return f
+        return listRecipes
     }
 
     fun mapIngredients(listIngredients: MutableList<Ingredient>): MutableList<IngredientEntity> {
         val ingredientsEntities: MutableList<IngredientEntity> = arrayListOf()
-        for (actor in listIngredients) {
-            val actorEntity = IngredientEntity(actor.idIngredient, actor.title)
+        for (ingredient in listIngredients) {
+            val actorEntity = IngredientEntity(ingredient.idIngredient, ingredient.title)
             ingredientsEntities.add(actorEntity)
         }
         return ingredientsEntities
     }
+
+    fun mapRecipeIngredients(listRecipeIngredients: MutableList<RecipeIngredients>): MutableList<RecipeIngredientsEntity> {
+        val recipeIngredientsEntity: MutableList<RecipeIngredientsEntity> = arrayListOf()
+        for (recipeIngredient in listRecipeIngredients) {
+            val recipeIngredientEntity = RecipeIngredientsEntity(recipeIngredient.id, recipeIngredient.idRecipe, recipeIngredient.idIngredient)
+            recipeIngredientsEntity.add(recipeIngredientEntity)
+        }
+        return recipeIngredientsEntity
+    }
+
+    fun mapRecipe(recipes: MutableList<Recipe>): MutableList<RecipeEntity> {
+        val recipesEtinity: MutableList<RecipeEntity> = arrayListOf()
+        for (recipe in recipes) {
+            val recipeEntity = RecipeEntity(recipe.idRecipe, recipe.title)
+            recipesEtinity.add(recipeEntity)
+        }
+        return recipesEtinity
+    }
+
 
 }

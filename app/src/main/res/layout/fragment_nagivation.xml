@@ -13,7 +13,7 @@
         android:layout_weight="1"
         app:layout_constraintBottom_toTopOf="@id/tabLayout" />
 
-    <android.support.design.widget.TabLayout
+    <com.google.android.material.tabs.TabLayout
         android:id="@+id/tabLayout"
         style="@style/AppTabLayout"
         android:layout_width="match_parent"
@@ -23,21 +23,21 @@
         app:tabMode="fixed"
         tools:targetApi="lollipop">
 
-        <android.support.design.widget.TabItem
+        <com.google.android.material.tabs.TabItem
             android:layout_width="@dimen/size_large"
             android:layout_height="@dimen/size_large"
             android:icon="@drawable/ic_navigation_craft" />
 
-        <android.support.design.widget.TabItem
+        <com.google.android.material.tabs.TabItem
             android:layout_width="@dimen/size_large"
             android:layout_height="@dimen/size_large"
             android:icon="@drawable/ic_navigation_catalog" />
 
-        <android.support.design.widget.TabItem
+        <com.google.android.material.tabs.TabItem
             android:layout_width="@dimen/size_large"
             android:layout_height="@dimen/size_large"
             android:icon="@drawable/ic_navigation_favorites" />
 
-    </android.support.design.widget.TabLayout>
+    </com.google.android.material.tabs.TabLayout>
 
 </LinearLayout>

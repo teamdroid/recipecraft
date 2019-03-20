@@ -1,13 +1,13 @@
 package ru.teamdroid.recipecraft.data.model
 
-import android.arch.persistence.room.ColumnInfo
-import android.arch.persistence.room.Entity
-import android.arch.persistence.room.PrimaryKey
-import android.support.annotation.NonNull
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+
 
 @Entity(tableName = "recipe")
 data class RecipeEntity(
-        @PrimaryKey @NonNull @ColumnInfo(name = "idRecipe")
+        @PrimaryKey @ColumnInfo(name = "idRecipe")
         var idRecipe: Int = 0,
         @ColumnInfo(name = "title")
         var title: String = "",
