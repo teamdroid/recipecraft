@@ -4,8 +4,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.LifecycleRegistry
 
 abstract class BaseActivity : AppCompatActivity() {
-    private val lifecycleRegistry = LifecycleRegistry(this)
 
+    private val lifecycleRegistry = LifecycleRegistry(this)
 
     override fun getLifecycle(): LifecycleRegistry {
         return lifecycleRegistry

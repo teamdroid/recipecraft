@@ -5,7 +5,7 @@ import ru.teamdroid.recipecraft.data.model.Recipe
 interface RecipesContract {
 
     interface View  {
-        fun showRecipes(recipes: List<Recipe>)
+        fun showRecipes(recipes: MutableList<Recipe>)
     }
 
     interface Presenter : View {

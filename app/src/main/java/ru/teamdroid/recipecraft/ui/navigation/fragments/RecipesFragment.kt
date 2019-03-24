@@ -31,7 +31,7 @@ class RecipesFragment : BaseFragment(), RecipesContract.View {
                     onClick(it)
                 },
                 onFavoriteClickListener = {
-                    //onFavoriteClick(it)
+                    onFavoriteClick(it)
                 }
         )
     }
@@ -73,7 +73,7 @@ class RecipesFragment : BaseFragment(), RecipesContract.View {
     }
 
     private fun onFavoriteClick(recipes: Recipe) {
-       // presenter.bookmarkRecipe(recipes)
+        presenter.bookmarkRecipe(recipes)
     }
 
     private fun refresh() {
@@ -98,7 +98,7 @@ class RecipesFragment : BaseFragment(), RecipesContract.View {
         setInvisibleRefreshing()
     }
 
-    override fun showRecipes(recipes: List<Recipe>) {
+    override fun showRecipes(recipes: MutableList<Recipe>) {
         recipesAdapter.recipes = recipes
         setInvisibleRefreshing()
     }

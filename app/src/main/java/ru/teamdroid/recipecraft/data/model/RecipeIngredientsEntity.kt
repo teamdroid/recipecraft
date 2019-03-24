@@ -17,10 +17,11 @@ import androidx.room.PrimaryKey
             childColumns = arrayOf("idIngredient"),
             onDelete = ForeignKey.CASCADE)])
 data class RecipeIngredientsEntity(
+
         @PrimaryKey @ColumnInfo(name = "id")
         var id: Int = 0,
-        @ColumnInfo(name = "idRecipe")
+        @ColumnInfo(name = "idRecipe", index = true)
         var idRecipe: Int = 0,
-        @ColumnInfo(name = "idIngredient")
+        @ColumnInfo(name = "idIngredient", index = true)
         var idIngredient: Int = 0
 )

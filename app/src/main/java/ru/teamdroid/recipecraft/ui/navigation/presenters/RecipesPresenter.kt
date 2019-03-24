@@ -38,11 +38,11 @@ class RecipesPresenter @Inject constructor(private var repository: RecipeReposit
         compositeDisposable.add(disposable)
     }
 
-    fun bookmarkRecipe(recipes: Recipe) {
-        //viewModelRecipes.bookmarkRecipe(recipes)
+    fun bookmarkRecipe(recipe: Recipe) {
+        repository.bookmark(recipe).subscribeOn(ioScheduler).observeOn(uiScheduler).subscribe()
     }
 
-    private fun handleReturnedData(list: List<Recipe>) {
+    private fun handleReturnedData(list: MutableList<Recipe>) {
         if (!list.isEmpty()) {
           view.showRecipes(list)
         } else {
@@ -53,7 +53,7 @@ class RecipesPresenter @Inject constructor(private var repository: RecipeReposit
         Log.d("Error", error.message)
     }
 
-    override fun showRecipes(recipes: List<Recipe>) {
+    override fun showRecipes(recipes: MutableList<Recipe>) {
 
     }
 

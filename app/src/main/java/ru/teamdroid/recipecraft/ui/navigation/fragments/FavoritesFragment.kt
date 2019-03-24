@@ -38,7 +38,7 @@ class FavoritesFragment : BaseFragment() {
 
         with(recyclerView) {
             adapter = bookmarkRecipesAdapter
-            layoutManager = LinearLayoutManager(context, androidx.recyclerview.widget.LinearLayoutManager.VERTICAL, false)
+            layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         }
 
         if (bookmarkRecipesAdapter.recipes.isEmpty()) {

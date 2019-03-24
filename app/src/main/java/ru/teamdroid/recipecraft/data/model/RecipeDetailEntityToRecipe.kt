@@ -1,32 +1,20 @@
 package ru.teamdroid.recipecraft.data.model
 
-import java.util.*
 
 class RecipeDetailEntityToRecipe : Mapper<Recipe, RecipeEntity>() {
 
-    override fun map(value: Recipe): RecipeEntity = RecipeEntity(value.idRecipe, value.title, value.time, value.portion)
+    override fun map(value: Recipe): RecipeEntity = RecipeEntity(value.idRecipe, value.title, value.time, value.portion, value.isBookmarked)
     override fun reverseMap(value: RecipeEntity) = Recipe(value.idRecipe, value.title, value.time, value.portion)
 
-    fun mapDetailRecipe(value: List<RecipeEntity>, ingredientEntities: List<IngredientEntity>): MutableList<Recipe> {
+    fun mapDetailRecipe(value: RecipeEntity, ingredientEntities: List<IngredientEntity>): Recipe {
 
-        if (value.isEmpty()) return arrayListOf()
+        val recipe = Recipe(value.idRecipe, value.title, value.time, value.portion)
 
-        val listRecipes: MutableList<Recipe> = arrayListOf()
-
-        val ingredients = ArrayList<Ingredient>(ingredientEntities.size)
-
-        for (ingredientEntity in ingredientEntities) {
-            ingredients.add(Ingredient(ingredientEntity.idIngredient, ingredientEntity.title))
-        }
-        value.forEach { recipe ->
-            val recipe1 = Recipe(recipe.idRecipe, recipe.title, recipe.time, recipe.portion)
-            ingredientEntities.forEach {
-                ingredients.add(Ingredient(it.idIngredient, it.title))
-            }
-            listRecipes.add(recipe1)
+        ingredientEntities.forEach { ingredientEntity ->
+            recipe.ingredients.add(Ingredient(ingredientEntity.idIngredient, ingredientEntity.title))
         }
 
-        return listRecipes
+        return recipe
     }
 
     fun mapIngredients(listIngredients: MutableList<Ingredient>): MutableList<IngredientEntity> {
@@ -44,16 +32,17 @@ class RecipeDetailEntityToRecipe : Mapper<Recipe, RecipeEntity>() {
             val recipeIngredientEntity = RecipeIngredientsEntity(recipeIngredient.id, recipeIngredient.idRecipe, recipeIngredient.idIngredient)
             recipeIngredientsEntity.add(recipeIngredientEntity)
         }
+
         return recipeIngredientsEntity
     }
 
     fun mapRecipe(recipes: MutableList<Recipe>): MutableList<RecipeEntity> {
-        val recipesEtinity: MutableList<RecipeEntity> = arrayListOf()
+        val recipesEntities: MutableList<RecipeEntity> = arrayListOf()
         for (recipe in recipes) {
-            val recipeEntity = RecipeEntity(recipe.idRecipe, recipe.title)
-            recipesEtinity.add(recipeEntity)
+            val recipeEntity = RecipeEntity(recipe.idRecipe, recipe.title, recipe.time, recipe.portion, recipe.isBookmarked)
+            recipesEntities.add(recipeEntity)
         }
-        return recipesEtinity
+        return recipesEntities
     }
 
 

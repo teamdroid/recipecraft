@@ -16,6 +16,10 @@ interface RecipesDao {
 //    @Query("SELECT * FROM recipe WHERE recipe.isBookmarked == 1")
 //    fun getAllBookmarkedRecipes(): Observable<MutableList<RecipeEntity>>
 
+    @Update
+    fun bookmark(recipes: RecipeEntity)
+
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertRecipe(recipe: RecipeEntity)
 
@@ -23,10 +27,10 @@ interface RecipesDao {
     fun insertRecipes(listRecipes: MutableList<RecipeEntity>): Completable
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertIngredients(listIngredients: MutableList<IngredientEntity>)
+    fun insertIngredients(listIngredients: MutableList<IngredientEntity>): Completable
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertRecipeIngredients(listRecipeIngredients: MutableList<RecipeIngredientsEntity>)
+    fun insertRecipeIngredients(listRecipeIngredients: MutableList<RecipeIngredientsEntity>): Completable
 
     @Delete
     fun deleteRecipe(recipes: RecipeEntity)
@@ -35,6 +39,10 @@ interface RecipesDao {
     fun updateRecipe(recipes: RecipeEntity)
 
     @Query("SELECT * FROM recipe INNER JOIN recipe_ingredients ON recipe.idRecipe = recipe_ingredients.idRecipe")
-    fun getAllRecipeIngredients(): List<IngredientEntity>
+    fun getAllRecipeIngredients(): Flowable<MutableList<IngredientEntity>>
 
+    @Query("SELECT recipe.idRecipe, recipe_ingredients.idIngredient,  ingredient.title FROM recipe " +
+            "LEFT JOIN recipe_ingredients ON recipe.idRecipe = recipe_ingredients.idRecipe " +
+            "LEFT JOIN ingredient ON recipe_ingredients.idIngredient = ingredient.idIngredient")
+    fun getAllRecipeIngredientsById(): Flowable<MutableList<IngredientEntity>>
 }
