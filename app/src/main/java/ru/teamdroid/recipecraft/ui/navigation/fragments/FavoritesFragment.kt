@@ -5,21 +5,29 @@ import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
+import androidx.lifecycle.LifecycleRegistry
 import androidx.recyclerview.widget.LinearLayoutManager
-import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.fragment_favorites.*
 import ru.teamdroid.recipecraft.R
 import ru.teamdroid.recipecraft.data.model.Recipe
 import ru.teamdroid.recipecraft.ui.base.BaseFragment
+import ru.teamdroid.recipecraft.ui.navigation.FavoritesContract
 import ru.teamdroid.recipecraft.ui.navigation.adapters.RecipesAdapter
+import ru.teamdroid.recipecraft.ui.navigation.components.DaggerFavoritesComponent
+import ru.teamdroid.recipecraft.ui.navigation.modules.FavoritesPresenterModule
+import ru.teamdroid.recipecraft.ui.navigation.presenters.FavoritesPresenter
+import javax.inject.Inject
 
-class FavoritesFragment : BaseFragment() {
+class FavoritesFragment : BaseFragment(), FavoritesContract.View {
 
+    @Inject
+    internal lateinit var presenter: FavoritesPresenter
 
     override val contentResId = R.layout.fragment_favorites
 
-    private var compositeDisposable = CompositeDisposable()
+    private val lifecycleRegistry = LifecycleRegistry(this)
 
+    override fun getLifecycle(): LifecycleRegistry = lifecycleRegistry
 
     private val bookmarkRecipesAdapter by lazy {
         RecipesAdapter(
@@ -32,6 +40,19 @@ class FavoritesFragment : BaseFragment() {
         )
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        initializePresenter()
+    }
+
+    private fun initializePresenter() {
+        DaggerFavoritesComponent.builder()
+                .favoritesPresenterModule(FavoritesPresenterModule(this))
+                .recipeRepositoryComponent(baseActivity.recipeRepositoryComponent)
+                .build()
+                .inject(this)
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupToolbar(toolbar, false, getString(R.string.fragment_favorites_title))
@@ -41,9 +62,7 @@ class FavoritesFragment : BaseFragment() {
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         }
 
-        if (bookmarkRecipesAdapter.recipes.isEmpty()) {
-            refresh()
-        }
+        if (bookmarkRecipesAdapter.recipes.isEmpty()) refresh()
 
         swipeRefreshLayout.setOnRefreshListener {
             swipeRefreshLayout.isRefreshing = true
@@ -56,6 +75,7 @@ class FavoritesFragment : BaseFragment() {
         progressBar.visibility = View.VISIBLE
         swipeRefreshLayout.isRefreshing = false
         bookmarkRecipesAdapter.recipes = ArrayList()
+        presenter.loadRecipes()
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -68,8 +88,9 @@ class FavoritesFragment : BaseFragment() {
         //baseActivity.replaceFragment(DetailRecipeFragment.newInstance(RecipeEntity(currentRecipe.idRecipe, currentRecipe.title, currentRecipe.isBookmarked, currentRecipe.ingredients)), NavigationFragment.TAG)
     }
 
-    private fun onFavoriteClick(recipes: Recipe) {
-
+    private fun onFavoriteClick(recipe: Recipe) {
+        recipe.isBookmarked = !recipe.isBookmarked
+        presenter.bookmarkRecipe(recipe)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -82,19 +103,23 @@ class FavoritesFragment : BaseFragment() {
         }
     }
 
-    fun onSuccessLoad(list: MutableList<Recipe>) {
-        bookmarkRecipesAdapter.recipes = list
-        setInvisibleRefreshing()
+//    fun onSuccessLoad(list: MutableList<Recipe>) {
+//        bookmarkRecipesAdapter.recipes = list
+//        setInvisibleRefreshing()
+//    }
+//
+//    fun setInvisibleRefreshing() {
+//        progressBar.visibility = View.GONE
+//        swipeRefreshLayout.isRefreshing = false
+//    }
+
+    override fun showRecipes(recipes: MutableList<Recipe>) {
+        bookmarkRecipesAdapter.recipes = recipes
     }
 
-    fun setInvisibleRefreshing() {
+    private fun setInvisibleRefreshing() {
         progressBar.visibility = View.GONE
         swipeRefreshLayout.isRefreshing = false
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        compositeDisposable.clear()
     }
 
     companion object {

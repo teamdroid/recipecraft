@@ -11,7 +11,7 @@ class RecipeRepository @Inject constructor(private val recipeDataSource: Recipes
         return if (forceRemote) {
             loadRemoteData()
         } else {
-            recipeDataSource.loadLocalRecipe(false).take(1).filter { !it.isNullOrEmpty() }.switchIfEmpty(loadRemoteData())
+            recipeDataSource.loadLocalRecipe(false).filter { !it.isEmpty() }.switchIfEmpty(loadRemoteData())
         }
     }
 
@@ -21,9 +21,6 @@ class RecipeRepository @Inject constructor(private val recipeDataSource: Recipes
         }
     }
 
-    fun bookmark(recipe: Recipe): Completable {
-        recipe.isBookmarked = !recipe.isBookmarked
-        return recipeDataSource.bookmark(recipe)
-    }
+    fun bookmark(recipe: Recipe): Completable = recipeDataSource.bookmark(recipe)
 
 }

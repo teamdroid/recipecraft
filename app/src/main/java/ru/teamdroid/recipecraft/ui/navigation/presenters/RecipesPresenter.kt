@@ -29,42 +29,35 @@ class RecipesPresenter @Inject constructor(private var repository: RecipeReposit
         compositeDisposable = CompositeDisposable()
     }
 
-
     override fun loadRecipes(onlineRequired: Boolean) {
-        val disposable = repository.loadRecipe(false)
+        compositeDisposable.add(repository.loadRecipe(false)
                 .subscribeOn(ioScheduler)
                 .observeOn(uiScheduler)
-                .subscribe({ handleReturnedData(it) }, { handleError(it) }, {  })
-        compositeDisposable.add(disposable)
+                .subscribe({ handleReturnedData(it) }, { handleError(it) }, { }))
     }
 
     fun bookmarkRecipe(recipe: Recipe) {
-        repository.bookmark(recipe).subscribeOn(ioScheduler).observeOn(uiScheduler).subscribe()
+        compositeDisposable.add(repository.bookmark(recipe)
+                .subscribeOn(ioScheduler)
+                .observeOn(uiScheduler)
+                .subscribe({ view.showBookmarked(recipe.isBookmarked) }, { }))
     }
 
     private fun handleReturnedData(list: MutableList<Recipe>) {
-        if (!list.isEmpty()) {
-          view.showRecipes(list)
-        } else {
-        }
+        view.showRecipes(list)
     }
 
     private fun handleError(error: Throwable) {
         Log.d("Error", error.message)
     }
 
-    override fun showRecipes(recipes: MutableList<Recipe>) {
-
-    }
-
     @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
-    fun onAttach() {
-        //loadRecipes("ru")
+    override fun onAttach() {
+
     }
 
-    @OnLifecycleEvent(Lifecycle.Event.ON_PAUSE)
-    fun onDetach() {
+    @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
+    override fun onDestroy() {
         compositeDisposable.clear()
     }
-
 }

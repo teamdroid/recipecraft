@@ -50,13 +50,15 @@ class RecipeDataSourceImpl @Inject constructor(private val recipeDao: RecipesDao
                         recipeDao.getAllRecipeIngredientsById()
                                 .map { details ->
                                     mapper.mapDetailRecipe(item, details)
-                                }.firstOrError().toFlowable()
+                                }.toFlowable()
                     }.toList().toFlowable()
                 }
     }
 
     override fun bookmark(recipe: Recipe): Completable {
-        return Completable.fromAction { recipeDao.bookmark(mapper.map(recipe)) }
+        return Completable.fromAction {
+            recipeDao.bookmark(mapper.map(recipe))
+        }
     }
 
     override fun loadRemoteRecipe(): Flowable<MutableList<Recipe>> {

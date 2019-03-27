@@ -29,4 +29,6 @@
     <string name="save">Сохранить</string>
     <string name="Delete">Удалить</string>
     <string name="error_remote_load">Не удалось обновить данные из сервера</string>
+    <string name="bookmarked">Добавленно в избранное</string>
+    <string name="unbookmarked">Удалено из избранного</string>
 </resources>

@@ -8,7 +8,7 @@ class RecipeDetailEntityToRecipe : Mapper<Recipe, RecipeEntity>() {
 
     fun mapDetailRecipe(value: RecipeEntity, ingredientEntities: List<IngredientEntity>): Recipe {
 
-        val recipe = Recipe(value.idRecipe, value.title, value.time, value.portion)
+        val recipe = Recipe(value.idRecipe, value.title, value.time, value.portion, value.isBookmarked)
 
         ingredientEntities.forEach { ingredientEntity ->
             recipe.ingredients.add(Ingredient(ingredientEntity.idIngredient, ingredientEntity.title))
@@ -20,8 +20,8 @@ class RecipeDetailEntityToRecipe : Mapper<Recipe, RecipeEntity>() {
     fun mapIngredients(listIngredients: MutableList<Ingredient>): MutableList<IngredientEntity> {
         val ingredientsEntities: MutableList<IngredientEntity> = arrayListOf()
         for (ingredient in listIngredients) {
-            val actorEntity = IngredientEntity(ingredient.idIngredient, ingredient.title)
-            ingredientsEntities.add(actorEntity)
+            val ingredientEntity = IngredientEntity(ingredient.idIngredient, ingredient.title)
+            ingredientsEntities.add(ingredientEntity)
         }
         return ingredientsEntities
     }
@@ -44,6 +44,4 @@ class RecipeDetailEntityToRecipe : Mapper<Recipe, RecipeEntity>() {
         }
         return recipesEntities
     }
-
-
 }

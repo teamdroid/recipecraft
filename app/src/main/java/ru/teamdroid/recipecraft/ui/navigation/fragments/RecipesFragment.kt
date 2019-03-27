@@ -5,8 +5,9 @@ import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
-import android.widget.Toast
+import androidx.lifecycle.LifecycleRegistry
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.fragment_recipes.*
 import ru.teamdroid.recipecraft.R
 import ru.teamdroid.recipecraft.data.model.Recipe
@@ -24,6 +25,10 @@ class RecipesFragment : BaseFragment(), RecipesContract.View {
     internal lateinit var presenter: RecipesPresenter
 
     override val contentResId = R.layout.fragment_recipes
+
+    private val lifecycleRegistry = LifecycleRegistry(this)
+
+    override fun getLifecycle(): LifecycleRegistry = lifecycleRegistry
 
     private val recipesAdapter by lazy {
         RecipesAdapter(
@@ -55,7 +60,7 @@ class RecipesFragment : BaseFragment(), RecipesContract.View {
 
         with(recyclerView) {
             adapter = recipesAdapter
-            layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+            layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
         }
 
         if (recipesAdapter.recipes.isEmpty()) refresh()
@@ -72,8 +77,9 @@ class RecipesFragment : BaseFragment(), RecipesContract.View {
         baseActivity.replaceFragment(DetailRecipeFragment.newInstance(recipesAdapter.recipes[position]), NavigationFragment.TAG)
     }
 
-    private fun onFavoriteClick(recipes: Recipe) {
-        presenter.bookmarkRecipe(recipes)
+    private fun onFavoriteClick(recipe: Recipe) {
+        recipe.isBookmarked = !recipe.isBookmarked
+        presenter.bookmarkRecipe(recipe)
     }
 
     private fun refresh() {
@@ -88,24 +94,19 @@ class RecipesFragment : BaseFragment(), RecipesContract.View {
         super.onCreateOptionsMenu(menu, inflater)
     }
 
-    fun onSuccessLoad(list: MutableList<Recipe>) {
-      //  recipesAdapter.recipes = list
-        setInvisibleRefreshing()
-    }
-
-    fun onErrorLoad(error: Throwable) {
-        Toast.makeText(context, getString(R.string.error_remote_load), Int.MAX_VALUE).show()
-        setInvisibleRefreshing()
-    }
-
     override fun showRecipes(recipes: MutableList<Recipe>) {
+        // progressBar.visibility = View.VISIBLE
         recipesAdapter.recipes = recipes
-        setInvisibleRefreshing()
+        //setInvisibleRefreshing()
     }
 
     private fun setInvisibleRefreshing() {
        progressBar.visibility = View.GONE
        swipeRefreshLayout.isRefreshing = false
+    }
+
+    override fun showBookmarked(isBookmarked: Boolean) {
+        //  Toast.makeText(context, if (isBookmarked) getString(R.string.bookmarked) else getString(R.string.unbookmarked), Toast.LENGTH_SHORT).show()
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
