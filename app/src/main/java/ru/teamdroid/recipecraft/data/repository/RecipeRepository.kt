@@ -6,7 +6,6 @@ import io.reactivex.Single
 import ru.teamdroid.recipecraft.data.api.ReportMessage
 import ru.teamdroid.recipecraft.data.api.Response
 import ru.teamdroid.recipecraft.data.model.Recipe
-import ru.teamdroid.recipecraft.ui.MainActivity
 import javax.inject.Inject
 
 class RecipeRepository @Inject constructor(private val recipeDataSource: RecipesDataSource) {
@@ -15,7 +14,7 @@ class RecipeRepository @Inject constructor(private val recipeDataSource: Recipes
         return if (forceRemote) {
             loadRemoteData()
         } else {
-            if (MainActivity.isFirstStartup) loadRemoteData() else recipeDataSource.loadLocalRecipe() // TODO: FIX IT 'CAUSE IT'S HACK
+            recipeDataSource.loadLocalRecipe()
         }
     }
 

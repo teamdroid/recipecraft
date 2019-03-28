@@ -64,10 +64,10 @@ class RecipesFragment : BaseFragment(), RecipesContract.View {
             layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
         }
 
-        if (recipesAdapter.recipes.isEmpty()) refresh()
+        if (recipesAdapter.recipes.isEmpty()) refresh(false)
 
         swipeRefreshLayout.setOnRefreshListener {
-            refresh()
+            refresh(isOnline())
         }
     }
 
@@ -80,11 +80,11 @@ class RecipesFragment : BaseFragment(), RecipesContract.View {
         presenter.bookmarkRecipe(recipe)
     }
 
-    private fun refresh() {
+    private fun refresh(onlineRequired: Boolean) {
         progressBar.visibility = View.VISIBLE
         swipeRefreshLayout.isRefreshing = false
-        recipesAdapter.recipes = ArrayList()
-        presenter.loadRecipes(false)
+        recipesAdapter.recipes = arrayListOf()
+        presenter.loadRecipes(onlineRequired)
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -105,7 +105,7 @@ class RecipesFragment : BaseFragment(), RecipesContract.View {
     }
 
     override fun showBookmarked(isBookmarked: Boolean) {
-        val snackBar = Snackbar.make(constraintLayout, if (isBookmarked) getString(R.string.bookmarked) else getString(R.string.unbookmarked), Snackbar.LENGTH_SHORT)
+        val snackBar = Snackbar.make(constraintLayout, if (isBookmarked) getString(R.string.bookmarked) else getString(R.string.unbookmarked), 500)
         snackBar.setAction(getString(R.string.close_text)) { snackBar.dismiss() }.setActionTextColor(resources.getColor(R.color.textWhite)).show()
     }
 

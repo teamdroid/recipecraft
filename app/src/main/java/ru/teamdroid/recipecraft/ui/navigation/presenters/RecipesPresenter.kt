@@ -31,10 +31,10 @@ class RecipesPresenter @Inject constructor(private var repository: RecipeReposit
     }
 
     override fun loadRecipes(onlineRequired: Boolean) {
-        compositeDisposable.add(repository.loadRecipe(false)
+        compositeDisposable.add(repository.loadRecipe(onlineRequired)
                 .subscribeOn(ioScheduler)
                 .observeOn(uiScheduler)
-                .subscribe({ handleReturnedData(it) }, { handleError(it) }, { }))
+                .subscribe({ handleReturnedData(it, onlineRequired) }, { handleError(it) }, { }))
     }
 
     fun bookmarkRecipe(recipe: Recipe) {
@@ -44,21 +44,22 @@ class RecipesPresenter @Inject constructor(private var repository: RecipeReposit
                 .subscribe({ view.showBookmarked(recipe.isBookmarked) }, { }))
     }
 
-    private fun handleReturnedData(list: MutableList<Recipe>) {
-        view.showRecipes(list)
+    private fun handleReturnedData(list: MutableList<Recipe>, onlineRequired: Boolean) {
+        if (!list.isEmpty() || onlineRequired) view.showRecipes(list) else loadRecipes(true)
     }
 
     private fun handleError(error: Throwable) {
         Log.d(RecipesFragment.TAG, error.message)
+        view.showRecipes(arrayListOf())
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
     override fun onAttach() {
 
     }
-
+    
     @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
     override fun onDestroy() {
-        compositeDisposable.clear()
+        compositeDisposable.dispose()
     }
 }

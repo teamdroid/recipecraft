@@ -15,7 +15,6 @@ import ru.teamdroid.recipecraft.ui.navigation.modules.ReportPresenterModule
 import ru.teamdroid.recipecraft.ui.navigation.presenters.ReportPresenter
 import javax.inject.Inject
 
-
 class ReportFragment : BaseFragment(), ReportContract.View {
 
     @Inject

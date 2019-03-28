@@ -2,6 +2,8 @@ package ru.teamdroid.recipecraft.ui.base
 
 import android.app.AlertDialog
 import android.content.Context
+import android.net.ConnectivityManager
+import android.net.NetworkInfo
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -48,6 +50,12 @@ abstract class BaseFragment : Fragment(), OnBackPressedListener {
 
     fun onBack() {
         fragmentManager?.popBackStack()
+    }
+
+    fun isOnline(): Boolean {
+        val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val activeNetwork: NetworkInfo? = connectivityManager.activeNetworkInfo
+        return activeNetwork?.isConnectedOrConnecting == true
     }
 
     override fun getContext(): Context {
