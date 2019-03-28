@@ -94,17 +94,19 @@ class RecipesFragment : BaseFragment(), RecipesContract.View {
 
     override fun showRecipes(recipes: MutableList<Recipe>) {
         recipesAdapter.recipes = recipes
-        if (this.isResumed) setInvisibleRefreshing()
+        setInvisibleRefreshing()
     }
 
     private fun setInvisibleRefreshing() {
-       progressBar.visibility = View.GONE
-       swipeRefreshLayout.isRefreshing = false
+        if (isResumed) {
+            progressBar.visibility = View.GONE
+            swipeRefreshLayout.isRefreshing = false
+        }
     }
 
     override fun showBookmarked(isBookmarked: Boolean) {
         val snackBar = Snackbar.make(constraintLayout, if (isBookmarked) getString(R.string.bookmarked) else getString(R.string.unbookmarked), Snackbar.LENGTH_SHORT)
-        snackBar.setAction(getString(R.string.close_text)) { snackBar.dismiss() }.show()
+        snackBar.setAction(getString(R.string.close_text)) { snackBar.dismiss() }.setActionTextColor(resources.getColor(R.color.textWhite)).show()
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
