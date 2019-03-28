@@ -4,13 +4,43 @@ import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
+import androidx.lifecycle.LifecycleRegistry
 import kotlinx.android.synthetic.main.fragment_report.*
 import ru.teamdroid.recipecraft.R
 import ru.teamdroid.recipecraft.ui.base.BaseFragment
+import ru.teamdroid.recipecraft.ui.navigation.ReportContract
+import ru.teamdroid.recipecraft.ui.navigation.components.DaggerReportComponent
+import ru.teamdroid.recipecraft.ui.navigation.dialogs.ReportDialog
+import ru.teamdroid.recipecraft.ui.navigation.modules.ReportPresenterModule
+import ru.teamdroid.recipecraft.ui.navigation.presenters.ReportPresenter
+import javax.inject.Inject
 
-class ReportFragment : BaseFragment() {
+
+class ReportFragment : BaseFragment(), ReportContract.View {
+
+    @Inject
+    internal lateinit var presenter: ReportPresenter
 
     override val contentResId = R.layout.fragment_report
+
+    private val lifecycleRegistry = LifecycleRegistry(this)
+
+    override fun getLifecycle(): LifecycleRegistry = lifecycleRegistry
+
+    private var reportDialog: ReportDialog? = null
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        initializePresenter()
+    }
+
+    private fun initializePresenter() {
+        DaggerReportComponent.builder()
+                .reportPresenterModule(ReportPresenterModule(this))
+                .recipeRepositoryComponent(baseActivity.recipeRepositoryComponent)
+                .build()
+                .inject(this)
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -18,23 +48,29 @@ class ReportFragment : BaseFragment() {
         submitFeedbackButton.setOnClickListener {
             if (nameEditText.text.isNotBlank() && emailEditText.text.isNotBlank() && feedbackEditText.text.isNotBlank()) {
                 progressBar.visibility = View.VISIBLE
-                //presenter.sendReportMessage(nameEditText.text.toString(), emailEditText.text.toString(), feedbackEditText.text.toString())
+                sendReport(nameEditText.text.toString(), emailEditText.text.toString(), feedbackEditText.text.toString())
             } else {
                 Toast.makeText(context, R.string.error_input_text, Toast.LENGTH_SHORT).show()
             }
         }
     }
 
-    fun onSuccess() {
-        progressBar.visibility = View.GONE
-        Toast.makeText(context, R.string.thanks_feedback, Toast.LENGTH_SHORT).show()
-        onBack()
+    private fun sendReport(name: String, email: String, text: String) {
+        reportDialog = ReportDialog()
+        reportDialog?.show(childFragmentManager, TAG)
+        presenter.sendReportMessage(name, email, text)
     }
 
-    fun onFailure() {
+    override fun onSuccess() {
+        progressBar.visibility = View.GONE
+        Toast.makeText(context, R.string.thanks_feedback, Toast.LENGTH_SHORT).show()
+        reportDialog?.dismiss()
+    }
+
+    override fun onFailure() {
         progressBar.visibility = View.GONE
         Toast.makeText(context, R.string.error_feedback, Toast.LENGTH_SHORT).show()
-        onBack()
+        reportDialog?.dismiss()
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -47,7 +83,13 @@ class ReportFragment : BaseFragment() {
         }
     }
 
+    override fun onDetach() {
+        super.onDetach()
+        reportDialog?.dismiss()
+    }
+
     companion object {
+        const val TAG = "RecipesFragment"
         fun newInstance() = ReportFragment()
     }
 }

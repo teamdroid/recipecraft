@@ -36,7 +36,7 @@ class DetailRecipeFragment : BaseFragment() {
 
         with(recyclerView) {
             adapter = ingredientsAdapter
-            layoutManager = LinearLayoutManager(context, androidx.recyclerview.widget.LinearLayoutManager.VERTICAL, false)
+            layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         }
 
         ingredientsAdapter.items = recipes?.ingredients ?: arrayListOf()

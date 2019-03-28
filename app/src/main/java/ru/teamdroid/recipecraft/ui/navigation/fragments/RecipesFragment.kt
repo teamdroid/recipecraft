@@ -8,6 +8,7 @@ import android.view.View
 import androidx.lifecycle.LifecycleRegistry
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_recipes.*
 import ru.teamdroid.recipecraft.R
 import ru.teamdroid.recipecraft.data.model.Recipe
@@ -102,7 +103,8 @@ class RecipesFragment : BaseFragment(), RecipesContract.View {
     }
 
     override fun showBookmarked(isBookmarked: Boolean) {
-        //  Toast.makeText(context, if (isBookmarked) getString(R.string.bookmarked) else getString(R.string.unbookmarked), Toast.LENGTH_SHORT).show()
+        val snackBar = Snackbar.make(constraintLayout, if (isBookmarked) getString(R.string.bookmarked) else getString(R.string.unbookmarked), Snackbar.LENGTH_SHORT)
+        snackBar.setAction(getString(R.string.close_text)) { snackBar.dismiss() }.show()
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

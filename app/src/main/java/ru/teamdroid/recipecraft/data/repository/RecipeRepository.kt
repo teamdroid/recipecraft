@@ -2,6 +2,9 @@ package ru.teamdroid.recipecraft.data.repository
 
 import io.reactivex.Completable
 import io.reactivex.Flowable
+import io.reactivex.Single
+import ru.teamdroid.recipecraft.data.api.ReportMessage
+import ru.teamdroid.recipecraft.data.api.Response
 import ru.teamdroid.recipecraft.data.model.Recipe
 import ru.teamdroid.recipecraft.ui.MainActivity
 import javax.inject.Inject
@@ -27,5 +30,9 @@ class RecipeRepository @Inject constructor(private val recipeDataSource: Recipes
     }
 
     fun bookmark(recipe: Recipe): Completable = recipeDataSource.bookmark(recipe)
+
+    fun sendReportMessage(reportMessage: ReportMessage): Single<Response> {
+        return recipeDataSource.sendReportMessage(reportMessage)
+    }
 
 }

@@ -2,7 +2,10 @@ package ru.teamdroid.recipecraft.data.repository
 
 import io.reactivex.Completable
 import io.reactivex.Flowable
+import io.reactivex.Single
 import ru.teamdroid.recipecraft.data.api.RecipeService
+import ru.teamdroid.recipecraft.data.api.ReportMessage
+import ru.teamdroid.recipecraft.data.api.Response
 import ru.teamdroid.recipecraft.data.base.RecipeMapper
 import ru.teamdroid.recipecraft.data.database.RecipesDao
 import ru.teamdroid.recipecraft.data.model.Ingredient
@@ -79,6 +82,10 @@ class RecipeDataSourceImpl @Inject constructor(private val recipeDao: RecipesDao
 
     override fun loadRemoteRecipe(): Flowable<MutableList<Recipe>> {
         return recipeService.getAllRecipes("ru")
+    }
+
+    override fun sendReportMessage(reportMessage: ReportMessage): Single<Response> {
+        return recipeService.sendReportMessage(reportMessage)
     }
 
 }
