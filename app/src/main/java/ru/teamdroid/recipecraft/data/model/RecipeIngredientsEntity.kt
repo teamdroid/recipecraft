@@ -1,11 +1,9 @@
 package ru.teamdroid.recipecraft.data.model
 
-
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
-
 
 @Entity(tableName = "recipe_ingredients", foreignKeys = [
     ForeignKey(entity = RecipeEntity::class,
@@ -17,7 +15,6 @@ import androidx.room.PrimaryKey
             childColumns = arrayOf("idIngredient"),
             onDelete = ForeignKey.CASCADE)])
 data class RecipeIngredientsEntity(
-
         @PrimaryKey @ColumnInfo(name = "id")
         var id: Int = 0,
         @ColumnInfo(name = "idRecipe", index = true)

@@ -10,6 +10,7 @@ import io.reactivex.disposables.CompositeDisposable
 import ru.teamdroid.recipecraft.data.model.Recipe
 import ru.teamdroid.recipecraft.data.repository.RecipeRepository
 import ru.teamdroid.recipecraft.ui.navigation.RecipesContract
+import ru.teamdroid.recipecraft.ui.navigation.fragments.RecipesFragment
 import ru.teamdroid.recipecraft.util.schedulers.RunOn
 import ru.teamdroid.recipecraft.util.schedulers.SchedulerType.IO
 import ru.teamdroid.recipecraft.util.schedulers.SchedulerType.UI
@@ -48,7 +49,7 @@ class RecipesPresenter @Inject constructor(private var repository: RecipeReposit
     }
 
     private fun handleError(error: Throwable) {
-        Log.d("Error", error.message)
+        Log.d(RecipesFragment.TAG, error.message)
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)

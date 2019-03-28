@@ -29,7 +29,7 @@ class FavoritesPresenter @Inject constructor(private var repository: RecipeRepos
     }
 
     override fun loadRecipes() {
-        compositeDisposable.add(repository.loadRecipe(false)
+        compositeDisposable.add(repository.loadBookmarkedRecipe()
                 .subscribeOn(ioScheduler)
                 .observeOn(uiScheduler)
                 .subscribe({ handleReturnedData(it) }, { handleError(it) }, { }))

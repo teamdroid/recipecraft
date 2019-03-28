@@ -65,8 +65,6 @@ class FavoritesFragment : BaseFragment(), FavoritesContract.View {
         if (bookmarkRecipesAdapter.recipes.isEmpty()) refresh()
 
         swipeRefreshLayout.setOnRefreshListener {
-            swipeRefreshLayout.isRefreshing = true
-            progressBar.visibility = View.VISIBLE
             refresh()
         }
     }
@@ -84,8 +82,7 @@ class FavoritesFragment : BaseFragment(), FavoritesContract.View {
     }
 
     private fun onClick(position: Int) {
-        val currentRecipe = bookmarkRecipesAdapter.recipes[position]
-        //baseActivity.replaceFragment(DetailRecipeFragment.newInstance(RecipeEntity(currentRecipe.idRecipe, currentRecipe.title, currentRecipe.isBookmarked, currentRecipe.ingredients)), NavigationFragment.TAG)
+        baseActivity.replaceFragment(DetailRecipeFragment.newInstance(bookmarkRecipesAdapter.recipes[position]), NavigationFragment.TAG)
     }
 
     private fun onFavoriteClick(recipe: Recipe) {
@@ -103,18 +100,9 @@ class FavoritesFragment : BaseFragment(), FavoritesContract.View {
         }
     }
 
-//    fun onSuccessLoad(list: MutableList<Recipe>) {
-//        bookmarkRecipesAdapter.recipes = list
-//        setInvisibleRefreshing()
-//    }
-//
-//    fun setInvisibleRefreshing() {
-//        progressBar.visibility = View.GONE
-//        swipeRefreshLayout.isRefreshing = false
-//    }
-
     override fun showRecipes(recipes: MutableList<Recipe>) {
         bookmarkRecipesAdapter.recipes = recipes
+        if (this.isResumed) setInvisibleRefreshing()
     }
 
     private fun setInvisibleRefreshing() {

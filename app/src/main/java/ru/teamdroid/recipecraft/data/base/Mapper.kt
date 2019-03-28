@@ -1,4 +1,4 @@
-package ru.teamdroid.recipecraft.data.model
+package ru.teamdroid.recipecraft.data.base
 
 import java.util.*
 

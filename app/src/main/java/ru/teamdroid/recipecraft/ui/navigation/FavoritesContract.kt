@@ -4,7 +4,6 @@ import ru.teamdroid.recipecraft.data.model.Recipe
 import ru.teamdroid.recipecraft.ui.base.BasePresenter
 
 interface FavoritesContract {
-
     interface View {
         fun showRecipes(recipes: MutableList<Recipe>)
     }
@@ -12,5 +11,4 @@ interface FavoritesContract {
     interface Presenter : BasePresenter<FavoritesContract.View> {
         fun loadRecipes()
     }
-
 }

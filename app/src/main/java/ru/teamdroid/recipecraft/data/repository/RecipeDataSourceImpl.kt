@@ -3,13 +3,17 @@ package ru.teamdroid.recipecraft.data.repository
 import io.reactivex.Completable
 import io.reactivex.Flowable
 import ru.teamdroid.recipecraft.data.api.RecipeService
+import ru.teamdroid.recipecraft.data.base.RecipeMapper
 import ru.teamdroid.recipecraft.data.database.RecipesDao
-import ru.teamdroid.recipecraft.data.model.*
+import ru.teamdroid.recipecraft.data.model.Ingredient
+import ru.teamdroid.recipecraft.data.model.Recipe
+import ru.teamdroid.recipecraft.data.model.RecipeEntity
+import ru.teamdroid.recipecraft.data.model.RecipeIngredients
 import javax.inject.Inject
 
 class RecipeDataSourceImpl @Inject constructor(private val recipeDao: RecipesDao, private val recipeService: RecipeService) : RecipesDataSource {
 
-    private val mapper: RecipeDetailEntityToRecipe = RecipeDetailEntityToRecipe() // TODO : REMOVE
+    private val mapper: RecipeMapper = RecipeMapper() // TODO : INJECT IT
 
     override fun addRecipe(recipes: Recipe) {
         recipeDao.insertRecipe(RecipeEntity(idRecipe = recipes.idRecipe, title = recipes.title))
@@ -43,11 +47,23 @@ class RecipeDataSourceImpl @Inject constructor(private val recipeDao: RecipesDao
         return recipeDao.insertRecipeIngredients(mapper.mapRecipeIngredients(listRecipeIngredients))
     }
 
-    override fun loadLocalRecipe(forceRemote: Boolean): Flowable<MutableList<Recipe>> {
+    override fun loadLocalRecipe(): Flowable<MutableList<Recipe>> {
         return recipeDao.getAllRecipes()
                 .flatMap {
                     Flowable.fromIterable(it).flatMap { item ->
-                        recipeDao.getAllRecipeIngredientsById()
+                        recipeDao.getAllRecipeIngredientsById(item.idRecipe)
+                                .map { details ->
+                                    mapper.mapDetailRecipe(item, details)
+                                }.toFlowable()
+                    }.toList().toFlowable()
+                }
+    }
+
+    override fun loadBookmarkRecipes(): Flowable<MutableList<Recipe>> {
+        return recipeDao.getAllBookmarkedRecipes()
+                .flatMap {
+                    Flowable.fromIterable(it).flatMap { item ->
+                        recipeDao.getAllRecipeIngredientsById(item.idRecipe)
                                 .map { details ->
                                     mapper.mapDetailRecipe(item, details)
                                 }.toFlowable()

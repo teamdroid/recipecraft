@@ -4,8 +4,7 @@ import ru.teamdroid.recipecraft.data.model.Recipe
 import ru.teamdroid.recipecraft.ui.base.BasePresenter
 
 interface RecipesContract {
-
-    interface View  {
+    interface View {
         fun showRecipes(recipes: MutableList<Recipe>)
         fun showBookmarked(isBookmarked: Boolean)
     }

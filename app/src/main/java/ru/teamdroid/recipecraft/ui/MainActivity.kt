@@ -13,8 +13,6 @@ import ru.teamdroid.recipecraft.ui.navigation.fragments.NavigationFragment
 
 class MainActivity : BaseActivity() {
 
-    private var isFirstStartup: Boolean = false
-
     val recipeRepositoryComponent: RecipeRepositoryComponent
         get() = (application as AndroidApplication).getRecipeRepositoryComponent()
 
@@ -41,5 +39,9 @@ class MainActivity : BaseActivity() {
         supportFragmentManager.beginTransaction().apply {
             replace(R.id.mainContainer, fragment).addToBackStack(tag)
         }.commit()
+    }
+
+    companion object {
+        var isFirstStartup: Boolean = false
     }
 }

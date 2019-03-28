@@ -66,9 +66,6 @@ class RecipesFragment : BaseFragment(), RecipesContract.View {
         if (recipesAdapter.recipes.isEmpty()) refresh()
 
         swipeRefreshLayout.setOnRefreshListener {
-            progressBar.visibility = View.VISIBLE
-            swipeRefreshLayout.isRefreshing = false
-            progressBar.visibility = View.VISIBLE
             refresh()
         }
     }
@@ -95,9 +92,8 @@ class RecipesFragment : BaseFragment(), RecipesContract.View {
     }
 
     override fun showRecipes(recipes: MutableList<Recipe>) {
-        // progressBar.visibility = View.VISIBLE
         recipesAdapter.recipes = recipes
-        //setInvisibleRefreshing()
+        if (this.isResumed) setInvisibleRefreshing()
     }
 
     private fun setInvisibleRefreshing() {

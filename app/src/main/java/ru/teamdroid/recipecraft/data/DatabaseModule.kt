@@ -11,7 +11,6 @@ import javax.inject.Singleton
 
 @Module
 class DatabaseModule {
-
     @Provides
     @Named(DATABASE)
     internal fun provideDatabaseName(): String {
