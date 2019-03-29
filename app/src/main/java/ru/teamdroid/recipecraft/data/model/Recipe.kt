@@ -2,6 +2,7 @@ package ru.teamdroid.recipecraft.data.model
 
 import android.os.Parcel
 import android.os.Parcelable
+import com.google.gson.annotations.SerializedName
 
 data class Recipe(
         var idRecipe: Int = 0,
@@ -9,13 +10,17 @@ data class Recipe(
         var time: Long = 0,
         var portion: Int = 0,
         var isBookmarked: Boolean = false,
+        @SerializedName("ingredients")
         var ingredients: MutableList<Ingredient> = arrayListOf(),
+        @SerializedName("instructions")
         var insctructions: MutableList<Instruction> = arrayListOf()
 ) : Parcelable {
 
-    constructor(parcel: Parcel) : this(parcel.readInt(), parcel.readString(), parcel.readLong(), parcel.readInt(), parcel.readInt() == 0, mutableListOf<Ingredient>().apply {
-        parcel.readArrayList(Ingredient::class.java.classLoader)
-    })
+    constructor(parcel: Parcel) : this(parcel.readInt(), parcel.readString()
+            ?: "", parcel.readLong(), parcel.readInt(), parcel.readInt() == 0,
+            mutableListOf<Ingredient>().apply { parcel.readArrayList(Ingredient::class.java.classLoader) },
+            mutableListOf<Instruction>().apply { parcel.readArrayList(Instruction::class.java.classLoader) }
+    )
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeInt(idRecipe)
@@ -24,6 +29,7 @@ data class Recipe(
         parcel.writeInt(portion)
         parcel.writeInt(if (isBookmarked) 1 else 0)
         parcel.writeList(ingredients)
+        parcel.writeList(insctructions)
     }
 
     override fun describeContents(): Int {

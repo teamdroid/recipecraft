@@ -57,7 +57,7 @@ class RecipesPresenter @Inject constructor(private var repository: RecipeReposit
     override fun onAttach() {
 
     }
-    
+
     @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
     override fun onDestroy() {
         compositeDisposable.dispose()

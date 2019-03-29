@@ -9,8 +9,8 @@ import ru.teamdroid.recipecraft.data.api.Response
 import ru.teamdroid.recipecraft.data.base.RecipeMapper
 import ru.teamdroid.recipecraft.data.database.RecipesDao
 import ru.teamdroid.recipecraft.data.model.Ingredient
+import ru.teamdroid.recipecraft.data.model.Instruction
 import ru.teamdroid.recipecraft.data.model.Recipe
-import ru.teamdroid.recipecraft.data.model.RecipeEntity
 import ru.teamdroid.recipecraft.data.model.RecipeIngredients
 import javax.inject.Inject
 
@@ -18,12 +18,12 @@ class RecipeDataSourceImpl @Inject constructor(private val recipeDao: RecipesDao
 
     private val mapper: RecipeMapper = RecipeMapper() // TODO : INJECT IT
 
-    override fun addRecipe(recipes: Recipe) {
-        recipeDao.insertRecipe(RecipeEntity(idRecipe = recipes.idRecipe, title = recipes.title))
-    }
-
     override fun addRecipes(recipes: MutableList<Recipe>): Completable {
-        return recipeDao.insertRecipes(mapper.mapRecipe(recipes)).andThen(addIngredients(recipes)).andThen(addRecipeIngredients(recipes))
+
+        return recipeDao.insertRecipes(mapper.mapRecipe(recipes))
+                .andThen(addIngredients(recipes))
+                .andThen(addRecipeIngredients(recipes))
+                .andThen(addInstructions(recipes))
     }
 
     override fun addIngredients(recipes: MutableList<Recipe>): Completable {
@@ -48,6 +48,18 @@ class RecipeDataSourceImpl @Inject constructor(private val recipeDao: RecipesDao
         }
 
         return recipeDao.insertRecipeIngredients(mapper.mapRecipeIngredients(listRecipeIngredients))
+    }
+
+    override fun addInstructions(recipes: MutableList<Recipe>): Completable {
+        val listRecipeInstructions: MutableList<Instruction> = arrayListOf()
+
+        recipes.forEach { recipe ->
+            recipe.insctructions.forEach {
+                listRecipeInstructions.add(Instruction(idInstruction = it.idInstruction, idRecipe = recipe.idRecipe, title = it.title))
+            }
+        }
+
+        return recipeDao.insertRecipeInstructions(mapper.mapRecipeInstructions(listRecipeInstructions))
     }
 
     override fun loadLocalRecipe(): Flowable<MutableList<Recipe>> {
@@ -88,4 +100,7 @@ class RecipeDataSourceImpl @Inject constructor(private val recipeDao: RecipesDao
         return recipeService.sendReportMessage(reportMessage)
     }
 
+    override fun getInstructionsById(idRecipe: Int): Single<MutableList<Instruction>> {
+        return recipeDao.getInstructionsById(idRecipe).map { mapper.reverseInstructions(it) }
+    }
 }

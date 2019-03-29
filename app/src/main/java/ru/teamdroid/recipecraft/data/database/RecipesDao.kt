@@ -5,6 +5,7 @@ import io.reactivex.Completable
 import io.reactivex.Flowable
 import io.reactivex.Single
 import ru.teamdroid.recipecraft.data.model.IngredientEntity
+import ru.teamdroid.recipecraft.data.model.InstructionEntity
 import ru.teamdroid.recipecraft.data.model.RecipeEntity
 import ru.teamdroid.recipecraft.data.model.RecipeIngredientsEntity
 
@@ -32,6 +33,9 @@ interface RecipesDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertRecipeIngredients(listRecipeIngredients: MutableList<RecipeIngredientsEntity>): Completable
 
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertRecipeInstructions(listRecipeInstructions: MutableList<InstructionEntity>): Completable
+
     @Delete
     fun deleteRecipe(recipes: RecipeEntity)
 
@@ -42,4 +46,8 @@ interface RecipesDao {
             "LEFT JOIN recipe_ingredients ON recipe.idRecipe = recipe_ingredients.idRecipe " +
             "LEFT JOIN ingredient ON recipe_ingredients.idIngredient = ingredient.idIngredient WHERE recipe_ingredients.idRecipe = :idRecipe")
     fun getAllRecipeIngredientsById(idRecipe: Int): Single<MutableList<IngredientEntity>>
+
+    @Query("SELECT * FROM instruction WHERE idRecipe = :idRecipe")
+    fun getInstructionsById(idRecipe: Int): Single<MutableList<InstructionEntity>>
+
 }

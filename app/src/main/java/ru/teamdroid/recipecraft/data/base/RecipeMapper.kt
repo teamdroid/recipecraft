@@ -45,4 +45,25 @@ class RecipeMapper : Mapper<Recipe, RecipeEntity>() {
         }
         return recipesEntities
     }
+
+    fun mapRecipeInstructions(listRecipeInstructions: MutableList<Instruction>): MutableList<InstructionEntity> {
+        val recipeInstructionsEntity: MutableList<InstructionEntity> = arrayListOf()
+        for (instruction in listRecipeInstructions) {
+            val recipeIngredientEntity = InstructionEntity(instruction.idInstruction, instruction.idRecipe, instruction.title)
+            recipeInstructionsEntity.add(recipeIngredientEntity)
+        }
+
+        return recipeInstructionsEntity
+    }
+
+    fun reverseInstructions(listInstructionsEntity: MutableList<InstructionEntity>): MutableList<Instruction> {
+        val recipeInstructions: MutableList<Instruction> = arrayListOf()
+
+        for (instruction in listInstructionsEntity) {
+            val recipeIngredient = Instruction(instruction.idInstruction, instruction.idRecipe, instruction.title)
+            recipeInstructions.add(recipeIngredient)
+        }
+
+        return recipeInstructions
+    }
 }

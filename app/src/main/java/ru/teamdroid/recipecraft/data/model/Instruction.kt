@@ -1,16 +1,37 @@
 package ru.teamdroid.recipecraft.data.model
 
-import androidx.annotation.NonNull
-import androidx.room.ColumnInfo
-import androidx.room.Entity
-import androidx.room.PrimaryKey
+import android.os.Parcel
+import android.os.Parcelable
 
-@Entity(tableName = "instruction")
-data class Instruction(
-        @PrimaryKey @NonNull @ColumnInfo(name = "id")
-        val id: Int = 0,
-        @ColumnInfo(name = "title")
-        val title: String,
-        @ColumnInfo(name = "amount")
-        val amount: Int
-)
+class Instruction(
+        var idInstruction: Int = 0,
+        var idRecipe: Int = 0,
+        var title: String = ""
+) : Parcelable {
+
+    constructor(parcel: Parcel) : this(parcel.readInt(), parcel.readInt(), parcel.readString()
+            ?: "")
+
+    override fun writeToParcel(parcel: Parcel, flags: Int) {
+        parcel.writeInt(idInstruction)
+        parcel.writeInt(idRecipe)
+        parcel.writeString(title)
+    }
+
+    override fun describeContents(): Int {
+        return 0
+    }
+
+    companion object {
+        @JvmField
+        val CREATOR: Parcelable.Creator<Instruction> = object : Parcelable.Creator<Instruction> {
+            override fun createFromParcel(parcel: Parcel): Instruction {
+                return Instruction(parcel)
+            }
+
+            override fun newArray(size: Int): Array<Instruction?> {
+                return arrayOfNulls(size)
+            }
+        }
+    }
+}

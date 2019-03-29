@@ -34,4 +34,9 @@
     <string name="send_report_message_text">Идет отправка сообщения</string>
     <string name="please_wait_text">Пожалуйста, подождите</string>
     <string name="close_text">Закрыть</string>
+    <string name="ingredients_text">Ингредиенты</string>
+    <string name="information_detail_recipe_text">Время: %d мин. | Порций: %d \nИнгредиентов: %s | Инструкций: %s</string>
+
+    <string name="instructions_title_text">Инструкции</string>
+    <string name="instructions_text">%d) %s</string>
 </resources>
