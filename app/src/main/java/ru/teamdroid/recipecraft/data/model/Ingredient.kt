@@ -10,7 +10,8 @@ class Ingredient(
         var id: Int = 0
 ) : Parcelable {
 
-    constructor(parcel: Parcel) : this(parcel.readInt(), parcel.readString(), parcel.readInt(), parcel.readInt())
+    constructor(parcel: Parcel) : this(parcel.readInt(), parcel.readString()
+            ?: "", parcel.readInt(), parcel.readInt())
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeInt(idIngredient)
