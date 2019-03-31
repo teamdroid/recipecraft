@@ -57,6 +57,10 @@ dependencies {
     implementation "org.jetbrains.anko:anko:$anko_version"
     kapt "com.google.dagger:dagger-android-processor:$rootProject.dagger"
 
+    debugImplementation 'com.squareup.leakcanary:leakcanary-android:1.6.3'
+    releaseImplementation 'com.squareup.leakcanary:leakcanary-android-no-op:1.6.3'
+    debugImplementation 'com.squareup.leakcanary:leakcanary-support-fragment:1.6.3'
+
     kapt "com.google.dagger:dagger-compiler:$rootProject.dagger"
     testImplementation 'junit:junit:4.12'
     implementation 'androidx.annotation:annotation:1.0.0'

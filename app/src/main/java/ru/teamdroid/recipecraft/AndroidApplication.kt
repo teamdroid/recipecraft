@@ -2,6 +2,7 @@ package ru.teamdroid.recipecraft
 
 import android.app.Application
 import com.facebook.stetho.Stetho
+import com.squareup.leakcanary.LeakCanary
 import ru.teamdroid.recipecraft.data.DaggerRecipeRepositoryComponent
 import ru.teamdroid.recipecraft.data.RecipeRepositoryComponent
 
@@ -13,6 +14,7 @@ class AndroidApplication : Application() {
         super.onCreate()
         initializeDependencies()
         Stetho.initializeWithDefaults(this)
+        LeakCanary.install(this)
     }
 
     private fun initializeDependencies() {
