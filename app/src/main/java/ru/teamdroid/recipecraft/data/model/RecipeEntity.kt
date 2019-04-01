@@ -14,6 +14,8 @@ data class RecipeEntity(
         var time: Long = 0,
         @ColumnInfo(name = "portion")
         var portion: Int = 0,
+        @ColumnInfo(name = "type")
+        var type: String = "",
         @ColumnInfo(name = "isBookmarked")
         var isBookmarked: Boolean = false
 )

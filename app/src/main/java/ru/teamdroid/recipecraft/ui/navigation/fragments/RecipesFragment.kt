@@ -5,6 +5,10 @@ import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
+import android.widget.Adapter
+import android.widget.AdapterView
+import android.widget.AdapterView.OnItemSelectedListener
+import android.widget.ArrayAdapter
 import androidx.lifecycle.LifecycleRegistry
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -19,6 +23,7 @@ import ru.teamdroid.recipecraft.ui.navigation.components.DaggerRecipesComponent
 import ru.teamdroid.recipecraft.ui.navigation.modules.RecipesPresenterModule
 import ru.teamdroid.recipecraft.ui.navigation.presenters.RecipesPresenter
 import javax.inject.Inject
+
 
 class RecipesFragment : BaseFragment(), RecipesContract.View {
 
@@ -42,6 +47,8 @@ class RecipesFragment : BaseFragment(), RecipesContract.View {
         )
     }
 
+    private lateinit var sortAdapter: Adapter
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         initializePresenter()
@@ -57,7 +64,7 @@ class RecipesFragment : BaseFragment(), RecipesContract.View {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setupToolbar(toolbar, false, getString(R.string.fragment_recipes_title))
+        setupToolbar(toolbar, false, "")
 
         with(recyclerView) {
             adapter = recipesAdapter
@@ -65,6 +72,32 @@ class RecipesFragment : BaseFragment(), RecipesContract.View {
         }
 
         if (recipesAdapter.recipes.isEmpty()) refresh(false)
+
+
+        sortAdapter = ArrayAdapter.createFromResource(
+                context,
+                R.array.sort_recipes,
+                R.layout.simple_spinner_item
+        ).also { adapter ->
+            adapter.setDropDownViewResource(R.layout.simple_spinner_dropdown_item)
+            spinner_nav.adapter = adapter
+        }
+
+        spinner_nav.onItemSelectedListener = object : OnItemSelectedListener {
+            override fun onItemSelected(adapter: AdapterView<*>, v: View?, i: Int, lng: Long) {
+                with(recipesAdapter) {
+                    when (i) {
+                        0 -> sortByAll()
+                        1 -> sortByPortion()
+                        2 -> sortByIngredients()
+                        3 -> sortByTime()
+                    }
+                    notifyDataSetChanged()
+                }
+            }
+
+            override fun onNothingSelected(parentView: AdapterView<*>) {}
+        }
 
         swipeRefreshLayout.setOnRefreshListener {
             refresh(isOnline())

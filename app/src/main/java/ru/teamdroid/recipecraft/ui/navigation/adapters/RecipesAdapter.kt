@@ -39,7 +39,7 @@ class RecipesAdapter(
                     currentRecipe.portion.toString(),
                     currentRecipe.time.toString()
             )
-
+            categoryTextView.text = recipes[position].type
             with(favoritesButton) {
                 text = if (!recipes[position].isBookmarked) context.getString(R.string.save) else context.getString(R.string.Delete)
                 setOnClickListener {
@@ -47,6 +47,22 @@ class RecipesAdapter(
                 }
             }
         }
+    }
+
+    fun sortByTime() {
+        recipes.sortBy { it.time }
+    }
+
+    fun sortByPortion() {
+        recipes.sortByDescending { it.portion }
+    }
+
+    fun sortByIngredients() {
+        recipes.sortBy { it.ingredients.size }
+    }
+
+    fun sortByAll() {
+        recipes.sortBy { it.idRecipe }
     }
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view)

@@ -39,4 +39,12 @@
 
     <string name="instructions_title_text">Инструкции</string>
     <string name="instructions_text">%d) %s</string>
+
+    <string-array name="sort_recipes">
+        <item>Рецепты (Все)</item>
+        <item>Рецепты (По порциям)</item>
+        <item>Рецепты (По ингредиентам)</item>
+        <item>Рецепты (По времени)</item>
+    </string-array>
+
 </resources>

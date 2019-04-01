@@ -9,6 +9,7 @@ data class Recipe(
         var title: String = "",
         var time: Long = 0,
         var portion: Int = 0,
+        var type: String = "",
         var isBookmarked: Boolean = false,
         @SerializedName("ingredients")
         var ingredients: MutableList<Ingredient> = arrayListOf(),
@@ -17,7 +18,8 @@ data class Recipe(
 ) : Parcelable {
 
     constructor(parcel: Parcel) : this(parcel.readInt(), parcel.readString()
-            ?: "", parcel.readLong(), parcel.readInt(), parcel.readInt() == 0,
+            ?: "", parcel.readLong(), parcel.readInt(), parcel.readString()
+            ?: "", parcel.readInt() == 0,
             mutableListOf<Ingredient>().apply { parcel.readArrayList(Ingredient::class.java.classLoader) },
             mutableListOf<Instruction>().apply { parcel.readArrayList(Instruction::class.java.classLoader) }
     )
@@ -27,6 +29,7 @@ data class Recipe(
         parcel.writeString(title)
         parcel.writeLong(time)
         parcel.writeInt(portion)
+        parcel.writeString(type)
         parcel.writeInt(if (isBookmarked) 1 else 0)
         parcel.writeList(ingredients)
         parcel.writeList(insctructions)
