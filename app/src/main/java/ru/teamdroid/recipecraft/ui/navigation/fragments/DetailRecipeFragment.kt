@@ -4,13 +4,13 @@ import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
 import androidx.lifecycle.LifecycleRegistry
-import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_detail_recipe.*
 import org.jetbrains.anko.bundleOf
 import ru.teamdroid.recipecraft.R
 import ru.teamdroid.recipecraft.data.model.Instruction
 import ru.teamdroid.recipecraft.data.model.Recipe
 import ru.teamdroid.recipecraft.ui.base.BaseFragment
+import ru.teamdroid.recipecraft.ui.base.CustomGridLayoutManager
 import ru.teamdroid.recipecraft.ui.navigation.DetailRecipeContract
 import ru.teamdroid.recipecraft.ui.navigation.adapters.IngredientsAdapter
 import ru.teamdroid.recipecraft.ui.navigation.adapters.InstructionAdapter
@@ -71,12 +71,12 @@ class DetailRecipeFragment : BaseFragment(), DetailRecipeContract.View {
 
         with(recyclerView) {
             adapter = ingredientsAdapter
-            layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+            layoutManager = CustomGridLayoutManager(context)
         }
 
         with(recyclerViewInstruction) {
             adapter = instructionsAdapter
-            layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+            layoutManager = CustomGridLayoutManager(context)
         }
 
         ingredientsAdapter.items = recipe?.ingredients ?: arrayListOf()

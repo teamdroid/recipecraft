@@ -59,10 +59,15 @@ class FavoritesFragment : BaseFragment(), FavoritesContract.View {
 
         with(recyclerView) {
             adapter = bookmarkRecipesAdapter
-            layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+            layoutManager = LinearLayoutManager(context)
         }
 
-        if (bookmarkRecipesAdapter.recipes.isEmpty()) refresh()
+        if (bookmarkRecipesAdapter.recipes.isEmpty()) {
+            refresh()
+        } else {
+            recyclerView.visibility = View.VISIBLE
+            placeholderTextView.visibility = View.GONE
+        }
 
         swipeRefreshLayout.setOnRefreshListener {
             refresh()
@@ -102,7 +107,16 @@ class FavoritesFragment : BaseFragment(), FavoritesContract.View {
 
     override fun showRecipes(recipes: MutableList<Recipe>) {
         bookmarkRecipesAdapter.recipes = recipes
-        if (this.isResumed) setInvisibleRefreshing()
+        if (isResumed) {
+            setInvisibleRefreshing()
+            if (!recipes.isEmpty()) {
+                placeholderTextView.visibility = View.GONE
+                recyclerView.visibility = View.VISIBLE
+            } else {
+                placeholderTextView.visibility = View.VISIBLE
+                recyclerView.visibility = View.GONE
+            }
+        }
     }
 
     private fun setInvisibleRefreshing() {

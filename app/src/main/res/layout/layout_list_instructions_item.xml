@@ -17,7 +17,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/text_size_medium"
             android:layout_marginTop="@dimen/size_xlarge"
-            android:textSize="@dimen/text_size_medium"
+            android:textSize="@dimen/text_size_small"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"

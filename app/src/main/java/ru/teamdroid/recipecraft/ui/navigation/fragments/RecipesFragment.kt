@@ -11,7 +11,6 @@ import android.widget.AdapterView.OnItemSelectedListener
 import android.widget.ArrayAdapter
 import androidx.lifecycle.LifecycleRegistry
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_recipes.*
 import ru.teamdroid.recipecraft.R
@@ -68,7 +67,7 @@ class RecipesFragment : BaseFragment(), RecipesContract.View {
 
         with(recyclerView) {
             adapter = recipesAdapter
-            layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
+            layoutManager = LinearLayoutManager(context)
         }
 
         if (recipesAdapter.recipes.isEmpty()) refresh(false)
