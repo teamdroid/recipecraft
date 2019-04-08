@@ -72,7 +72,6 @@ class RecipesFragment : BaseFragment(), RecipesContract.View {
 
         if (recipesAdapter.recipes.isEmpty()) refresh(false)
 
-
         sortAdapter = ArrayAdapter.createFromResource(
                 context,
                 R.array.sort_recipes,
