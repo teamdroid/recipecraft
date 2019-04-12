@@ -29,6 +29,10 @@ class RecipeRepository @Inject constructor(private val recipeDataSource: Recipes
         }
     }
 
+    fun findRecipeByIngredients(listIngredients: List<String>, count: Int): Single<MutableList<Recipe>> {
+        return recipeDataSource.findRecipeByIngredients(listIngredients, count)
+    }
+
     fun bookmark(recipe: Recipe): Completable = recipeDataSource.bookmark(recipe)
 
     fun sendReportMessage(reportMessage: ReportMessage): Single<Response> {
@@ -39,4 +43,7 @@ class RecipeRepository @Inject constructor(private val recipeDataSource: Recipes
         return recipeDataSource.getInstructionsById(idRecipe)
     }
 
+    fun loadIngredientsTitle(): Single<List<String>> {
+        return recipeDataSource.loadIngredientsTitle()
+    }
 }

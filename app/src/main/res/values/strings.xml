@@ -30,7 +30,7 @@
     <string name="Delete">Удалить</string>
     <string name="error_remote_load">Не удалось обновить данные из сервера</string>
     <string name="bookmarked">Добавлено в избранное</string>
-    <string name="unbookmarked">Удалено из избранного</string>
+    <string name="unbookmark_text">Удалено из избранного</string>
     <string name="send_report_message_text">Идет отправка сообщения</string>
     <string name="please_wait_text">Пожалуйста, подождите</string>
     <string name="close_text">Закрыть</string>
@@ -39,6 +39,11 @@
 
     <string name="instructions_title_text">Инструкции</string>
     <string name="instructions_text">%d) %s</string>
+    <string name="select_ingredients_text_btn">Выбрать ингредиенты</string>
+    <string name="selected_ingredients_text">Выбранные ингредиенты:</string>
+    <string name="relevant_recipes_text">Подходящие рецепты</string>
+    <string name="cancel">Отменить</string>
+    <string name="list_ingredients_text">Список ингредиентов</string>
 
     <string-array name="sort_recipes">
         <item>Рецепты (Все)</item>

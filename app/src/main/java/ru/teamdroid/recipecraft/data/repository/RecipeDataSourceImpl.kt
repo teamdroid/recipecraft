@@ -19,7 +19,6 @@ class RecipeDataSourceImpl @Inject constructor(private val recipeDao: RecipesDao
     private val mapper: RecipeMapper = RecipeMapper() // TODO : INJECT IT
 
     override fun addRecipes(recipes: MutableList<Recipe>): Completable {
-
         return recipeDao.insertRecipes(mapper.mapRecipe(recipes))
                 .andThen(addIngredients(recipes))
                 .andThen(addRecipeIngredients(recipes))
@@ -90,6 +89,18 @@ class RecipeDataSourceImpl @Inject constructor(private val recipeDao: RecipesDao
         return Completable.fromAction {
             recipeDao.bookmark(mapper.map(recipe))
         }
+    }
+
+    override fun findRecipeByIngredients(listIngredients: List<String>, count: Int): Single<MutableList<Recipe>> {
+        return recipeDao.findRecipeByIngredients(listIngredients, count).flatMap {
+            recipeDao.getRecipesByIds(it).map { list ->
+                mapper.reverseMap(list).toMutableList()
+            }
+        }
+    }
+
+    override fun loadIngredientsTitle(): Single<List<String>> {
+        return recipeDao.loadIngredientsTitle()
     }
 
     override fun loadRemoteRecipe(): Flowable<MutableList<Recipe>> {

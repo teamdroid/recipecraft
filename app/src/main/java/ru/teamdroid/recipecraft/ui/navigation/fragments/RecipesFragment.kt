@@ -136,7 +136,7 @@ class RecipesFragment : BaseFragment(), RecipesContract.View {
     }
 
     override fun showBookmarked(isBookmarked: Boolean) {
-        val snackBar = Snackbar.make(constraintLayout, if (isBookmarked) getString(R.string.bookmarked) else getString(R.string.unbookmarked), 500)
+        val snackBar = Snackbar.make(constraintLayout, if (isBookmarked) getString(R.string.bookmarked) else getString(R.string.unbookmark_text), 500)
         snackBar.setAction(getString(R.string.close_text)) { snackBar.dismiss() }.setActionTextColor(resources.getColor(R.color.textWhite)).show()
     }
 

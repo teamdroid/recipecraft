@@ -19,4 +19,6 @@ interface RecipesDataSource {
     fun bookmark(recipe: Recipe): Completable
     fun sendReportMessage(reportMessage: ReportMessage): Single<Response>
     fun getInstructionsById(idRecipe: Int): Single<MutableList<Instruction>>
+    fun loadIngredientsTitle(): Single<List<String>>
+    fun findRecipeByIngredients(listIngredients: List<String>, count: Int): Single<MutableList<Recipe>>
 }

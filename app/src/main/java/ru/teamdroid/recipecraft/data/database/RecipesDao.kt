@@ -15,6 +15,9 @@ interface RecipesDao {
     @Query("SELECT * FROM recipe")
     fun getAllRecipes(): Flowable<MutableList<RecipeEntity>>
 
+    @Query("SELECT * FROM recipe WHERE idRecipe IN (:listRecipesIds)")
+    fun getRecipesByIds(listRecipesIds: List<Int>): Single<MutableList<RecipeEntity>>
+
     @Query("SELECT * FROM recipe WHERE isBookmarked = 1")
     fun getAllBookmarkedRecipes(): Flowable<MutableList<RecipeEntity>>
 
@@ -39,8 +42,20 @@ interface RecipesDao {
     @Delete
     fun deleteRecipe(recipes: RecipeEntity)
 
+    @Query("SELECT recipe.idRecipe FROM (" +
+            "  SELECT recipe.idRecipe FROM recipe" +
+            "    JOIN recipe_ingredients ON recipe.idRecipe = recipe_ingredients.idRecipe" +
+            "    JOIN ingredient ON ingredient.idIngredient = recipe_ingredients.idIngredient" +
+            "    GROUP BY recipe.idRecipe" +
+            "    HAVING sum(CASE WHEN ingredient.title in (:listIngredients) THEN 1 ELSE 0 END) = :count" +
+            ") t JOIN recipe ON recipe.idRecipe = t.idRecipe")
+    fun findRecipeByIngredients(listIngredients: List<String>, count: Int): Single<List<Int>>
+
     @Update
     fun updateRecipe(recipes: RecipeEntity)
+
+    @Query("SELECT title FROM ingredient")
+    fun loadIngredientsTitle(): Single<List<String>>
 
     @Query("SELECT recipe.idRecipe, recipe_ingredients.idIngredient,  ingredient.title FROM recipe " +
             "LEFT JOIN recipe_ingredients ON recipe.idRecipe = recipe_ingredients.idRecipe " +
