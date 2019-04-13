@@ -54,7 +54,6 @@ class CraftFragment : BaseFragment(), CraftRecipeContract.View {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         initializePresenter()
-        presenter.loadIngredientsTitle()
     }
 
     private fun initializePresenter() {
@@ -69,6 +68,8 @@ class CraftFragment : BaseFragment(), CraftRecipeContract.View {
         super.onViewCreated(view, savedInstanceState)
         setupToolbar(toolbar, false, getString(R.string.fragment_craft_title))
 
+        presenter.loadIngredientsTitle()
+
         with(ingredientsRecyclerView) {
             adapter = ingredientsAdapter
             layoutManager = CustomGridLayoutManager(context)
@@ -81,10 +82,8 @@ class CraftFragment : BaseFragment(), CraftRecipeContract.View {
 
         button.setOnClickListener {
             selectIngredientsDialog = SelectIngredientsDialog.newInstance(listIngredientsTitle)
-            selectIngredientsDialog?.let {
-                it.setTargetFragment(this, SelectIngredientsDialog.REQUEST_CODE)
-                it.show(parentFragment?.childFragmentManager, TAG)
-            }
+            selectIngredientsDialog?.setTargetFragment(this, SelectIngredientsDialog.REQUEST_CODE)
+            selectIngredientsDialog?.show(parentFragment?.childFragmentManager, TAG)
         }
 
     }
@@ -95,6 +94,7 @@ class CraftFragment : BaseFragment(), CraftRecipeContract.View {
                     ?: arrayListOf()
             ingredientsAdapter.items = list
             presenter.findRecipeByIngredients(list, list.size)
+            selectIngredientsDialog?.dismiss()
         }
     }
 
@@ -135,8 +135,8 @@ class CraftFragment : BaseFragment(), CraftRecipeContract.View {
         snackBar.setAction(getString(R.string.close_text)) { snackBar.dismiss() }.setActionTextColor(resources.getColor(R.color.textWhite)).show()
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
+    override fun onPause() {
+        super.onPause()
         selectIngredientsDialog?.dismiss()
     }
 

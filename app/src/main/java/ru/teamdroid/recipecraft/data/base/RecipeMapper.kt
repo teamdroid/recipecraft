@@ -7,12 +7,16 @@ class RecipeMapper : Mapper<Recipe, RecipeEntity>() {
     override fun map(value: Recipe): RecipeEntity = RecipeEntity(value.idRecipe, value.title, value.time, value.portion, value.type, value.isBookmarked)
     override fun reverseMap(value: RecipeEntity) = Recipe(value.idRecipe, value.title, value.time, value.portion)
 
-    fun mapDetailRecipe(value: RecipeEntity, ingredientEntities: List<IngredientEntity>): Recipe {
+    fun mapDetailRecipe(value: RecipeEntity, ingredientEntities: List<IngredientEntity>, listRecipeInstructions: MutableList<InstructionEntity>): Recipe {
 
         val recipe = Recipe(value.idRecipe, value.title, value.time, value.portion, value.type, value.isBookmarked)
 
         ingredientEntities.forEach { ingredientEntity ->
             recipe.ingredients.add(Ingredient(ingredientEntity.idIngredient, ingredientEntity.title))
+        }
+
+        listRecipeInstructions.forEach { instruction ->
+            recipe.insctructions.add(Instruction(instruction.idInstruction, instruction.idRecipe, instruction.title))
         }
 
         return recipe

@@ -7,7 +7,6 @@ import androidx.lifecycle.LifecycleRegistry
 import kotlinx.android.synthetic.main.fragment_detail_recipe.*
 import org.jetbrains.anko.bundleOf
 import ru.teamdroid.recipecraft.R
-import ru.teamdroid.recipecraft.data.model.Instruction
 import ru.teamdroid.recipecraft.data.model.Recipe
 import ru.teamdroid.recipecraft.ui.base.BaseFragment
 import ru.teamdroid.recipecraft.ui.base.CustomGridLayoutManager
@@ -51,10 +50,6 @@ class DetailRecipeFragment : BaseFragment(), DetailRecipeContract.View {
         }
 
         initializePresenter()
-
-        recipe?.let {
-            presenter.getInstructionsById(it.idRecipe)
-        }
     }
 
     private fun initializePresenter() {
@@ -80,13 +75,7 @@ class DetailRecipeFragment : BaseFragment(), DetailRecipeContract.View {
         }
 
         ingredientsAdapter.items = recipe?.ingredients ?: arrayListOf()
-    }
-
-
-    override fun updateInstructions(listInstruction: MutableList<Instruction>) {
-        instructionsAdapter.items = listInstruction
-
-        recipe?.insctructions = listInstruction
+        instructionsAdapter.items = recipe?.insctructions ?: arrayListOf()
 
         information_text.text = resources.getString(
                 R.string.information_detail_recipe_text,
@@ -96,7 +85,6 @@ class DetailRecipeFragment : BaseFragment(), DetailRecipeContract.View {
                 recipe?.insctructions?.size.toString()
         )
     }
-
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {

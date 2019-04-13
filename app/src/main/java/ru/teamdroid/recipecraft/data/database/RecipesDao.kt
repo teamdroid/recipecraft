@@ -16,7 +16,7 @@ interface RecipesDao {
     fun getAllRecipes(): Flowable<MutableList<RecipeEntity>>
 
     @Query("SELECT * FROM recipe WHERE idRecipe IN (:listRecipesIds)")
-    fun getRecipesByIds(listRecipesIds: List<Int>): Single<MutableList<RecipeEntity>>
+    fun getRecipesByIds(listRecipesIds: List<Int>): Flowable<MutableList<RecipeEntity>>
 
     @Query("SELECT * FROM recipe WHERE isBookmarked = 1")
     fun getAllBookmarkedRecipes(): Flowable<MutableList<RecipeEntity>>

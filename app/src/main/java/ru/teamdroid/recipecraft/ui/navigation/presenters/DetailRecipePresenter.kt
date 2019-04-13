@@ -25,13 +25,6 @@ class DetailRecipePresenter @Inject constructor(private var repository: RecipeRe
         compositeDisposable = CompositeDisposable()
     }
 
-    override fun getInstructionsById(idRecipe: Int) {
-        compositeDisposable.add(repository.getInstructionsById(idRecipe)
-                .subscribeOn(ioScheduler)
-                .observeOn(uiScheduler)
-                .subscribe({ view.updateInstructions(it) }, { }))
-
-    }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
     override fun onAttach() {

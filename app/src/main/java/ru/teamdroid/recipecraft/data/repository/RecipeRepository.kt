@@ -29,7 +29,7 @@ class RecipeRepository @Inject constructor(private val recipeDataSource: Recipes
         }
     }
 
-    fun findRecipeByIngredients(listIngredients: List<String>, count: Int): Single<MutableList<Recipe>> {
+    fun findRecipeByIngredients(listIngredients: List<String>, count: Int): Flowable<MutableList<Recipe>> {
         return recipeDataSource.findRecipeByIngredients(listIngredients, count)
     }
 

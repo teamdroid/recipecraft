@@ -20,5 +20,5 @@ interface RecipesDataSource {
     fun sendReportMessage(reportMessage: ReportMessage): Single<Response>
     fun getInstructionsById(idRecipe: Int): Single<MutableList<Instruction>>
     fun loadIngredientsTitle(): Single<List<String>>
-    fun findRecipeByIngredients(listIngredients: List<String>, count: Int): Single<MutableList<Recipe>>
+    fun findRecipeByIngredients(listIngredients: List<String>, count: Int): Flowable<MutableList<Recipe>>
 }
