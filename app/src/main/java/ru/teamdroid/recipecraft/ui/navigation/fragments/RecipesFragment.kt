@@ -23,7 +23,6 @@ import ru.teamdroid.recipecraft.ui.navigation.modules.RecipesPresenterModule
 import ru.teamdroid.recipecraft.ui.navigation.presenters.RecipesPresenter
 import javax.inject.Inject
 
-
 class RecipesFragment : BaseFragment(), RecipesContract.View {
 
     @Inject
@@ -148,6 +147,12 @@ class RecipesFragment : BaseFragment(), RecipesContract.View {
             }
             else -> super.onOptionsItemSelected(item)
         }
+    }
+
+    override fun onDestroyView() {
+        recyclerView.adapter = null
+        spinner_nav.adapter = null
+        super.onDestroyView()
     }
 
     companion object {

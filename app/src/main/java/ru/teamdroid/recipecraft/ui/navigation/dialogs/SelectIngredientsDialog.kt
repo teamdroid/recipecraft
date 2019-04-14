@@ -2,12 +2,12 @@ package ru.teamdroid.recipecraft.ui.navigation.dialogs
 
 import android.app.AlertDialog
 import android.app.Dialog
-import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.DialogFragment
 import org.jetbrains.anko.bundleOf
 
 import ru.teamdroid.recipecraft.R
+import ru.teamdroid.recipecraft.ui.navigation.OnSubmitClickListener
 
 class SelectIngredientsDialog : DialogFragment() {
 
@@ -21,10 +21,8 @@ class SelectIngredientsDialog : DialogFragment() {
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        return activity.let {
             val selectedItems = ArrayList<String>()
-            val builder = AlertDialog.Builder(it)
-
+        val builder = AlertDialog.Builder(targetFragment?.context) // fix
             builder.setTitle(getString(R.string.list_ingredients_text))
                     .setMultiChoiceItems(listIngredients.toTypedArray(), null) { _, which, isChecked ->
                         if (isChecked) {
@@ -33,20 +31,18 @@ class SelectIngredientsDialog : DialogFragment() {
                             selectedItems.remove(listIngredients[which])
                         }
                     }
-                    .setPositiveButton(R.string.ok) { _, _ ->
-                        val intent = Intent().putExtra(LIST_INGREDIENTS, selectedItems)
-                        targetFragment?.onActivityResult(targetRequestCode, REQUEST_CODE, intent)
+                    .setPositiveButton(R.string.ok) { dialog, _ ->
+                        (targetFragment as OnSubmitClickListener).onSubmitClicked(selectedItems)
+                        dialog.dismiss()
                     }
-                    .setNegativeButton(getString(R.string.cancel)) { _, _ ->
-
+                    .setNegativeButton(getString(R.string.cancel)) { dialog, _ ->
+                        dialog.dismiss()
                     }
-            builder.create()
-        } ?: throw IllegalStateException("Activity cannot be null")
+        return builder.create()
     }
 
     companion object {
         const val LIST_INGREDIENTS = "listIngredients"
-        const val REQUEST_CODE = 134
         fun newInstance(listIngredients: ArrayList<String>) = SelectIngredientsDialog().apply {
             arguments = bundleOf(LIST_INGREDIENTS to listIngredients)
         }

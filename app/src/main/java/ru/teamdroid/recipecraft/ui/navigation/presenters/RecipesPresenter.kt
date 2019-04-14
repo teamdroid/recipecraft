@@ -45,7 +45,7 @@ class RecipesPresenter @Inject constructor(private var repository: RecipeReposit
     }
 
     private fun handleReturnedData(list: MutableList<Recipe>, onlineRequired: Boolean) {
-        if (!list.isEmpty() || onlineRequired) view.showRecipes(list) else loadRecipes(true)
+        if (list.isNotEmpty() || onlineRequired) view.showRecipes(list) else loadRecipes(true)
     }
 
     private fun handleError(error: Throwable) {
@@ -62,4 +62,5 @@ class RecipesPresenter @Inject constructor(private var repository: RecipeReposit
     override fun onDestroy() {
         compositeDisposable.dispose()
     }
+
 }

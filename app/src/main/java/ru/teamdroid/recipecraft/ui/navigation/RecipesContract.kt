@@ -9,7 +9,7 @@ interface RecipesContract {
         fun showBookmarked(isBookmarked: Boolean)
     }
 
-    interface Presenter : BasePresenter<RecipesContract.View> {
+    interface Presenter : BasePresenter<View> {
         fun loadRecipes(onlineRequired: Boolean)
     }
 }

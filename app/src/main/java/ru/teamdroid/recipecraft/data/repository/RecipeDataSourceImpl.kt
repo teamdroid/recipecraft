@@ -59,7 +59,6 @@ class RecipeDataSourceImpl @Inject constructor(private val recipeDao: RecipesDao
         return recipeDao.insertRecipeInstructions(mapper.mapRecipeInstructions(listRecipeInstructions))
     }
 
-
     override fun loadLocalRecipe(): Flowable<MutableList<Recipe>> {
         return recipeDao.getAllRecipes()
                 .flatMap {

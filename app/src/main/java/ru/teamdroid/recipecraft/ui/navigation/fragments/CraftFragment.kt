@@ -1,6 +1,5 @@
 package ru.teamdroid.recipecraft.ui.navigation.fragments
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
@@ -13,8 +12,10 @@ import kotlinx.android.synthetic.main.fragment_craft.*
 import ru.teamdroid.recipecraft.R
 import ru.teamdroid.recipecraft.data.model.Recipe
 import ru.teamdroid.recipecraft.ui.base.BaseFragment
+import ru.teamdroid.recipecraft.ui.base.Constants
 import ru.teamdroid.recipecraft.ui.base.CustomGridLayoutManager
 import ru.teamdroid.recipecraft.ui.navigation.CraftRecipeContract
+import ru.teamdroid.recipecraft.ui.navigation.OnSubmitClickListener
 import ru.teamdroid.recipecraft.ui.navigation.adapters.RecipesAdapter
 import ru.teamdroid.recipecraft.ui.navigation.adapters.SimpleListAdapter
 import ru.teamdroid.recipecraft.ui.navigation.components.DaggerCraftComponent
@@ -23,7 +24,7 @@ import ru.teamdroid.recipecraft.ui.navigation.modules.CraftPresenterModule
 import ru.teamdroid.recipecraft.ui.navigation.presenters.CraftPresenter
 import javax.inject.Inject
 
-class CraftFragment : BaseFragment(), CraftRecipeContract.View {
+class CraftFragment : BaseFragment(), CraftRecipeContract.View, OnSubmitClickListener {
 
     @Inject
     internal lateinit var presenter: CraftPresenter
@@ -31,8 +32,6 @@ class CraftFragment : BaseFragment(), CraftRecipeContract.View {
     override val contentResId = R.layout.fragment_craft
 
     private val lifecycleRegistry = LifecycleRegistry(this)
-
-    private var selectIngredientsDialog: SelectIngredientsDialog? = null
 
     private val ingredientsAdapter = SimpleListAdapter()
 
@@ -54,6 +53,7 @@ class CraftFragment : BaseFragment(), CraftRecipeContract.View {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         initializePresenter()
+        presenter.loadIngredientsTitle()
     }
 
     private fun initializePresenter() {
@@ -68,8 +68,6 @@ class CraftFragment : BaseFragment(), CraftRecipeContract.View {
         super.onViewCreated(view, savedInstanceState)
         setupToolbar(toolbar, false, getString(R.string.fragment_craft_title))
 
-        presenter.loadIngredientsTitle()
-
         with(ingredientsRecyclerView) {
             adapter = ingredientsAdapter
             layoutManager = CustomGridLayoutManager(context)
@@ -81,20 +79,9 @@ class CraftFragment : BaseFragment(), CraftRecipeContract.View {
         }
 
         button.setOnClickListener {
-            selectIngredientsDialog = SelectIngredientsDialog.newInstance(listIngredientsTitle)
-            selectIngredientsDialog?.setTargetFragment(this, SelectIngredientsDialog.REQUEST_CODE)
-            selectIngredientsDialog?.show(parentFragment?.childFragmentManager, TAG)
-        }
-
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
-        if (requestCode == SelectIngredientsDialog.REQUEST_CODE) {
-            val list = data.extras?.getStringArrayList(SelectIngredientsDialog.LIST_INGREDIENTS)?.toMutableList()
-                    ?: arrayListOf()
-            ingredientsAdapter.items = list
-            presenter.findRecipeByIngredients(list, list.size)
-            selectIngredientsDialog?.dismiss()
+            val selectIngredientsDialog = SelectIngredientsDialog.newInstance(listIngredientsTitle)
+            selectIngredientsDialog.setTargetFragment(this, Constants.REQUEST_CODE)
+            selectIngredientsDialog.show(requireFragmentManager(), TAG)
         }
     }
 
@@ -135,9 +122,16 @@ class CraftFragment : BaseFragment(), CraftRecipeContract.View {
         snackBar.setAction(getString(R.string.close_text)) { snackBar.dismiss() }.setActionTextColor(resources.getColor(R.color.textWhite)).show()
     }
 
-    override fun onPause() {
-        super.onPause()
-        selectIngredientsDialog?.dismiss()
+    override fun onSubmitClicked(list: ArrayList<String>) {
+        ingredientsAdapter.items = list
+        presenter.findRecipeByIngredients(list, list.size)
+    }
+
+    override fun onDestroyView() {
+        button.setOnClickListener(null)
+        ingredientsRecyclerView.adapter = null
+        recipesRecyclerView.adapter = null
+        super.onDestroyView()
     }
 
     companion object {

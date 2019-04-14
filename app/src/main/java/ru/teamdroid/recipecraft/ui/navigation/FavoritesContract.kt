@@ -8,7 +8,7 @@ interface FavoritesContract {
         fun showRecipes(recipes: MutableList<Recipe>)
     }
 
-    interface Presenter : BasePresenter<FavoritesContract.View> {
+    interface Presenter : BasePresenter<View> {
         fun loadRecipes()
     }
 }

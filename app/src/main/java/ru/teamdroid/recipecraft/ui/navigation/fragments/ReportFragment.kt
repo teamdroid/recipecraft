@@ -64,12 +64,14 @@ class ReportFragment : BaseFragment(), ReportContract.View {
         progressBar.visibility = View.GONE
         Toast.makeText(context, R.string.thanks_feedback, Toast.LENGTH_SHORT).show()
         reportDialog?.dismiss()
+        reportDialog = null
     }
 
     override fun onFailure() {
         progressBar.visibility = View.GONE
         Toast.makeText(context, R.string.error_feedback, Toast.LENGTH_SHORT).show()
         reportDialog?.dismiss()
+        reportDialog = null
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -82,9 +84,10 @@ class ReportFragment : BaseFragment(), ReportContract.View {
         }
     }
 
-    override fun onDetach() {
-        super.onDetach()
+    override fun onDestroyView() {
+        super.onDestroyView()
         reportDialog?.dismiss()
+        reportDialog = null
     }
 
     companion object {

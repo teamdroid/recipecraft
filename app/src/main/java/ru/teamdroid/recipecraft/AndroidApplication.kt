@@ -8,7 +8,7 @@ import ru.teamdroid.recipecraft.data.RecipeRepositoryComponent
 
 class AndroidApplication : Application() {
 
-    private lateinit var repositoryComponent: RecipeRepositoryComponent
+    private lateinit var recipeRepositoryComponent: RecipeRepositoryComponent
 
     override fun onCreate() {
         super.onCreate()
@@ -18,13 +18,13 @@ class AndroidApplication : Application() {
     }
 
     private fun initializeDependencies() {
-        repositoryComponent = DaggerRecipeRepositoryComponent.builder()
+        recipeRepositoryComponent = DaggerRecipeRepositoryComponent.builder()
                 .appModule(AppModule(this))
                 .build()
     }
 
     fun getRecipeRepositoryComponent(): RecipeRepositoryComponent {
-        return repositoryComponent
+        return recipeRepositoryComponent
     }
 
 }

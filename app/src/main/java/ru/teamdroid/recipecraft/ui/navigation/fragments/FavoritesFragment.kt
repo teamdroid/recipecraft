@@ -109,7 +109,7 @@ class FavoritesFragment : BaseFragment(), FavoritesContract.View {
         bookmarkRecipesAdapter.recipes = recipes
         if (isResumed) {
             setInvisibleRefreshing()
-            if (!recipes.isEmpty()) {
+            if (recipes.isNotEmpty()) {
                 placeholderTextView.visibility = View.GONE
                 recyclerView.visibility = View.VISIBLE
             } else {
@@ -117,6 +117,11 @@ class FavoritesFragment : BaseFragment(), FavoritesContract.View {
                 recyclerView.visibility = View.GONE
             }
         }
+    }
+
+    override fun onDestroyView() {
+        recyclerView.adapter = null
+        super.onDestroyView()
     }
 
     private fun setInvisibleRefreshing() {
