@@ -9,11 +9,11 @@ import org.jetbrains.anko.bundleOf
 import ru.teamdroid.recipecraft.R
 import ru.teamdroid.recipecraft.data.model.Recipe
 import ru.teamdroid.recipecraft.ui.base.BaseFragment
-import ru.teamdroid.recipecraft.ui.base.CustomGridLayoutManager
-import ru.teamdroid.recipecraft.ui.navigation.DetailRecipeContract
+import ru.teamdroid.recipecraft.ui.base.customs.CustomGridLayoutManager
 import ru.teamdroid.recipecraft.ui.navigation.adapters.IngredientsAdapter
 import ru.teamdroid.recipecraft.ui.navigation.adapters.InstructionAdapter
 import ru.teamdroid.recipecraft.ui.navigation.components.DaggerDetailRecipeComponent
+import ru.teamdroid.recipecraft.ui.navigation.contracts.DetailRecipeContract
 import ru.teamdroid.recipecraft.ui.navigation.modules.DetailRecipePresenterModule
 import ru.teamdroid.recipecraft.ui.navigation.presenters.DetailRecipePresenter
 import javax.inject.Inject

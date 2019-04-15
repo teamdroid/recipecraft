@@ -4,7 +4,7 @@ import android.os.Bundle
 import androidx.fragment.app.Fragment
 import ru.teamdroid.recipecraft.AndroidApplication
 import ru.teamdroid.recipecraft.R
-import ru.teamdroid.recipecraft.data.RecipeRepositoryComponent
+import ru.teamdroid.recipecraft.data.components.RecipeRepositoryComponent
 import ru.teamdroid.recipecraft.ui.base.BaseActivity
 import ru.teamdroid.recipecraft.ui.base.Constants
 import ru.teamdroid.recipecraft.ui.base.extensions.getProperty

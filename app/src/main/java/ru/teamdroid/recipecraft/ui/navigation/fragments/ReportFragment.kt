@@ -8,8 +8,8 @@ import androidx.lifecycle.LifecycleRegistry
 import kotlinx.android.synthetic.main.fragment_report.*
 import ru.teamdroid.recipecraft.R
 import ru.teamdroid.recipecraft.ui.base.BaseFragment
-import ru.teamdroid.recipecraft.ui.navigation.ReportContract
 import ru.teamdroid.recipecraft.ui.navigation.components.DaggerReportComponent
+import ru.teamdroid.recipecraft.ui.navigation.contracts.ReportContract
 import ru.teamdroid.recipecraft.ui.navigation.dialogs.ReportDialog
 import ru.teamdroid.recipecraft.ui.navigation.modules.ReportPresenterModule
 import ru.teamdroid.recipecraft.ui.navigation.presenters.ReportPresenter

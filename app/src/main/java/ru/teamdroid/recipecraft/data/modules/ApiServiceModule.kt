@@ -1,4 +1,4 @@
-package ru.teamdroid.recipecraft.data
+package ru.teamdroid.recipecraft.data.modules
 
 import dagger.Module
 import dagger.Provides
@@ -9,6 +9,7 @@ import retrofit2.Converter
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
+import ru.teamdroid.recipecraft.data.Config
 import ru.teamdroid.recipecraft.data.api.HeaderInterceptor
 import ru.teamdroid.recipecraft.data.api.RecipeService
 import javax.inject.Named
@@ -19,21 +20,16 @@ class ApiServiceModule {
 
     @Provides
     @Named(BASE_URL)
-    fun provideBaseUrl(): String {
-        return Config.API_HOST
-    }
+    fun provideBaseUrl(): String = Config.API_HOST
 
     @Provides
     @Singleton
-    fun provideHeaderInterceptor(): HeaderInterceptor {
-        return HeaderInterceptor()
-    }
+    fun provideHeaderInterceptor(): HeaderInterceptor = HeaderInterceptor()
 
     @Provides
     @Singleton
-    fun provideHttpLoggingInterceptor(): HttpLoggingInterceptor {
-        return HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BASIC)
-    }
+    fun provideHttpLoggingInterceptor(): HttpLoggingInterceptor = HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BASIC)
+
 
     @Provides
     @Singleton
@@ -46,15 +42,11 @@ class ApiServiceModule {
 
     @Provides
     @Singleton
-    fun provideGsonConverterFactory(): Converter.Factory {
-        return GsonConverterFactory.create()
-    }
+    fun provideGsonConverterFactory(): Converter.Factory = GsonConverterFactory.create()
 
     @Provides
     @Singleton
-    fun provideRxJavaAdapterFactory(): CallAdapter.Factory {
-        return RxJava2CallAdapterFactory.create()
-    }
+    fun provideRxJavaAdapterFactory(): CallAdapter.Factory = RxJava2CallAdapterFactory.create()
 
     @Provides
     @Singleton
@@ -69,9 +61,7 @@ class ApiServiceModule {
 
     @Provides
     @Singleton
-    fun provideRecipeService(retrofit: Retrofit): RecipeService {
-        return retrofit.create<RecipeService>(RecipeService::class.java)
-    }
+    fun provideRecipeService(retrofit: Retrofit): RecipeService = retrofit.create<RecipeService>(RecipeService::class.java)
 
     companion object {
         private const val BASE_URL = "base_url"

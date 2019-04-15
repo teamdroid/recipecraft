@@ -3,8 +3,8 @@ package ru.teamdroid.recipecraft
 import android.app.Application
 import com.facebook.stetho.Stetho
 import com.squareup.leakcanary.LeakCanary
-import ru.teamdroid.recipecraft.data.DaggerRecipeRepositoryComponent
-import ru.teamdroid.recipecraft.data.RecipeRepositoryComponent
+import ru.teamdroid.recipecraft.data.components.DaggerRecipeRepositoryComponent
+import ru.teamdroid.recipecraft.data.components.RecipeRepositoryComponent
 
 class AndroidApplication : Application() {
 
@@ -23,8 +23,6 @@ class AndroidApplication : Application() {
                 .build()
     }
 
-    fun getRecipeRepositoryComponent(): RecipeRepositoryComponent {
-        return recipeRepositoryComponent
-    }
+    fun getRecipeRepositoryComponent(): RecipeRepositoryComponent = recipeRepositoryComponent
 
 }

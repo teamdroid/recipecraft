@@ -8,7 +8,7 @@ import io.reactivex.Scheduler
 import io.reactivex.disposables.CompositeDisposable
 import ru.teamdroid.recipecraft.data.api.ReportMessage
 import ru.teamdroid.recipecraft.data.repository.RecipeRepository
-import ru.teamdroid.recipecraft.ui.navigation.ReportContract
+import ru.teamdroid.recipecraft.ui.navigation.contracts.ReportContract
 import ru.teamdroid.recipecraft.util.schedulers.RunOn
 import ru.teamdroid.recipecraft.util.schedulers.SchedulerType
 import javax.inject.Inject

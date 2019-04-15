@@ -7,7 +7,7 @@ import androidx.fragment.app.DialogFragment
 import org.jetbrains.anko.bundleOf
 
 import ru.teamdroid.recipecraft.R
-import ru.teamdroid.recipecraft.ui.navigation.OnSubmitClickListener
+import ru.teamdroid.recipecraft.ui.base.listeners.OnSubmitClickListener
 
 class SelectIngredientsDialog : DialogFragment() {
 
@@ -18,6 +18,7 @@ class SelectIngredientsDialog : DialogFragment() {
         arguments.let {
             listIngredients = it?.getStringArrayList(LIST_INGREDIENTS) as ArrayList<String>
         }
+        isCancelable = true
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {

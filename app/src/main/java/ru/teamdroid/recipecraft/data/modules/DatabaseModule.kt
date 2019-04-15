@@ -1,9 +1,10 @@
-package ru.teamdroid.recipecraft.data
+package ru.teamdroid.recipecraft.data.modules
 
 import android.content.Context
 import androidx.room.Room
 import dagger.Module
 import dagger.Provides
+import ru.teamdroid.recipecraft.data.Config
 import ru.teamdroid.recipecraft.data.database.RecipecraftDB
 import ru.teamdroid.recipecraft.data.database.RecipesDao
 import javax.inject.Named

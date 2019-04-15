@@ -1,4 +1,4 @@
-package ru.teamdroid.recipecraft.data
+package ru.teamdroid.recipecraft.data.modules
 
 import dagger.Module
 import dagger.Provides

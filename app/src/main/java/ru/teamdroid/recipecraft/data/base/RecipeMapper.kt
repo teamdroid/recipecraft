@@ -1,6 +1,13 @@
 package ru.teamdroid.recipecraft.data.base
 
-import ru.teamdroid.recipecraft.data.model.*
+import ru.teamdroid.recipecraft.data.database.entities.IngredientEntity
+import ru.teamdroid.recipecraft.data.database.entities.InstructionEntity
+import ru.teamdroid.recipecraft.data.database.entities.RecipeEntity
+import ru.teamdroid.recipecraft.data.database.entities.RecipeIngredientsEntity
+import ru.teamdroid.recipecraft.data.model.Ingredient
+import ru.teamdroid.recipecraft.data.model.Instruction
+import ru.teamdroid.recipecraft.data.model.Recipe
+import ru.teamdroid.recipecraft.data.model.RecipeIngredients
 
 class RecipeMapper : Mapper<Recipe, RecipeEntity>() {
 

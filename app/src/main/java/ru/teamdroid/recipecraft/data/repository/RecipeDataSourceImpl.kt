@@ -9,7 +9,12 @@ import ru.teamdroid.recipecraft.data.api.ReportMessage
 import ru.teamdroid.recipecraft.data.api.Response
 import ru.teamdroid.recipecraft.data.base.RecipeMapper
 import ru.teamdroid.recipecraft.data.database.RecipesDao
-import ru.teamdroid.recipecraft.data.model.*
+import ru.teamdroid.recipecraft.data.database.entities.IngredientEntity
+import ru.teamdroid.recipecraft.data.database.entities.InstructionEntity
+import ru.teamdroid.recipecraft.data.model.Ingredient
+import ru.teamdroid.recipecraft.data.model.Instruction
+import ru.teamdroid.recipecraft.data.model.Recipe
+import ru.teamdroid.recipecraft.data.model.RecipeIngredients
 import javax.inject.Inject
 
 class RecipeDataSourceImpl @Inject constructor(private val recipeDao: RecipesDao, private val recipeService: RecipeService) : RecipesDataSource {
@@ -59,14 +64,15 @@ class RecipeDataSourceImpl @Inject constructor(private val recipeDao: RecipesDao
         return recipeDao.insertRecipeInstructions(mapper.mapRecipeInstructions(listRecipeInstructions))
     }
 
-    override fun loadLocalRecipe(): Flowable<MutableList<Recipe>> {
+    override fun loadLocalRecipes(): Flowable<MutableList<Recipe>> {
         return recipeDao.getAllRecipes()
                 .flatMap {
                     Flowable.fromIterable(it).flatMapSingle { recipe ->
-                        recipeDao.getAllRecipeIngredientsById(recipe.idRecipe).zipWith(recipeDao.getInstructionsById(recipe.idRecipe),
-                                BiFunction<MutableList<IngredientEntity>, MutableList<InstructionEntity>, Recipe> { listIngredients, listInstruction ->
-                                    mapper.mapDetailRecipe(recipe, listIngredients, listInstruction)
-                                })
+                        recipeDao.getAllRecipeIngredientsById(recipe.idRecipe)
+                                .zipWith(recipeDao.getInstructionsById(recipe.idRecipe),
+                                        BiFunction<MutableList<IngredientEntity>, MutableList<InstructionEntity>, Recipe> { listIngredients, listInstruction ->
+                                            mapper.mapDetailRecipe(recipe, listIngredients, listInstruction)
+                                        })
                     }.toList().toFlowable()
                 }
     }
@@ -75,10 +81,11 @@ class RecipeDataSourceImpl @Inject constructor(private val recipeDao: RecipesDao
         return recipeDao.getAllBookmarkedRecipes()
                 .flatMap {
                     Flowable.fromIterable(it).flatMapSingle { recipe ->
-                        recipeDao.getAllRecipeIngredientsById(recipe.idRecipe).zipWith(recipeDao.getInstructionsById(recipe.idRecipe),
-                                BiFunction<MutableList<IngredientEntity>, MutableList<InstructionEntity>, Recipe> { listIngredients, listInstruction ->
-                                    mapper.mapDetailRecipe(recipe, listIngredients, listInstruction)
-                                })
+                        recipeDao.getAllRecipeIngredientsById(recipe.idRecipe)
+                                .zipWith(recipeDao.getInstructionsById(recipe.idRecipe),
+                                        BiFunction<MutableList<IngredientEntity>, MutableList<InstructionEntity>, Recipe> { listIngredients, listInstruction ->
+                                            mapper.mapDetailRecipe(recipe, listIngredients, listInstruction)
+                                        })
                     }.toList().toFlowable()
                 }
     }
@@ -89,32 +96,25 @@ class RecipeDataSourceImpl @Inject constructor(private val recipeDao: RecipesDao
         }
     }
 
-    override fun findRecipeByIngredients(listIngredients: List<String>, count: Int): Flowable<MutableList<Recipe>> {
+    override fun findRecipesByIngredients(listIngredients: List<String>, count: Int): Flowable<MutableList<Recipe>> {
         return recipeDao.findRecipeByIngredients(listIngredients, count).flatMapPublisher { list ->
             recipeDao.getRecipesByIds(list).flatMap {
                 Flowable.fromIterable(it).flatMapSingle { recipe ->
-                    recipeDao.getAllRecipeIngredientsById(recipe.idRecipe).zipWith(recipeDao.getInstructionsById(recipe.idRecipe),
-                            BiFunction<MutableList<IngredientEntity>, MutableList<InstructionEntity>, Recipe> { listIngredients, listInstruction ->
-                                mapper.mapDetailRecipe(recipe, listIngredients, listInstruction)
-                            })
+                    recipeDao.getAllRecipeIngredientsById(recipe.idRecipe)
+                            .zipWith(recipeDao.getInstructionsById(recipe.idRecipe),
+                                    BiFunction<MutableList<IngredientEntity>, MutableList<InstructionEntity>, Recipe> { listIngredients, listInstruction ->
+                                        mapper.mapDetailRecipe(recipe, listIngredients, listInstruction)
+                                    })
                 }.toList().toFlowable()
             }
         }
     }
 
-    override fun loadIngredientsTitle(): Single<List<String>> {
-        return recipeDao.loadIngredientsTitle()
-    }
+    override fun loadIngredientsTitle(): Single<List<String>> = recipeDao.loadIngredientsTitle()
 
-    override fun loadRemoteRecipe(): Flowable<MutableList<Recipe>> {
-        return recipeService.getAllRecipes("ru")
-    }
+    override fun loadRemoteRecipes(): Flowable<MutableList<Recipe>> = recipeService.getAllRecipes("ru")
 
-    override fun sendReportMessage(reportMessage: ReportMessage): Single<Response> {
-        return recipeService.sendReportMessage(reportMessage)
-    }
+    override fun sendReportMessage(reportMessage: ReportMessage): Single<Response> = recipeService.sendReportMessage(reportMessage)
 
-    override fun getInstructionsById(idRecipe: Int): Single<MutableList<Instruction>> {
-        return recipeDao.getInstructionsById(idRecipe).map { mapper.reverseInstructions(it) }
-    }
+    override fun getInstructionsById(idRecipe: Int): Single<MutableList<Instruction>> = recipeDao.getInstructionsById(idRecipe).map { mapper.reverseInstructions(it) }
 }

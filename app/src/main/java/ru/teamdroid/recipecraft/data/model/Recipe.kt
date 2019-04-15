@@ -18,8 +18,8 @@ data class Recipe(
 ) : Parcelable {
 
     constructor(parcel: Parcel) : this(parcel.readInt(), parcel.readString()
-            ?: "", parcel.readLong(), parcel.readInt(), parcel.readString()
-            ?: "", parcel.readInt() == 0,
+            ?: "", parcel.readLong(), parcel.readInt(),
+            parcel.readString() ?: "", parcel.readInt() == 0,
             mutableListOf<Ingredient>().apply { parcel.readArrayList(Ingredient::class.java.classLoader) },
             mutableListOf<Instruction>().apply { parcel.readArrayList(Instruction::class.java.classLoader) }
     )

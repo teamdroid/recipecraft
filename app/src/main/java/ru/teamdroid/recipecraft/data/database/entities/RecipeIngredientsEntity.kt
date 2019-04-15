@@ -1,4 +1,4 @@
-package ru.teamdroid.recipecraft.data.model
+package ru.teamdroid.recipecraft.data.database.entities
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity

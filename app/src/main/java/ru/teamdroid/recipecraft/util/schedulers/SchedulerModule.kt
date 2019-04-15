@@ -14,13 +14,13 @@ class SchedulerModule {
 
     @Provides
     @RunOn(IO)
-    internal fun provideIo(): Scheduler {
+    internal fun provideIO(): Scheduler {
         return Schedulers.io()
     }
 
     @Provides
     @RunOn(UI)
-    internal fun provideUi(): Scheduler {
+    internal fun provideUI(): Scheduler {
         return AndroidSchedulers.mainThread()
     }
 }

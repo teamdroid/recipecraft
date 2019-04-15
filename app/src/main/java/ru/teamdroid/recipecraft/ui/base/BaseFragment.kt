@@ -13,6 +13,7 @@ import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 import ru.teamdroid.recipecraft.R
 import ru.teamdroid.recipecraft.ui.MainActivity
+import ru.teamdroid.recipecraft.ui.base.listeners.OnBackPressedListener
 
 abstract class BaseFragment : Fragment(), OnBackPressedListener {
 

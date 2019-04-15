@@ -9,7 +9,7 @@ import io.reactivex.Scheduler
 import io.reactivex.disposables.CompositeDisposable
 import ru.teamdroid.recipecraft.data.model.Recipe
 import ru.teamdroid.recipecraft.data.repository.RecipeRepository
-import ru.teamdroid.recipecraft.ui.navigation.FavoritesContract
+import ru.teamdroid.recipecraft.ui.navigation.contracts.FavoritesContract
 import ru.teamdroid.recipecraft.util.schedulers.RunOn
 import ru.teamdroid.recipecraft.util.schedulers.SchedulerType
 import javax.inject.Inject
@@ -29,7 +29,7 @@ class FavoritesPresenter @Inject constructor(private var repository: RecipeRepos
     }
 
     override fun loadRecipes() {
-        compositeDisposable.add(repository.loadBookmarkedRecipe()
+        compositeDisposable.add(repository.loadBookmarkedRecipes()
                 .subscribeOn(ioScheduler)
                 .observeOn(uiScheduler)
                 .subscribe({ handleReturnedData(it) }, { handleError(it) }, { }))
@@ -47,7 +47,7 @@ class FavoritesPresenter @Inject constructor(private var repository: RecipeRepos
     }
 
     private fun handleError(error: Throwable) {
-        Log.d("Error4", error.message)
+        Log.d("Error", error.message)
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)

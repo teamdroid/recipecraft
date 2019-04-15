@@ -13,12 +13,12 @@ import ru.teamdroid.recipecraft.R
 import ru.teamdroid.recipecraft.data.model.Recipe
 import ru.teamdroid.recipecraft.ui.base.BaseFragment
 import ru.teamdroid.recipecraft.ui.base.Constants
-import ru.teamdroid.recipecraft.ui.base.CustomGridLayoutManager
-import ru.teamdroid.recipecraft.ui.navigation.CraftRecipeContract
-import ru.teamdroid.recipecraft.ui.navigation.OnSubmitClickListener
+import ru.teamdroid.recipecraft.ui.base.customs.CustomGridLayoutManager
+import ru.teamdroid.recipecraft.ui.base.listeners.OnSubmitClickListener
 import ru.teamdroid.recipecraft.ui.navigation.adapters.RecipesAdapter
 import ru.teamdroid.recipecraft.ui.navigation.adapters.SimpleListAdapter
 import ru.teamdroid.recipecraft.ui.navigation.components.DaggerCraftComponent
+import ru.teamdroid.recipecraft.ui.navigation.contracts.CraftRecipeContract
 import ru.teamdroid.recipecraft.ui.navigation.dialogs.SelectIngredientsDialog
 import ru.teamdroid.recipecraft.ui.navigation.modules.CraftPresenterModule
 import ru.teamdroid.recipecraft.ui.navigation.presenters.CraftPresenter

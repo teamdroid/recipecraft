@@ -11,9 +11,9 @@ import kotlinx.android.synthetic.main.fragment_favorites.*
 import ru.teamdroid.recipecraft.R
 import ru.teamdroid.recipecraft.data.model.Recipe
 import ru.teamdroid.recipecraft.ui.base.BaseFragment
-import ru.teamdroid.recipecraft.ui.navigation.FavoritesContract
 import ru.teamdroid.recipecraft.ui.navigation.adapters.RecipesAdapter
 import ru.teamdroid.recipecraft.ui.navigation.components.DaggerFavoritesComponent
+import ru.teamdroid.recipecraft.ui.navigation.contracts.FavoritesContract
 import ru.teamdroid.recipecraft.ui.navigation.modules.FavoritesPresenterModule
 import ru.teamdroid.recipecraft.ui.navigation.presenters.FavoritesPresenter
 import javax.inject.Inject

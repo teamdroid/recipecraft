@@ -9,9 +9,9 @@ import ru.teamdroid.recipecraft.data.model.Instruction
 import ru.teamdroid.recipecraft.data.model.Recipe
 
 interface RecipesDataSource {
-    fun loadLocalRecipe(): Flowable<MutableList<Recipe>>
+    fun loadLocalRecipes(): Flowable<MutableList<Recipe>>
     fun loadBookmarkRecipes(): Flowable<MutableList<Recipe>>
-    fun loadRemoteRecipe(): Flowable<MutableList<Recipe>>
+    fun loadRemoteRecipes(): Flowable<MutableList<Recipe>>
     fun addRecipes(recipes: MutableList<Recipe>): Completable
     fun addIngredients(recipes: MutableList<Recipe>): Completable
     fun addRecipeIngredients(recipes: MutableList<Recipe>): Completable
@@ -20,5 +20,5 @@ interface RecipesDataSource {
     fun sendReportMessage(reportMessage: ReportMessage): Single<Response>
     fun getInstructionsById(idRecipe: Int): Single<MutableList<Instruction>>
     fun loadIngredientsTitle(): Single<List<String>>
-    fun findRecipeByIngredients(listIngredients: List<String>, count: Int): Flowable<MutableList<Recipe>>
+    fun findRecipesByIngredients(listIngredients: List<String>, count: Int): Flowable<MutableList<Recipe>>
 }

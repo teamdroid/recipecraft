@@ -1,4 +1,4 @@
-package ru.teamdroid.recipecraft.ui.base
+package ru.teamdroid.recipecraft.ui.base.customs
 
 import android.content.Context
 import androidx.recyclerview.widget.LinearLayoutManager

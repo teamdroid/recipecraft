@@ -9,7 +9,7 @@ import io.reactivex.Scheduler
 import io.reactivex.disposables.CompositeDisposable
 import ru.teamdroid.recipecraft.data.model.Recipe
 import ru.teamdroid.recipecraft.data.repository.RecipeRepository
-import ru.teamdroid.recipecraft.ui.navigation.RecipesContract
+import ru.teamdroid.recipecraft.ui.navigation.contracts.RecipesContract
 import ru.teamdroid.recipecraft.ui.navigation.fragments.RecipesFragment
 import ru.teamdroid.recipecraft.util.schedulers.RunOn
 import ru.teamdroid.recipecraft.util.schedulers.SchedulerType.IO
@@ -31,7 +31,7 @@ class RecipesPresenter @Inject constructor(private var repository: RecipeReposit
     }
 
     override fun loadRecipes(onlineRequired: Boolean) {
-        compositeDisposable.add(repository.loadRecipe(onlineRequired)
+        compositeDisposable.add(repository.loadRecipes(onlineRequired)
                 .subscribeOn(ioScheduler)
                 .observeOn(uiScheduler)
                 .subscribe({ handleReturnedData(it, onlineRequired) }, { handleError(it) }, { }))

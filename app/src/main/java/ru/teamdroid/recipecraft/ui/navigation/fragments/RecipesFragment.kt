@@ -16,9 +16,9 @@ import kotlinx.android.synthetic.main.fragment_recipes.*
 import ru.teamdroid.recipecraft.R
 import ru.teamdroid.recipecraft.data.model.Recipe
 import ru.teamdroid.recipecraft.ui.base.BaseFragment
-import ru.teamdroid.recipecraft.ui.navigation.RecipesContract
 import ru.teamdroid.recipecraft.ui.navigation.adapters.RecipesAdapter
 import ru.teamdroid.recipecraft.ui.navigation.components.DaggerRecipesComponent
+import ru.teamdroid.recipecraft.ui.navigation.contracts.RecipesContract
 import ru.teamdroid.recipecraft.ui.navigation.modules.RecipesPresenterModule
 import ru.teamdroid.recipecraft.ui.navigation.presenters.RecipesPresenter
 import javax.inject.Inject
