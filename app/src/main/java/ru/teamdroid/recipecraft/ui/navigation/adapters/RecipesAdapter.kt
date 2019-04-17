@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.layout_list_recipes_item.view.*
 import ru.teamdroid.recipecraft.R
 import ru.teamdroid.recipecraft.data.model.Recipe
+import ru.teamdroid.recipecraft.ui.base.SortRecipes
 
 class RecipesAdapter(
         var onItemClickListener: (position: Int) -> Unit,
@@ -49,21 +50,16 @@ class RecipesAdapter(
         }
     }
 
-    fun sortByTime() {
-        recipes.sortBy { it.time }
-    }
+    fun sort(sortType: String) {
+        when (sortType) {
+            SortRecipes.ByNewer -> recipes.sortByDescending { it.idRecipe }
+            SortRecipes.ByIngredients -> recipes.sortBy { it.ingredients.size }
+            SortRecipes.ByTime -> recipes.sortBy { it.time }
+            SortRecipes.ByPortion -> recipes.sortByDescending { it.portion }
 
-    fun sortByPortion() {
-        recipes.sortByDescending { it.portion }
-    }
-
-    fun sortByIngredients() {
-        recipes.sortBy { it.ingredients.size }
-    }
-
-    fun sortByAll() {
-        recipes.sortBy { it.idRecipe }
+        }
     }
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view)
+
 }

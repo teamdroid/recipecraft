@@ -16,6 +16,7 @@ import kotlinx.android.synthetic.main.fragment_recipes.*
 import ru.teamdroid.recipecraft.R
 import ru.teamdroid.recipecraft.data.model.Recipe
 import ru.teamdroid.recipecraft.ui.base.BaseFragment
+import ru.teamdroid.recipecraft.ui.base.SortRecipes
 import ru.teamdroid.recipecraft.ui.navigation.adapters.RecipesAdapter
 import ru.teamdroid.recipecraft.ui.navigation.components.DaggerRecipesComponent
 import ru.teamdroid.recipecraft.ui.navigation.contracts.RecipesContract
@@ -27,6 +28,8 @@ class RecipesFragment : BaseFragment(), RecipesContract.View {
 
     @Inject
     internal lateinit var presenter: RecipesPresenter
+
+    private var currentSort = SortRecipes.ByNewer
 
     override val contentResId = R.layout.fragment_recipes
 
@@ -84,11 +87,12 @@ class RecipesFragment : BaseFragment(), RecipesContract.View {
             override fun onItemSelected(adapter: AdapterView<*>, v: View?, i: Int, lng: Long) {
                 with(recipesAdapter) {
                     when (i) {
-                        0 -> sortByAll()
-                        1 -> sortByPortion()
-                        2 -> sortByIngredients()
-                        3 -> sortByTime()
+                        0 -> currentSort = SortRecipes.ByNewer
+                        1 -> currentSort = SortRecipes.ByPortion
+                        2 -> currentSort = SortRecipes.ByIngredients
+                        3 -> currentSort = SortRecipes.ByTime
                     }
+                    sort(currentSort)
                     notifyDataSetChanged()
                 }
             }
@@ -123,7 +127,10 @@ class RecipesFragment : BaseFragment(), RecipesContract.View {
     }
 
     override fun showRecipes(recipes: MutableList<Recipe>) {
-        recipesAdapter.recipes = recipes
+        recipesAdapter.apply {
+            this.recipes = recipes
+            sort(currentSort)
+        }
         setInvisibleRefreshing()
     }
 

@@ -9,7 +9,7 @@ import ru.teamdroid.recipecraft.data.model.Instruction
 import ru.teamdroid.recipecraft.data.model.Recipe
 import ru.teamdroid.recipecraft.data.model.RecipeIngredients
 
-class RecipeMapper : Mapper<Recipe, RecipeEntity>() {
+class RecipeMapper : Mapper<Recipe, RecipeEntity> {
 
     override fun map(value: Recipe): RecipeEntity = RecipeEntity(value.idRecipe, value.title, value.time, value.portion, value.type, value.isBookmarked)
     override fun reverseMap(value: RecipeEntity) = Recipe(value.idRecipe, value.title, value.time, value.portion)

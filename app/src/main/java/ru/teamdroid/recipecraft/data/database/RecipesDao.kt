@@ -27,7 +27,7 @@ interface RecipesDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertRecipe(recipe: RecipeEntity)
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     fun insertRecipes(listRecipes: MutableList<RecipeEntity>): Completable
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)

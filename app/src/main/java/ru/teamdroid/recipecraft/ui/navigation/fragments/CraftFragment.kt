@@ -5,6 +5,7 @@ import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
+import android.widget.Toast
 import androidx.lifecycle.LifecycleRegistry
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
@@ -33,7 +34,12 @@ class CraftFragment : BaseFragment(), CraftRecipeContract.View, OnSubmitClickLis
 
     private val lifecycleRegistry = LifecycleRegistry(this)
 
-    private val ingredientsAdapter = SimpleListAdapter()
+    private val ingredientsAdapter by lazy {
+        SimpleListAdapter(
+                onDeleteClickListener = {
+                    onDeleteClick(it)
+                })
+    }
 
     private val recipesAdapter by lazy {
         RecipesAdapter(
@@ -78,11 +84,14 @@ class CraftFragment : BaseFragment(), CraftRecipeContract.View, OnSubmitClickLis
             layoutManager = LinearLayoutManager(context)
         }
 
+        setPlaceholderIfEmpty(ingredientsAdapter.isEmpty())
+
         button.setOnClickListener {
             val selectIngredientsDialog = SelectIngredientsDialog.newInstance(listIngredientsTitle)
             selectIngredientsDialog.setTargetFragment(this, Constants.REQUEST_CODE)
             selectIngredientsDialog.show(requireFragmentManager(), TAG)
         }
+
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -109,12 +118,30 @@ class CraftFragment : BaseFragment(), CraftRecipeContract.View, OnSubmitClickLis
         presenter.bookmarkRecipe(recipe)
     }
 
+    private fun onDeleteClick(ingredient: String) {
+        ingredientsAdapter.items.remove(ingredient)
+        ingredientsAdapter.notifyDataSetChanged()
+
+        if (!ingredientsAdapter.isEmpty()) {
+            presenter.findRecipeByIngredients(ingredientsAdapter.items, ingredientsAdapter.itemCount)
+            setPlaceholderIfEmpty(false)
+        } else {
+            recipesAdapter.recipes.clear()
+            recipesAdapter.notifyDataSetChanged()
+            setPlaceholderIfEmpty(true)
+        }
+    }
+
     override fun setIngredientsTitle(listIngredientsTitle: List<String>) {
         this.listIngredientsTitle.addAll(listIngredientsTitle)
     }
 
-    override fun showRecipe(listRecipe: MutableList<Recipe>) {
-        recipesAdapter.recipes = listRecipe
+    override fun showRecipes(listRecipe: MutableList<Recipe>) {
+        recipesAdapter.apply {
+            recipes = listRecipe
+            notifyDataSetChanged()
+            if (listRecipe.isEmpty()) Toast.makeText(context, R.string.not_found_text, Toast.LENGTH_SHORT).show()
+        }
     }
 
     override fun showBookmarked(isBookmarked: Boolean) {
@@ -124,7 +151,28 @@ class CraftFragment : BaseFragment(), CraftRecipeContract.View, OnSubmitClickLis
 
     override fun onSubmitClicked(list: ArrayList<String>) {
         ingredientsAdapter.items = list
-        presenter.findRecipeByIngredients(list, list.size)
+        if (list.isNotEmpty()) {
+            setPlaceholderIfEmpty(false)
+            presenter.findRecipeByIngredients(list, list.size)
+        } else {
+            setPlaceholderIfEmpty(true)
+            recipesAdapter.recipes.clear()
+            recipesAdapter.notifyDataSetChanged()
+        }
+    }
+
+    private fun setPlaceholderIfEmpty(isEmpty: Boolean) {
+        if (!isEmpty) {
+            emptyIngredients.visibility = View.INVISIBLE
+            emptyRecipes.visibility = View.INVISIBLE
+            ingredientsCardView.visibility = View.VISIBLE
+            recipesRecyclerView.visibility = View.VISIBLE
+        } else {
+            emptyIngredients.visibility = View.VISIBLE
+            emptyRecipes.visibility = View.VISIBLE
+            ingredientsCardView.visibility = View.INVISIBLE
+            recipesRecyclerView.visibility = View.INVISIBLE
+        }
     }
 
     override fun onDestroyView() {

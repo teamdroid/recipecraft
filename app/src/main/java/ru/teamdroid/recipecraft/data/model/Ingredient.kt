@@ -6,17 +6,17 @@ import android.os.Parcelable
 class Ingredient(
         var idIngredient: Int = 0,
         var title: String = "",
-        var amount: Int = 0,
+        var amount: Double = 0.0,
         var id: Int = 0
 ) : Parcelable {
 
     constructor(parcel: Parcel) : this(parcel.readInt(), parcel.readString()
-            ?: "", parcel.readInt(), parcel.readInt())
+            ?: "", parcel.readDouble(), parcel.readInt())
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeInt(idIngredient)
         parcel.writeString(title)
-        parcel.writeInt(amount)
+        parcel.writeDouble(amount)
         parcel.writeInt(id)
     }
 

@@ -6,7 +6,7 @@ import ru.teamdroid.recipecraft.ui.base.BasePresenter
 interface CraftRecipeContract {
     interface View {
         fun setIngredientsTitle(listIngredientsTitle: List<String>)
-        fun showRecipe(listRecipe: MutableList<Recipe>)
+        fun showRecipes(listRecipe: MutableList<Recipe>)
         fun showBookmarked(isBookmarked: Boolean)
     }
 

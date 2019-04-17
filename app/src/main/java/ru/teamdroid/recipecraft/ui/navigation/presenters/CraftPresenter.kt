@@ -6,6 +6,7 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.OnLifecycleEvent
 import io.reactivex.Scheduler
 import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.disposables.Disposable
 import ru.teamdroid.recipecraft.data.model.Recipe
 import ru.teamdroid.recipecraft.data.repository.RecipeRepository
 import ru.teamdroid.recipecraft.ui.navigation.contracts.CraftRecipeContract
@@ -19,6 +20,8 @@ class CraftPresenter @Inject constructor(private var repository: RecipeRepositor
                                          @RunOn(SchedulerType.UI) private var uiScheduler: Scheduler) : CraftRecipeContract.Presenter, LifecycleObserver {
 
     private var compositeDisposable: CompositeDisposable
+
+    private var findRecipeDisposable: Disposable? = null
 
     init {
         if (view is LifecycleOwner) {
@@ -35,10 +38,15 @@ class CraftPresenter @Inject constructor(private var repository: RecipeRepositor
     }
 
     override fun findRecipeByIngredients(listIngredients: List<String>, count: Int) {
-        compositeDisposable.add(repository.findRecipeByIngredients(listIngredients, count)
+        if (findRecipeDisposable != null) findRecipeDisposable?.dispose()
+        findRecipeDisposable = repository.findRecipeByIngredients(listIngredients, count)
                 .subscribeOn(ioScheduler)
                 .observeOn(uiScheduler)
-                .subscribe({ view.showRecipe(it) }, { }))
+                .subscribe({ view.showRecipes(it) }, { })
+
+        findRecipeDisposable?.let {
+            compositeDisposable.add(it)
+        }
     }
 
     fun bookmarkRecipe(recipe: Recipe) {
@@ -55,7 +63,7 @@ class CraftPresenter @Inject constructor(private var repository: RecipeRepositor
 
     @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
     override fun onDestroy() {
-        compositeDisposable.clear()
+        compositeDisposable.dispose()
     }
 
 }

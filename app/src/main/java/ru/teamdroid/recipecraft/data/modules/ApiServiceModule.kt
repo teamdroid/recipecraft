@@ -30,7 +30,6 @@ class ApiServiceModule {
     @Singleton
     fun provideHttpLoggingInterceptor(): HttpLoggingInterceptor = HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BASIC)
 
-
     @Provides
     @Singleton
     fun provideHttpClient(headerInterceptor: HeaderInterceptor,
