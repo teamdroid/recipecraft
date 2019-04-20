@@ -64,30 +64,23 @@
             android:layout_marginBottom="@dimen/size_medium"
             android:text="@string/ingredients_text"
             android:textStyle="bold"
-            app:layout_constraintBottom_toTopOf="@id/cardView"
+            app:layout_constraintBottom_toTopOf="@id/ingredientsRecyclerView"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/information_text"
             app:layout_constraintVertical_chainStyle="spread_inside" />
 
-        <androidx.cardview.widget.CardView
-            android:id="@+id/cardView"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/size_small"
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/ingredientsRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:nestedScrollingEnabled="false"
             app:layout_constraintBottom_toTopOf="@+id/instructions_text"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/ingredients_text">
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/ingredientsRecyclerView"
-                android:nestedScrollingEnabled="false"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
-
-        </androidx.cardview.widget.CardView>
+            app:layout_constraintTop_toBottomOf="@+id/ingredients_text" />
 
         <TextView
             android:id="@+id/instructions_text"
@@ -102,17 +95,17 @@
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/cardView"
+            app:layout_constraintTop_toBottomOf="@+id/ingredientsRecyclerView"
             app:layout_constraintVertical_chainStyle="spread_inside" />
-        
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/instructionsRecyclerView"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:clipToPadding="false"
-            android:paddingTop="@dimen/size_small"
-            android:nestedScrollingEnabled="false"
             android:layout_marginBottom="@dimen/size_small"
+            android:clipToPadding="false"
+            android:nestedScrollingEnabled="false"
+            android:paddingTop="@dimen/size_small"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"

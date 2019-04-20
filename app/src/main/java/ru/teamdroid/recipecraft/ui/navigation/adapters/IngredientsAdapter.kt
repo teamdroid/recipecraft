@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.layout_list_ingredients_item.view.*
 import ru.teamdroid.recipecraft.R
 import ru.teamdroid.recipecraft.data.model.Ingredient
+import java.text.DecimalFormat
 
 class IngredientsAdapter(var onItemClickListener: (position: Int) -> Unit) : RecyclerView.Adapter<IngredientsAdapter.ViewHolder>() {
 
@@ -26,7 +27,14 @@ class IngredientsAdapter(var onItemClickListener: (position: Int) -> Unit) : Rec
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         with(holder.itemView) {
             setOnClickListener { onItemClickListener.invoke(position) }
-            titleTexView.text = "${items[position].title} ${items[position].title_unit_measure}"
+
+            titleTexView.text = resources.getString(
+                    R.string.ingredients_list_text,
+                    items[position].title,
+                    DecimalFormat("#.#").format(items[position].amount).takeUnless { it == "0" }
+                            ?: "",
+                    items[position].measureTitle
+            )
         }
     }
 

@@ -55,7 +55,7 @@ class RecipeDataSourceImpl @Inject constructor(private val recipeDao: RecipesDao
 
         recipes.forEach { recipe ->
             recipe.ingredients.forEach {
-                listUnitMeasure.add(UnitMeasure(idUnitMeasure = it.idUnitMeasure, title = it.title_unit_measure))
+                listUnitMeasure.add(UnitMeasure(idUnitMeasure = it.idUnitMeasure, title = it.measureTitle))
             }
         }
 

@@ -57,10 +57,11 @@ interface RecipesDao {
     @Query("SELECT title FROM ingredient")
     fun loadIngredientsTitle(): Single<List<String>>
 
-    @Query("SELECT recipe_ingredients.idIngredient, ingredient.title, recipe_ingredients.amount, ingredient.idUnitMeasure, unit_measure.title as 'title_unit_measure' FROM recipe " +
-            "LEFT JOIN recipe_ingredients ON recipe.idRecipe = recipe_ingredients.idRecipe " +
+    @Query("SELECT recipe_ingredients.idIngredient, ingredient.title, recipe_ingredients.amount, unit_measure.idUnitMeasure, unit_measure.title as 'measureTitle' " +
+            "FROM recipe LEFT JOIN recipe_ingredients ON recipe.idRecipe = recipe_ingredients.idRecipe " +
             "LEFT JOIN unit_measure ON recipe_ingredients.idUnitMeasure = unit_measure.idUnitMeasure " +
-            "LEFT JOIN ingredient ON recipe_ingredients.idIngredient = ingredient.idIngredient WHERE recipe_ingredients.idRecipe = :idRecipe")
+            "LEFT JOIN ingredient ON recipe_ingredients.idIngredient = ingredient.idIngredient " +
+            "WHERE recipe_ingredients.idRecipe =:idRecipe")
     fun getAllRecipeIngredientsById(idRecipe: Int): Single<MutableList<IngredientEntity>>
 
     @Query("SELECT * FROM instruction WHERE idRecipe = :idRecipe")

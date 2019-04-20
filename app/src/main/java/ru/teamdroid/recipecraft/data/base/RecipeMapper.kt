@@ -27,7 +27,7 @@ class RecipeMapper : Mapper<Recipe, RecipeEntity> {
         val ingredientsEntities: MutableList<IngredientEntity> = arrayListOf()
         for (ingredient in listIngredients) {
 
-            val ingredientEntity = IngredientEntity(ingredient.idIngredient, ingredient.title, ingredient.amount, ingredient.idUnitMeasure, ingredient.title_unit_measure)
+            val ingredientEntity = IngredientEntity(ingredient.idIngredient, ingredient.title, ingredient.amount, ingredient.idUnitMeasure, ingredient.measureTitle)
             ingredientsEntities.add(ingredientEntity)
         }
         return ingredientsEntities

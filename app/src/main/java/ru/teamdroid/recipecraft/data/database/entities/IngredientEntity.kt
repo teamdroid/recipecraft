@@ -15,6 +15,6 @@ data class IngredientEntity(
         var amount: Double,
         @ColumnInfo(name = "idUnitMeasure", index = true)
         var idUnitMeasure: Int = 0,
-        @ColumnInfo(name = "title_unit_measure")
+        @ColumnInfo(name = "measureTitle")
         var title_unit_measure: String = ""
 )
