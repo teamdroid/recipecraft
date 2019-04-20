@@ -64,25 +64,25 @@ class DetailRecipeFragment : BaseFragment(), DetailRecipeContract.View {
         super.onViewCreated(view, savedInstanceState)
         setupToolbar(toolbar, true, recipe?.title ?: "")
 
-        with(recyclerView) {
+        with(ingredientsRecyclerView) {
             adapter = ingredientsAdapter
             layoutManager = CustomGridLayoutManager(context)
         }
 
-        with(recyclerViewInstruction) {
+        with(instructionsRecyclerView) {
             adapter = instructionsAdapter
             layoutManager = CustomGridLayoutManager(context)
         }
 
         ingredientsAdapter.items = recipe?.ingredients ?: arrayListOf()
-        instructionsAdapter.items = recipe?.insctructions ?: arrayListOf()
+        instructionsAdapter.items = recipe?.instructions ?: arrayListOf()
 
         information_text.text = resources.getString(
                 R.string.information_detail_recipe_text,
                 recipe?.time,
                 recipe?.portion,
                 recipe?.ingredients?.size.toString(),
-                recipe?.insctructions?.size.toString()
+                recipe?.instructions?.size.toString()
         )
     }
 
@@ -94,6 +94,12 @@ class DetailRecipeFragment : BaseFragment(), DetailRecipeContract.View {
             }
             else -> super.onOptionsItemSelected(item)
         }
+    }
+
+    override fun onDestroyView() {
+        ingredientsRecyclerView.adapter = null
+        instructionsRecyclerView.adapter = null
+        super.onDestroyView()
     }
 
     companion object {

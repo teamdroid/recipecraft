@@ -67,7 +67,7 @@ class RecipesFragment : BaseFragment(), RecipesContract.View {
         super.onViewCreated(view, savedInstanceState)
         setupToolbar(toolbar, false, "")
 
-        with(recyclerView) {
+        with(ingredientsRecyclerView) {
             adapter = recipesAdapter
             layoutManager = LinearLayoutManager(context)
         }
@@ -157,7 +157,7 @@ class RecipesFragment : BaseFragment(), RecipesContract.View {
     }
 
     override fun onDestroyView() {
-        recyclerView.adapter = null
+        ingredientsRecyclerView.adapter = null
         spinner_nav.adapter = null
         super.onDestroyView()
     }

@@ -26,7 +26,7 @@ class IngredientsAdapter(var onItemClickListener: (position: Int) -> Unit) : Rec
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         with(holder.itemView) {
             setOnClickListener { onItemClickListener.invoke(position) }
-            titleTexView.text = items[position].title
+            titleTexView.text = "${items[position].title} ${items[position].title_unit_measure}"
         }
     }
 

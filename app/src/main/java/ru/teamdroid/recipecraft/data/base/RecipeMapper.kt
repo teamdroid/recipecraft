@@ -1,13 +1,7 @@
 package ru.teamdroid.recipecraft.data.base
 
-import ru.teamdroid.recipecraft.data.database.entities.IngredientEntity
-import ru.teamdroid.recipecraft.data.database.entities.InstructionEntity
-import ru.teamdroid.recipecraft.data.database.entities.RecipeEntity
-import ru.teamdroid.recipecraft.data.database.entities.RecipeIngredientsEntity
-import ru.teamdroid.recipecraft.data.model.Ingredient
-import ru.teamdroid.recipecraft.data.model.Instruction
-import ru.teamdroid.recipecraft.data.model.Recipe
-import ru.teamdroid.recipecraft.data.model.RecipeIngredients
+import ru.teamdroid.recipecraft.data.database.entities.*
+import ru.teamdroid.recipecraft.data.model.*
 
 class RecipeMapper : Mapper<Recipe, RecipeEntity> {
 
@@ -19,11 +13,11 @@ class RecipeMapper : Mapper<Recipe, RecipeEntity> {
         val recipe = Recipe(value.idRecipe, value.title, value.time, value.portion, value.type, value.isBookmarked)
 
         ingredientEntities.forEach { ingredientEntity ->
-            recipe.ingredients.add(Ingredient(ingredientEntity.idIngredient, ingredientEntity.title))
+            recipe.ingredients.add(Ingredient(ingredientEntity.idIngredient, ingredientEntity.title, 0, ingredientEntity.amount, ingredientEntity.idUnitMeasure, ingredientEntity.title_unit_measure))
         }
 
         listRecipeInstructions.forEach { instruction ->
-            recipe.insctructions.add(Instruction(instruction.idInstruction, instruction.idRecipe, instruction.title))
+            recipe.instructions.add(Instruction(instruction.idInstruction, instruction.idRecipe, instruction.title))
         }
 
         return recipe
@@ -32,7 +26,8 @@ class RecipeMapper : Mapper<Recipe, RecipeEntity> {
     fun mapIngredients(listIngredients: MutableList<Ingredient>): MutableList<IngredientEntity> {
         val ingredientsEntities: MutableList<IngredientEntity> = arrayListOf()
         for (ingredient in listIngredients) {
-            val ingredientEntity = IngredientEntity(ingredient.idIngredient, ingredient.title)
+
+            val ingredientEntity = IngredientEntity(ingredient.idIngredient, ingredient.title, ingredient.amount, ingredient.idUnitMeasure, ingredient.title_unit_measure)
             ingredientsEntities.add(ingredientEntity)
         }
         return ingredientsEntities
@@ -41,7 +36,7 @@ class RecipeMapper : Mapper<Recipe, RecipeEntity> {
     fun mapRecipeIngredients(listRecipeIngredients: MutableList<RecipeIngredients>): MutableList<RecipeIngredientsEntity> {
         val recipeIngredientsEntity: MutableList<RecipeIngredientsEntity> = arrayListOf()
         for (recipeIngredient in listRecipeIngredients) {
-            val recipeIngredientEntity = RecipeIngredientsEntity(recipeIngredient.id, recipeIngredient.idRecipe, recipeIngredient.idIngredient)
+            val recipeIngredientEntity = RecipeIngredientsEntity(recipeIngredient.id, recipeIngredient.idRecipe, recipeIngredient.idIngredient, recipeIngredient.amount, recipeIngredient.idUnitMeasure)
             recipeIngredientsEntity.add(recipeIngredientEntity)
         }
 
@@ -76,5 +71,14 @@ class RecipeMapper : Mapper<Recipe, RecipeEntity> {
         }
 
         return recipeInstructions
+    }
+
+    fun mapUnitMeasure(listUnitMeasure: MutableList<UnitMeasure>): MutableList<UnitMeasureEntity> {
+        val listUnitMeasureEntities: MutableList<UnitMeasureEntity> = arrayListOf()
+        for (unitMeasure in listUnitMeasure) {
+            val unitMeasureEntity = UnitMeasureEntity(unitMeasure.idUnitMeasure, unitMeasure.title)
+            listUnitMeasureEntities.add(unitMeasureEntity)
+        }
+        return listUnitMeasureEntities
     }
 }

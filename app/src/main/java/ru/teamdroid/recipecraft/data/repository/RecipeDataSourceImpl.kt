@@ -11,10 +11,7 @@ import ru.teamdroid.recipecraft.data.base.RecipeMapper
 import ru.teamdroid.recipecraft.data.database.RecipesDao
 import ru.teamdroid.recipecraft.data.database.entities.IngredientEntity
 import ru.teamdroid.recipecraft.data.database.entities.InstructionEntity
-import ru.teamdroid.recipecraft.data.model.Ingredient
-import ru.teamdroid.recipecraft.data.model.Instruction
-import ru.teamdroid.recipecraft.data.model.Recipe
-import ru.teamdroid.recipecraft.data.model.RecipeIngredients
+import ru.teamdroid.recipecraft.data.model.*
 import javax.inject.Inject
 
 class RecipeDataSourceImpl @Inject constructor(private val recipeDao: RecipesDao,
@@ -24,8 +21,9 @@ class RecipeDataSourceImpl @Inject constructor(private val recipeDao: RecipesDao
     override fun addRecipes(recipes: MutableList<Recipe>): Completable {
         return recipeDao.insertRecipes(recipeMapper.mapRecipe(recipes))
                 .andThen(addIngredients(recipes))
-                .andThen(addRecipeIngredients(recipes))
+                .andThen(addUnitMeasure(recipes))
                 .andThen(addInstructions(recipes))
+                .andThen(addRecipeIngredients(recipes))
     }
 
     override fun addIngredients(recipes: MutableList<Recipe>): Completable {
@@ -33,7 +31,7 @@ class RecipeDataSourceImpl @Inject constructor(private val recipeDao: RecipesDao
 
         recipes.forEach { recipe ->
             recipe.ingredients.forEach {
-                listIngredients.add(Ingredient(it.idIngredient, it.title, it.amount))
+                listIngredients.add(Ingredient(it.idIngredient, it.title))
             }
         }
 
@@ -45,18 +43,30 @@ class RecipeDataSourceImpl @Inject constructor(private val recipeDao: RecipesDao
 
         recipes.forEach { recipe ->
             recipe.ingredients.forEach {
-                listRecipeIngredients.add(RecipeIngredients(id = it.id, idRecipe = recipe.idRecipe, idIngredient = it.idIngredient))
+                listRecipeIngredients.add(RecipeIngredients(id = it.id, idRecipe = recipe.idRecipe, idIngredient = it.idIngredient, amount = it.amount, idUnitMeasure = it.idUnitMeasure))
             }
         }
 
         return recipeDao.insertRecipeIngredients(recipeMapper.mapRecipeIngredients(listRecipeIngredients))
     }
 
+    override fun addUnitMeasure(recipes: MutableList<Recipe>): Completable {
+        val listUnitMeasure: MutableList<UnitMeasure> = arrayListOf()
+
+        recipes.forEach { recipe ->
+            recipe.ingredients.forEach {
+                listUnitMeasure.add(UnitMeasure(idUnitMeasure = it.idUnitMeasure, title = it.title_unit_measure))
+            }
+        }
+
+        return recipeDao.insertUnitMeasure(recipeMapper.mapUnitMeasure(listUnitMeasure))
+    }
+
     override fun addInstructions(recipes: MutableList<Recipe>): Completable {
         val listRecipeInstructions: MutableList<Instruction> = arrayListOf()
 
         recipes.forEach { recipe ->
-            recipe.insctructions.forEach {
+            recipe.instructions.forEach {
                 listRecipeInstructions.add(Instruction(idInstruction = it.idInstruction, idRecipe = recipe.idRecipe, title = it.title))
             }
         }
