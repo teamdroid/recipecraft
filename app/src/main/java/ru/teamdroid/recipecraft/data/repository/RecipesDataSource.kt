@@ -16,6 +16,7 @@ interface RecipesDataSource {
     fun addIngredients(recipes: MutableList<Recipe>): Completable
     fun addRecipeIngredients(recipes: MutableList<Recipe>): Completable
     fun addInstructions(recipes: MutableList<Recipe>): Completable
+    fun addUnitMeasure(recipes: MutableList<Recipe>): Completable
     fun bookmark(recipe: Recipe): Completable
     fun sendReportMessage(reportMessage: ReportMessage): Single<Response>
     fun getInstructionsById(idRecipe: Int): Single<MutableList<Instruction>>

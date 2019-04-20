@@ -57,7 +57,7 @@ class FavoritesFragment : BaseFragment(), FavoritesContract.View {
         super.onViewCreated(view, savedInstanceState)
         setupToolbar(toolbar, false, getString(R.string.fragment_favorites_title))
 
-        with(recyclerView) {
+        with(ingredientsRecyclerView) {
             adapter = bookmarkRecipesAdapter
             layoutManager = LinearLayoutManager(context)
         }
@@ -65,7 +65,7 @@ class FavoritesFragment : BaseFragment(), FavoritesContract.View {
         if (bookmarkRecipesAdapter.recipes.isEmpty()) {
             refresh()
         } else {
-            recyclerView.visibility = View.VISIBLE
+            ingredientsRecyclerView.visibility = View.VISIBLE
             placeholderTextView.visibility = View.GONE
         }
 
@@ -111,16 +111,16 @@ class FavoritesFragment : BaseFragment(), FavoritesContract.View {
             setInvisibleRefreshing()
             if (recipes.isNotEmpty()) {
                 placeholderTextView.visibility = View.GONE
-                recyclerView.visibility = View.VISIBLE
+                ingredientsRecyclerView.visibility = View.VISIBLE
             } else {
                 placeholderTextView.visibility = View.VISIBLE
-                recyclerView.visibility = View.GONE
+                ingredientsRecyclerView.visibility = View.GONE
             }
         }
     }
 
     override fun onDestroyView() {
-        recyclerView.adapter = null
+        ingredientsRecyclerView.adapter = null
         super.onDestroyView()
     }
 

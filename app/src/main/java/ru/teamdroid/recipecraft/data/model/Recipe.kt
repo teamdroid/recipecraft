@@ -14,12 +14,11 @@ data class Recipe(
         @SerializedName("ingredients")
         var ingredients: MutableList<Ingredient> = arrayListOf(),
         @SerializedName("instructions")
-        var insctructions: MutableList<Instruction> = arrayListOf()
+        var instructions: MutableList<Instruction> = arrayListOf()
 ) : Parcelable {
 
-    constructor(parcel: Parcel) : this(parcel.readInt(), parcel.readString()
-            ?: "", parcel.readLong(), parcel.readInt(),
-            parcel.readString() ?: "", parcel.readInt() == 0,
+    constructor(parcel: Parcel) : this(parcel.readInt(), parcel.readString() ?: "",
+            parcel.readLong(), parcel.readInt(), parcel.readString() ?: "", parcel.readInt() == 0,
             mutableListOf<Ingredient>().apply { parcel.readArrayList(Ingredient::class.java.classLoader) },
             mutableListOf<Instruction>().apply { parcel.readArrayList(Instruction::class.java.classLoader) }
     )
@@ -32,7 +31,7 @@ data class Recipe(
         parcel.writeString(type)
         parcel.writeInt(if (isBookmarked) 1 else 0)
         parcel.writeList(ingredients)
-        parcel.writeList(insctructions)
+        parcel.writeList(instructions)
     }
 
     override fun describeContents(): Int {

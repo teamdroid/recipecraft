@@ -4,10 +4,7 @@ import androidx.room.*
 import io.reactivex.Completable
 import io.reactivex.Flowable
 import io.reactivex.Single
-import ru.teamdroid.recipecraft.data.database.entities.IngredientEntity
-import ru.teamdroid.recipecraft.data.database.entities.InstructionEntity
-import ru.teamdroid.recipecraft.data.database.entities.RecipeEntity
-import ru.teamdroid.recipecraft.data.database.entities.RecipeIngredientsEntity
+import ru.teamdroid.recipecraft.data.database.entities.*
 
 @Dao
 interface RecipesDao {
@@ -39,6 +36,9 @@ interface RecipesDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertRecipeInstructions(listRecipeInstructions: MutableList<InstructionEntity>): Completable
 
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertUnitMeasure(listUnitMeasure: MutableList<UnitMeasureEntity>): Completable
+
     @Delete
     fun deleteRecipe(recipes: RecipeEntity)
 
@@ -57,9 +57,11 @@ interface RecipesDao {
     @Query("SELECT title FROM ingredient")
     fun loadIngredientsTitle(): Single<List<String>>
 
-    @Query("SELECT recipe_ingredients.idIngredient, ingredient.title FROM recipe " +
-            "LEFT JOIN recipe_ingredients ON recipe.idRecipe = recipe_ingredients.idRecipe " +
-            "LEFT JOIN ingredient ON recipe_ingredients.idIngredient = ingredient.idIngredient WHERE recipe_ingredients.idRecipe = :idRecipe")
+    @Query("SELECT recipe_ingredients.idIngredient, ingredient.title, recipe_ingredients.amount, unit_measure.idUnitMeasure, unit_measure.title as 'measureTitle' " +
+            "FROM recipe LEFT JOIN recipe_ingredients ON recipe.idRecipe = recipe_ingredients.idRecipe " +
+            "LEFT JOIN unit_measure ON recipe_ingredients.idUnitMeasure = unit_measure.idUnitMeasure " +
+            "LEFT JOIN ingredient ON recipe_ingredients.idIngredient = ingredient.idIngredient " +
+            "WHERE recipe_ingredients.idRecipe =:idRecipe")
     fun getAllRecipeIngredientsById(idRecipe: Int): Single<MutableList<IngredientEntity>>
 
     @Query("SELECT * FROM instruction WHERE idRecipe = :idRecipe")

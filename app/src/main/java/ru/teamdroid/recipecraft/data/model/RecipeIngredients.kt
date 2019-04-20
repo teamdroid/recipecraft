@@ -9,12 +9,11 @@ class RecipeIngredients(
         var idIngredient: Int = 0,
         var amount: Double = 0.0,
         var title: String = "",
-        var time: Long = 0,
-        var portion: Int = 0
+        var idUnitMeasure: Int = 0
 ) : Parcelable {
 
     constructor(parcel: Parcel) : this(parcel.readInt(), parcel.readInt(), parcel.readInt(), parcel.readDouble(), parcel.readString()
-            ?: "", parcel.readLong(), parcel.readInt())
+            ?: "", parcel.readInt())
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeInt(id)
@@ -22,8 +21,7 @@ class RecipeIngredients(
         parcel.writeInt(idIngredient)
         parcel.writeDouble(amount)
         parcel.writeString(title)
-        parcel.writeLong(time)
-        parcel.writeInt(portion)
+        parcel.writeInt(idUnitMeasure)
     }
 
     override fun describeContents(): Int {
