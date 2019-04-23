@@ -6,6 +6,7 @@
 ### Libraries Used: 
 * Architecture Components: Room + Lifecycle
 * RxJava2
+* Firebase (Crashlytics)
 * Dagger
 * Retrofit
 * Picasso
