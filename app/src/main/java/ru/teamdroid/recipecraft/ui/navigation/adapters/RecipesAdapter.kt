@@ -33,20 +33,17 @@ class RecipesAdapter(
         with(holder.itemView) {
             currentRecipe = recipes[position]
             setOnClickListener { onItemClickListener.invoke(position) }
-            titleTextView.text = recipes[position].title
-            infoTextView.text = resources.getString(
-                    R.string.info_recipes,
-                    currentRecipe.ingredients.size.toString(),
-                    currentRecipe.portion.toString(),
-                    currentRecipe.time.toString()
-            )
-            categoryTextView.text = recipes[position].type
-            with(favoritesButton) {
-                text = if (!recipes[position].isBookmarked) context.getString(R.string.save) else context.getString(R.string.Delete)
-                setOnClickListener {
-                    onFavoriteClickListener.invoke(recipes[position])
-                }
-            }
+            titleTextView.text = recipes[position].title.toLowerCase()
+            ingredientsTextView.text = recipes[position].ingredients.size.toString()
+            timeTextView.text = recipes[position].time.toString()
+            portionTextView.text = recipes[position].portion.toString()
+
+//            with(favoritesButton) {
+//                text = if (!recipes[position].isBookmarked) context.getString(R.string.save) else context.getString(R.string.Delete)
+//                setOnClickListener {
+//                    onFavoriteClickListener.invoke(recipes[position])
+//                }
+//            }
         }
     }
 

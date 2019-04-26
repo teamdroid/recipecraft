@@ -31,8 +31,7 @@ class IngredientsAdapter(var onItemClickListener: (position: Int) -> Unit) : Rec
             titleTexView.text = resources.getString(
                     R.string.ingredients_list_text,
                     items[position].title,
-                    DecimalFormat("#.#").format(items[position].amount).takeUnless { it == "0" }
-                            ?: "",
+                    DecimalFormat("#.#").format(items[position].amount).takeUnless { it == "0" } ?: "",
                     items[position].measureTitle
             )
         }
