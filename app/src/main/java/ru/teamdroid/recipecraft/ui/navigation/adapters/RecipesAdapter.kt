@@ -3,6 +3,7 @@ package ru.teamdroid.recipecraft.ui.navigation.adapters
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.layout_list_recipes_item.view.*
 import ru.teamdroid.recipecraft.R
@@ -32,18 +33,18 @@ class RecipesAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         with(holder.itemView) {
             currentRecipe = recipes[position]
-            setOnClickListener { onItemClickListener.invoke(position) }
+            cardView.setOnClickListener { onItemClickListener.invoke(position) }
             titleTextView.text = recipes[position].title.toLowerCase()
             ingredientsTextView.text = recipes[position].ingredients.size.toString()
             timeTextView.text = recipes[position].time.toString()
             portionTextView.text = recipes[position].portion.toString()
 
-//            with(favoritesButton) {
-//                text = if (!recipes[position].isBookmarked) context.getString(R.string.save) else context.getString(R.string.Delete)
-//                setOnClickListener {
-//                    onFavoriteClickListener.invoke(recipes[position])
-//                }
-//            }
+            with(favoriteImageView) {
+                if (recipes[position].isBookmarked) setImageDrawable(ContextCompat.getDrawable(context, R.drawable.star_active)) else setImageDrawable(ContextCompat.getDrawable(context, R.drawable.star_inactive))
+                setOnClickListener {
+                    onFavoriteClickListener.invoke(recipes[position])
+                }
+            }
         }
     }
 

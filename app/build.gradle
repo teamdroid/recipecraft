@@ -39,7 +39,6 @@ dependencies {
     implementation "com.google.dagger:dagger:$rootProject.dagger"
     implementation "com.google.dagger:dagger-android:$rootProject.dagger"
     implementation "com.google.dagger:dagger-android-support:$rootProject.dagger"
-
     implementation "androidx.room:room-rxjava2:2.1.0-alpha06"
     implementation "androidx.room:room-runtime:2.1.0-alpha06"
     implementation 'com.google.firebase:firebase-core:16.0.8'
