@@ -5,7 +5,6 @@
     android:layout_height="wrap_content"
     android:layout_marginBottom="@dimen/size_small"
     android:layout_marginTop="@dimen/size_small"
-
     android:background="?android:attr/selectableItemBackground">
 
     <ImageView
