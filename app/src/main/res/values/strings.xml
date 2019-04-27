@@ -53,6 +53,7 @@
     <string name="portion_content_description">portion</string>
     <string name="image_content_description">image</string>
     <string name="favorite_content_description">favorite</string>
+    <string name="no_favorite_recipes_text">Пока нет ни одного рецепта в избранном :(</string>
 
     <string-array name="sort_recipes">
         <item>Рецепты (Cначала новые)</item>

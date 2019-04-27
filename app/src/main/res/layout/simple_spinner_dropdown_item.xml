@@ -4,7 +4,7 @@
     android:id="@android:id/text1"
     android:singleLine="true"
     android:gravity="center_vertical"
-    android:textColor="@color/textWhite"
+    android:textColor="@android:color/black"
     android:paddingStart="@dimen/size_small"
     android:paddingEnd="@dimen/size_small"
     android:layout_width="match_parent"

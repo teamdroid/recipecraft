@@ -6,6 +6,7 @@
     <dimen name="size_xxsmall">2dp</dimen>
     <dimen name="size_xsmall">4dp</dimen>
     <dimen name="size_small">8dp</dimen>
+    <dimen name="size_ssmedium">10dp</dimen>
     <dimen name="size_smedium">12dp</dimen>
     <dimen name="size_medium">16dp</dimen>
     <dimen name="size_large">24dp</dimen>
