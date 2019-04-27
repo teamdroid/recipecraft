@@ -1,10 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#795547</color>
-    <color name="colorPrimaryDark">#483429</color>
+    <color name="colorPrimary">#DB5645</color>
+    <color name="colorPrimaryDark">#DB5645</color>
     <color name="colorAccent">#b3b3b3</color>
     <color name="colorActive">#de5c00</color>
     <color name="colorUnselected">#000000</color>
     <color name="textWhite">#FFF</color>
     <color name="textRed">#c90000</color>
+    <color name="ingredient_color_background">#FF614C</color>
+    <color name="time_color_background">#FF7F4D</color>
+    <color name="portion_color_background">#FF9D4D</color>
 </resources>

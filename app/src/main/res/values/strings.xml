@@ -48,6 +48,11 @@
     <string name="empty_recipes">Нет рецептов</string>
     <string name="empty_ingredients">Нет выбранных ингредиентов</string>
     <string name="not_found_text">Ничего не найдено</string>
+    <string name="ingredients_content_description">ingredients</string>
+    <string name="time_content_description">time_content_description</string>
+    <string name="portion_content_description">portion</string>
+    <string name="image_content_description">image</string>
+    <string name="favorite_content_description">favorite</string>
 
     <string-array name="sort_recipes">
         <item>Рецепты (Cначала новые)</item>
