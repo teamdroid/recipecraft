@@ -17,7 +17,7 @@
         <item name="tabMode">fixed</item>
     </style>
 
-    <style name="Toolbar">//ToolbarStyle изменен 
+    <style name="Toolbar">
         <item name="android:background">@android:color/white</item>
         <item name="android:textColorPrimary">@android:color/black</item>
         <item name="android:textColorSecondary">@android:color/black</item>
