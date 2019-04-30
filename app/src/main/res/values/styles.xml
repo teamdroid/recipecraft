@@ -17,14 +17,14 @@
         <item name="tabMode">fixed</item>
     </style>
 
-    <style name="ToolBarStyle">
+    <style name="Toolbar">//ToolbarStyle изменен
         <item name="android:background">@android:color/white</item>
         <item name="android:textColorPrimary">@android:color/black</item>
         <item name="android:textColorSecondary">@android:color/black</item>
         <item name="actionMenuTextColor">@android:color/black</item>
     </style>
 
-    <style name="CustomSpinnerStyle">
+    <style name="Spinner">//CustomSpinnerStyle изменен
         <item name="android:textColor">@android:color/black</item>
     </style>
 
