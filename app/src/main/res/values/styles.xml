@@ -24,7 +24,7 @@
         <item name="actionMenuTextColor">@android:color/black</item>
     </style>
 
-    <style name="Spinner">//CustomSpinnerStyle изменен
+    <style name="Spinner">
         <item name="android:textColor">@android:color/black</item>
     </style>
 
