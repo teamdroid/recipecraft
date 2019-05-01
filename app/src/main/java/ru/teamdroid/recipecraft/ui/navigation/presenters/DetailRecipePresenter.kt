@@ -6,6 +6,7 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.OnLifecycleEvent
 import io.reactivex.Scheduler
 import io.reactivex.disposables.CompositeDisposable
+import ru.teamdroid.recipecraft.data.model.Recipe
 import ru.teamdroid.recipecraft.data.repository.RecipeRepository
 import ru.teamdroid.recipecraft.ui.navigation.contracts.DetailRecipeContract
 import ru.teamdroid.recipecraft.util.schedulers.RunOn
@@ -26,6 +27,12 @@ class DetailRecipePresenter @Inject constructor(private var repository: RecipeRe
         compositeDisposable = CompositeDisposable()
     }
 
+    override fun bookmarkRecipe(recipe: Recipe) {
+        compositeDisposable.add(repository.bookmark(recipe)
+                .subscribeOn(ioScheduler)
+                .observeOn(uiScheduler)
+                .subscribe({ view.showBookmarked(!recipe.isBookmarked) }, { }))
+    }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
     override fun onAttach() {
