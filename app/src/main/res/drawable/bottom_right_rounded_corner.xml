@@ -2,5 +2,5 @@
     <solid android:color="@color/portion_color_background" />
     <corners
         android:bottomRightRadius="10dp"
-        android:topRightRadius="10dp"/>
+        android:topRightRadius="10dp" />
 </shape>

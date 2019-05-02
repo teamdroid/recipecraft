@@ -59,6 +59,7 @@
     <string name="ingredient_title_header">ингредиенты</string>
     <string name="measure_text"> %s %s</string>
     <string name="no_favorite_recipes_text">Пока нет ни одного рецепта в избранном :(</string>
+    <string name="star_inactive_content_description">star_inactive</string>
 
     <string-array name="sort_recipes">
         <item>Рецепты (Cначала новые)</item>

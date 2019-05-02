@@ -1,6 +1,10 @@
 package ru.teamdroid.recipecraft.ui.navigation.adapters
 
 import android.graphics.Typeface.BOLD
+import android.text.Spannable
+import android.text.SpannableString
+import android.text.style.RelativeSizeSpan
+import android.text.style.StyleSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,10 +12,6 @@ import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.layout_list_ingredients_item.view.*
 import ru.teamdroid.recipecraft.R
 import ru.teamdroid.recipecraft.data.model.Instruction
-import android.text.Spannable
-import android.text.SpannableString
-import android.text.style.RelativeSizeSpan
-import android.text.style.StyleSpan
 import ru.teamdroid.recipecraft.ui.base.ViewType
 
 class InstructionAdapter(var onItemClickListener: (position: Int) -> Unit) : RecyclerView.Adapter<InstructionAdapter.ViewHolder>() {
@@ -37,7 +37,7 @@ class InstructionAdapter(var onItemClickListener: (position: Int) -> Unit) : Rec
             setOnClickListener { onItemClickListener.invoke(position) }
 
             var positionInstruction = position
-            val spannable = SpannableString((++positionInstruction).toString() +" "+ items[position].title)
+            val spannable = SpannableString((++positionInstruction).toString() + " " + items[position].title)
 
             with(spannable) {
                 setSpan(

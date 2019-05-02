@@ -9,6 +9,6 @@ interface DetailRecipeContract {
     }
 
     interface Presenter : BasePresenter<View> {
-        fun bookmarkRecipe(recipe : Recipe)
+        fun bookmarkRecipe(recipe: Recipe)
     }
 }

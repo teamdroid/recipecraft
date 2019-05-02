@@ -1,14 +1,19 @@
 package ru.teamdroid.recipecraft.ui.navigation.fragments
 
+import android.graphics.Rect
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
+import androidx.core.content.ContextCompat
+import androidx.core.widget.NestedScrollView
 import androidx.lifecycle.LifecycleRegistry
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_detail_recipe.*
 import org.jetbrains.anko.bundleOf
 import ru.teamdroid.recipecraft.R
 import ru.teamdroid.recipecraft.data.model.Recipe
 import ru.teamdroid.recipecraft.ui.base.BaseFragment
+import ru.teamdroid.recipecraft.ui.base.customs.CustomGridLayoutManager
 import ru.teamdroid.recipecraft.ui.navigation.adapters.IngredientsAdapter
 import ru.teamdroid.recipecraft.ui.navigation.adapters.InstructionAdapter
 import ru.teamdroid.recipecraft.ui.navigation.components.DaggerDetailRecipeComponent
@@ -16,14 +21,6 @@ import ru.teamdroid.recipecraft.ui.navigation.contracts.DetailRecipeContract
 import ru.teamdroid.recipecraft.ui.navigation.modules.DetailRecipePresenterModule
 import ru.teamdroid.recipecraft.ui.navigation.presenters.DetailRecipePresenter
 import javax.inject.Inject
-import android.graphics.Rect
-import android.util.Log
-import androidx.core.content.ContextCompat
-import androidx.core.widget.NestedScrollView
-import com.google.android.material.snackbar.Snackbar
-import kotlinx.android.synthetic.main.fragment_detail_recipe.toolbar
-import kotlinx.android.synthetic.main.fragment_recipes.*
-import ru.teamdroid.recipecraft.ui.base.customs.CustomGridLayoutManager
 
 class DetailRecipeFragment : BaseFragment(), DetailRecipeContract.View {
 

@@ -95,7 +95,8 @@
                     app:layout_constraintBottom_toBottomOf="@+id/titleTextView"
                     app:layout_constraintLeft_toRightOf="@id/titleTextView"
                     app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/titleTextView" />
+                    app:layout_constraintTop_toTopOf="@+id/titleTextView"
+                    android:contentDescription="@string/star_inactive_content_description" />
 
                 <TextView
                     android:id="@+id/time_info_text"

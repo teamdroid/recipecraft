@@ -22,23 +22,23 @@ class SelectIngredientsDialog : DialogFragment() {
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-            val selectedItems = ArrayList<String>()
-        val builder = AlertDialog.Builder(targetFragment?.context) // fix
-            builder.setTitle(getString(R.string.list_ingredients_text))
-                    .setMultiChoiceItems(listIngredients.toTypedArray(), null) { _, which, isChecked ->
-                        if (isChecked) {
-                            selectedItems.add(listIngredients[which])
-                        } else if (selectedItems.contains(listIngredients[which])) {
-                            selectedItems.remove(listIngredients[which])
-                        }
+        val selectedItems = ArrayList<String>()
+        val builder = AlertDialog.Builder(targetFragment?.context)
+        builder.setTitle(getString(R.string.list_ingredients_text))
+                .setMultiChoiceItems(listIngredients.toTypedArray(), null) { _, which, isChecked ->
+                    if (isChecked) {
+                        selectedItems.add(listIngredients[which])
+                    } else if (selectedItems.contains(listIngredients[which])) {
+                        selectedItems.remove(listIngredients[which])
                     }
-                    .setPositiveButton(R.string.ok) { dialog, _ ->
-                        (targetFragment as OnSubmitClickListener).onSubmitClicked(selectedItems)
-                        dialog.dismiss()
-                    }
-                    .setNegativeButton(getString(R.string.cancel)) { dialog, _ ->
-                        dialog.dismiss()
-                    }
+                }
+                .setPositiveButton(R.string.ok) { dialog, _ ->
+                    (targetFragment as OnSubmitClickListener).onSubmitClicked(selectedItems)
+                    dialog.dismiss()
+                }
+                .setNegativeButton(getString(R.string.cancel)) { dialog, _ ->
+                    dialog.dismiss()
+                }
         return builder.create()
     }
 
