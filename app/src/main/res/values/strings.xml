@@ -36,7 +36,6 @@
     <string name="close_text">Закрыть</string>
     <string name="ingredients_text">Ингредиенты</string>
     <string name="information_detail_recipe_text">Время: %d мин. | Порций: %d \nИнгредиентов: %s | Инструкций: %s</string>
-    <string name="ingredients_list_text">%s - %s %s</string>
     <string name="instructions_title_text">Инструкции</string>
     <string name="instructions_text">%d) %s</string>
     <string name="select_ingredients_text_btn">Выбрать ингредиенты</string>
@@ -53,6 +52,14 @@
     <string name="portion_content_description">portion</string>
     <string name="image_content_description">image</string>
     <string name="favorite_content_description">favorite</string>
+    <string name="ingredients_info_text">%s \n ингред</string>
+    <string name="time_info_text">%s \n минут</string>
+    <string name="portion_info_text">%s \n порции</string>
+    <string name="instruction_title_header">инструкция</string>
+    <string name="ingredient_title_header">ингредиенты</string>
+    <string name="measure_text"> %s %s</string>
+    <string name="no_favorite_recipes_text">Пока нет ни одного рецепта в избранном :(</string>
+    <string name="star_inactive_content_description">star_inactive</string>
 
     <string-array name="sort_recipes">
         <item>Рецепты (Cначала новые)</item>

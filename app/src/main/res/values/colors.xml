@@ -10,4 +10,6 @@
     <color name="ingredient_color_background">#FF614C</color>
     <color name="time_color_background">#FF7F4D</color>
     <color name="portion_color_background">#FF9D4D</color>
+    <color name="color_main_text">#475161</color>
+    <color name="colorBackgroundList">#EBE8D8</color>
 </resources>

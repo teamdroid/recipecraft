@@ -1,117 +1,164 @@
-<?xml version="1.0" encoding="utf-8"?>
-<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/coordinatorLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appBarLayout"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:orientation="vertical">
+        android:layout_height="192dp"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
-        <com.google.android.material.appbar.AppBarLayout
-            android:id="@+id/appBarLayout"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-            app:layout_constraintBottom_toTopOf="@+id/imageView"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+        <com.google.android.material.appbar.CollapsingToolbarLayout
+            android:id="@+id/collapsing_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:contentScrim="?attr/colorPrimary"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed">
+
+            <ImageView
+                android:id="@+id/toolbarImage"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:scaleType="centerCrop"
+                android:src="@drawable/ic_placeholder_recipes"
+                app:layout_collapseMode="parallax" />
 
             <androidx.appcompat.widget.Toolbar
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
-                android:background="@color/colorPrimary" />
-        </com.google.android.material.appbar.AppBarLayout>
+                app:layout_collapseMode="pin"
+                app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
 
+        </com.google.android.material.appbar.CollapsingToolbarLayout>
+    </com.google.android.material.appbar.AppBarLayout>
 
-        <ImageView
-            android:id="@+id/imageView"
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/nestedScrollView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="fill_vertical"
+        android:fillViewport="true"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="@dimen/size_xxxlarge"
-            android:contentDescription="@string/placeholder_detail_recipe"
-            android:scaleType="centerCrop"
-            android:src="@drawable/ic_placeholder_recipes"
-            app:layout_constraintBottom_toTopOf="@id/information_text"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/appBarLayout" />
+            android:layout_height="match_parent">
 
-        <TextView
-            android:id="@+id/information_text"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/size_small"
-            android:layout_marginTop="@dimen/size_medium"
-            android:layout_marginBottom="@dimen/size_small"
-            android:textAlignment="center"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toTopOf="@id/ingredients_text"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imageView" />
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/contentDetailRecipeConstraintLayout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="@dimen/size_medium">
 
-        <TextView
-            android:id="@+id/ingredients_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/size_small"
-            android:layout_marginTop="@dimen/size_small"
-            android:layout_marginBottom="@dimen/size_medium"
-            android:text="@string/ingredients_text"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toTopOf="@id/ingredientsRecyclerView"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/information_text"
-            app:layout_constraintVertical_chainStyle="spread_inside" />
+                <TextView
+                    android:id="@+id/titleTextView"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/size_large"
+                    android:layout_marginTop="@dimen/size_medium"
+                    android:layout_marginBottom="@dimen/size_small"
+                    android:fontFamily="@font/ubuntu_medium"
+                    android:maxLines="2"
+                    android:textColor="@color/color_main_text"
+                    android:textSize="@dimen/text_size_large"
+                    app:layout_constraintBottom_toTopOf="@id/ingredient_info_text"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toLeftOf="@+id/favoriteImageView"
+                    app:layout_constraintTop_toTopOf="parent" />
 
+                <TextView
+                    android:id="@+id/ingredient_info_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/size_small"
+                    android:background="@drawable/bottom_left_rounded_corner"
+                    android:fontFamily="@font/ubuntu_medium"
+                    android:padding="@dimen/size_medium"
+                    android:textAlignment="center"
+                    android:textColor="@color/textWhite"
+                    app:layout_constraintBottom_toTopOf="@id/ingredientsRecyclerView"
+                    app:layout_constraintEnd_toStartOf="@+id/time_info_text"
+                    app:layout_constraintHorizontal_chainStyle="packed"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/titleTextView" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/ingredientsRecyclerView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:nestedScrollingEnabled="false"
-            app:layout_constraintBottom_toTopOf="@+id/instructions_text"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/ingredients_text" />
+                <ImageView
+                    android:id="@+id/favoriteImageView"
+                    android:layout_width="27dp"
+                    android:layout_height="27dp"
+                    android:layout_marginStart="@dimen/size_medium"
+                    android:layout_marginEnd="@dimen/size_medium"
+                    android:src="@drawable/star_inactive"
+                    app:layout_constraintBottom_toBottomOf="@+id/titleTextView"
+                    app:layout_constraintLeft_toRightOf="@id/titleTextView"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/titleTextView"
+                    android:contentDescription="@string/star_inactive_content_description" />
 
-        <TextView
-            android:id="@+id/instructions_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/size_small"
-            android:layout_marginTop="@dimen/size_small"
-            android:layout_marginBottom="@dimen/size_small"
-            android:text="@string/instructions_title_text"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toTopOf="@+id/instructionsRecyclerView"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/ingredientsRecyclerView"
-            app:layout_constraintVertical_chainStyle="spread_inside" />
+                <TextView
+                    android:id="@+id/time_info_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@color/time_color_background"
+                    android:fontFamily="@font/ubuntu_medium"
+                    android:padding="@dimen/size_medium"
+                    android:textAlignment="center"
+                    android:textColor="@color/textWhite"
+                    app:layout_constraintBottom_toBottomOf="@id/ingredient_info_text"
+                    app:layout_constraintEnd_toStartOf="@id/portion_info_text"
+                    app:layout_constraintHorizontal_chainStyle="packed"
+                    app:layout_constraintStart_toEndOf="@id/ingredient_info_text"
+                    app:layout_constraintTop_toTopOf="@id/ingredient_info_text" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/instructionsRecyclerView"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_marginBottom="@dimen/size_small"
-            android:clipToPadding="false"
-            android:nestedScrollingEnabled="false"
-            android:paddingTop="@dimen/size_small"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/instructions_text">
+                <TextView
+                    android:id="@+id/portion_info_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bottom_right_rounded_corner"
+                    android:fontFamily="@font/ubuntu_medium"
+                    android:padding="@dimen/size_medium"
+                    android:textAlignment="center"
+                    android:textColor="@color/textWhite"
+                    app:layout_constraintBottom_toBottomOf="@id/time_info_text"
+                    app:layout_constraintHorizontal_chainStyle="packed"
+                    app:layout_constraintLeft_toRightOf="@+id/time_info_text"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/time_info_text" />
 
-        </androidx.recyclerview.widget.RecyclerView>
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/ingredientsRecyclerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/size_medium"
+                    android:background="@drawable/rounded_corner"
+                    android:clipToPadding="false"
+                    android:nestedScrollingEnabled="false"
+                    android:paddingBottom="@dimen/size_small"
+                    app:layout_constraintBottom_toTopOf="@+id/instructionsRecyclerView"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/ingredient_info_text" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
-</androidx.core.widget.NestedScrollView>
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/instructionsRecyclerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/size_medium"
+                    android:layout_marginRight="@dimen/size_medium"
+                    android:layout_marginBottom="40dp"
+                    android:clipToPadding="false"
+                    android:nestedScrollingEnabled="false"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/ingredientsRecyclerView" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </FrameLayout>
+    </androidx.core.widget.NestedScrollView>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

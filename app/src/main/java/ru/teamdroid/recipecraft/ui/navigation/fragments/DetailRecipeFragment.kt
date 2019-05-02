@@ -1,9 +1,13 @@
 package ru.teamdroid.recipecraft.ui.navigation.fragments
 
+import android.graphics.Rect
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
+import androidx.core.content.ContextCompat
+import androidx.core.widget.NestedScrollView
 import androidx.lifecycle.LifecycleRegistry
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_detail_recipe.*
 import org.jetbrains.anko.bundleOf
 import ru.teamdroid.recipecraft.R
@@ -62,7 +66,7 @@ class DetailRecipeFragment : BaseFragment(), DetailRecipeContract.View {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setupToolbar(toolbar, true, recipe?.title ?: "")
+        setupToolbar(toolbar, true, "")
 
         with(ingredientsRecyclerView) {
             adapter = ingredientsAdapter
@@ -77,14 +81,40 @@ class DetailRecipeFragment : BaseFragment(), DetailRecipeContract.View {
         ingredientsAdapter.items = recipe?.ingredients ?: arrayListOf()
         instructionsAdapter.items = recipe?.instructions ?: arrayListOf()
 
-        information_text.text = resources.getString(
-                R.string.information_detail_recipe_text,
-                recipe?.time,
-                recipe?.portion,
-                recipe?.ingredients?.size.toString(),
-                recipe?.instructions?.size.toString()
-        )
+        recipe?.isBookmarked?.let { isBookmarked(it) }
+
+        nestedScrollView.setOnScrollChangeListener { v: NestedScrollView?, _: Int, _: Int, _: Int, _: Int ->
+            val react = Rect()
+            v?.getHitRect(react)
+            if (titleTextView.getLocalVisibleRect(react)) {
+                collapsing_toolbar.title = ""
+            } else {
+                collapsing_toolbar.title = recipe?.title ?: ""
+            }
+        }
+
+        titleTextView.text = recipe?.title
+        ingredient_info_text.text = resources.getString(R.string.ingredients_info_text, recipe?.ingredients?.size.toString())
+        time_info_text.text = resources.getString(R.string.time_info_text, recipe?.time.toString())
+        portion_info_text.text = resources.getString(R.string.portion_info_text, recipe?.portion.toString())
+
+        favoriteImageView.setOnClickListener {
+            recipe?.let { presenter.bookmarkRecipe(it) }
+        }
+
     }
+
+    override fun showBookmarked(isBookmarked: Boolean) {
+        recipe?.let { it.isBookmarked = !it.isBookmarked }
+        isBookmarked(isBookmarked)
+        val snackBar = Snackbar.make(coordinatorLayout, if (isBookmarked) getString(R.string.bookmarked) else getString(R.string.unbookmark_text), 500)
+        snackBar.setAction(getString(R.string.close_text)) { snackBar.dismiss() }.setActionTextColor(resources.getColor(R.color.textWhite)).show()
+    }
+
+    private fun isBookmarked(isBookmarked: Boolean) {
+        if (isBookmarked) favoriteImageView.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.star_active)) else favoriteImageView.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.star_inactive))
+    }
+
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
@@ -99,6 +129,8 @@ class DetailRecipeFragment : BaseFragment(), DetailRecipeContract.View {
     override fun onDestroyView() {
         ingredientsRecyclerView.adapter = null
         instructionsRecyclerView.adapter = null
+        favoriteImageView.setOnClickListener(null)
+        nestedScrollView.setOnClickListener(null)
         super.onDestroyView()
     }
 

@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.layout_list_ingredients_item.view.*
 import ru.teamdroid.recipecraft.R
 import ru.teamdroid.recipecraft.data.model.Ingredient
+import ru.teamdroid.recipecraft.ui.base.ViewType
 import java.text.DecimalFormat
 
 class IngredientsAdapter(var onItemClickListener: (position: Int) -> Unit) : RecyclerView.Adapter<IngredientsAdapter.ViewHolder>() {
@@ -20,20 +21,28 @@ class IngredientsAdapter(var onItemClickListener: (position: Int) -> Unit) : Rec
     override fun getItemCount() = items.size
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.layout_list_ingredients_item, parent, false)
-        return ViewHolder(view)
+        return when (viewType) {
+            ViewType.Header -> ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.layout_list_ingredients_item_header, parent, false))
+            else -> ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.layout_list_ingredients_item, parent, false))
+        }
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         with(holder.itemView) {
             setOnClickListener { onItemClickListener.invoke(position) }
-
-            titleTexView.text = resources.getString(
-                    R.string.ingredients_list_text,
-                    items[position].title,
-                    DecimalFormat("#.#").format(items[position].amount).takeUnless { it == "0" } ?: "",
+            titleTexView.text = items[position].title.toLowerCase()
+            measureTextView.text = resources.getString(
+                    R.string.measure_text,
+                    DecimalFormat("#.#").format(items[position].amount).toLowerCase().takeUnless { it == "0" } ?: "",
                     items[position].measureTitle
-            )
+            ).trimStart()
+        }
+    }
+
+    override fun getItemViewType(position: Int): Int {
+        return when (position) {
+            ViewType.Header -> ViewType.Header
+            else -> ViewType.Normal
         }
     }
 
