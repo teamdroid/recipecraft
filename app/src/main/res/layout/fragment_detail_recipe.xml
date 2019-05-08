@@ -79,7 +79,7 @@
                     android:padding="@dimen/size_medium"
                     android:textAlignment="center"
                     android:textColor="@color/textWhite"
-                    app:layout_constraintBottom_toTopOf="@id/ingredientsRecyclerView"
+                    app:layout_constraintBottom_toTopOf="@id/favoriteRecipesRecyclerView"
                     app:layout_constraintEnd_toStartOf="@+id/time_info_text"
                     app:layout_constraintHorizontal_chainStyle="packed"
                     app:layout_constraintStart_toStartOf="parent"
@@ -129,7 +129,7 @@
                     app:layout_constraintTop_toTopOf="@id/time_info_text" />
 
                 <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/ingredientsRecyclerView"
+                    android:id="@+id/favoriteRecipesRecyclerView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="@dimen/size_medium"
@@ -156,7 +156,7 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/ingredientsRecyclerView" />
+                    app:layout_constraintTop_toBottomOf="@+id/favoriteRecipesRecyclerView" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
         </FrameLayout>

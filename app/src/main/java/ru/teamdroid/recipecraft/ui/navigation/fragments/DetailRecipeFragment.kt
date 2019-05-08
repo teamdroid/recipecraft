@@ -68,7 +68,7 @@ class DetailRecipeFragment : BaseFragment(), DetailRecipeContract.View {
         super.onViewCreated(view, savedInstanceState)
         setupToolbar(toolbar, true, "")
 
-        with(ingredientsRecyclerView) {
+        with(favoriteRecipesRecyclerView) {
             adapter = ingredientsAdapter
             layoutManager = CustomGridLayoutManager(context)
         }
@@ -127,7 +127,7 @@ class DetailRecipeFragment : BaseFragment(), DetailRecipeContract.View {
     }
 
     override fun onDestroyView() {
-        ingredientsRecyclerView.adapter = null
+        favoriteRecipesRecyclerView.adapter = null
         instructionsRecyclerView.adapter = null
         favoriteImageView.setOnClickListener(null)
         nestedScrollView.setOnClickListener(null)
