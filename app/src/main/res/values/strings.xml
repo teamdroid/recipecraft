@@ -71,6 +71,18 @@
     <string name="feedback_text">Обратная связь</string>
     <string name="fragment_about_title">О приложении</string>
     <string name="fragment_settings_application_title">Настройки приложения</string>
+    <string name="tag_settings">SETTINGS</string>
+    <string name="tag_about">ABOUT</string>
+    <string name="tag_feedback">FEEDBACK</string>
+    <string name="tag_favorite">FAVORITE</string>
+    <string name="tag_sign_out">SIGN_OUT</string>
+    <string name="tag_sign_in">SIGN_IN</string>
+
+    <string name="about_version_app">Текущая версия: %s</string>
+    <string name="sign_out_text">Выйти из аккаунта</string>
+    <string name="tag_navigation_craft">CRAFT</string>
+    <string name="tag_navigation_recipe">RECIPE</string>
+    <string name="tag_navigation_profile">PROFILE</string>
 
     <string-array name="sort_recipes">
         <item>Рецепты (Cначала новые)</item>

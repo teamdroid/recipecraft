@@ -102,7 +102,7 @@ class CraftFragment : BaseFragment(), CraftRecipeContract.View, OnSubmitClickLis
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.action_report -> {
-                baseActivity.replaceFragment(ReportFragment.newInstance(), NavigationFragment.TAG)
+                baseActivity.replaceFragment(FeedbackFragment.newInstance(), NavigationFragment.TAG)
                 true
             }
             else -> super.onOptionsItemSelected(item)

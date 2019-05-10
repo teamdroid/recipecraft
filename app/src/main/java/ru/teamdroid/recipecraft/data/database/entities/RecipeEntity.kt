@@ -17,7 +17,9 @@ data class RecipeEntity(
         @ColumnInfo(name = "type")
         var type: String = "",
         @ColumnInfo(name = "isBookmarked")
-        var isBookmarked: Boolean = false
+        var isBookmarked: Boolean = false,
+        @ColumnInfo(name = "countIngredients")
+        var countIngredients: Int = 0
 )
 
 

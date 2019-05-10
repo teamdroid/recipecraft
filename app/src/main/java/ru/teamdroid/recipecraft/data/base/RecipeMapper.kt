@@ -46,7 +46,7 @@ class RecipeMapper : Mapper<Recipe, RecipeEntity> {
     fun mapRecipe(recipes: MutableList<Recipe>): MutableList<RecipeEntity> {
         val recipesEntities: MutableList<RecipeEntity> = arrayListOf()
         for (recipe in recipes) {
-            val recipeEntity = RecipeEntity(recipe.idRecipe, recipe.title, recipe.time, recipe.portion, recipe.type, recipe.isBookmarked)
+            val recipeEntity = RecipeEntity(recipe.idRecipe, recipe.title, recipe.time, recipe.portion, recipe.type, recipe.isBookmarked, recipe.ingredients.size)
             recipesEntities.add(recipeEntity)
         }
         return recipesEntities

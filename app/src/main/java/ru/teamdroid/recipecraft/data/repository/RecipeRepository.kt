@@ -1,5 +1,6 @@
 package ru.teamdroid.recipecraft.data.repository
 
+import android.util.Log
 import io.reactivex.Completable
 import io.reactivex.Flowable
 import io.reactivex.Single
@@ -10,17 +11,20 @@ import javax.inject.Inject
 
 class RecipeRepository @Inject constructor(private val recipeDataSource: RecipesDataSource) {
 
-    fun loadRecipes(forceRemote: Boolean): Flowable<MutableList<Recipe>> {
+    fun loadRecipes(forceRemote: Boolean, sortType : String): Flowable<MutableList<Recipe>> {
+
+        Log.d("ewrwerw", sortType)
+
         return if (forceRemote) {
-            loadRemoteRecipes()
+            loadRemoteRecipes(sortType)
         } else {
-            recipeDataSource.loadLocalRecipes()
+            recipeDataSource.loadLocalRecipes(sortType)
         }
     }
 
-    private fun loadRemoteRecipes(): Flowable<MutableList<Recipe>> {
+    private fun loadRemoteRecipes(sortType : String): Flowable<MutableList<Recipe>> {
         return recipeDataSource.loadRemoteRecipes().switchMap {
-            recipeDataSource.addRecipes(it).andThen(recipeDataSource.loadLocalRecipes())
+            recipeDataSource.addRecipes(it).andThen(recipeDataSource.loadLocalRecipes(sortType))
         }
     }
 

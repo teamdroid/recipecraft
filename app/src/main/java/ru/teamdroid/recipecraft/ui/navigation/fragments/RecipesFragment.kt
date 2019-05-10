@@ -1,6 +1,7 @@
 package ru.teamdroid.recipecraft.ui.navigation.fragments
 
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
@@ -92,7 +93,7 @@ class RecipesFragment : BaseFragment(), RecipesContract.View {
                         2 -> currentSort = SortRecipes.ByIngredients
                         3 -> currentSort = SortRecipes.ByTime
                     }
-                    sort(currentSort)
+                    presenter.loadRecipes(isOnline(), currentSort)
                     notifyDataSetChanged()
                 }
             }
@@ -118,7 +119,7 @@ class RecipesFragment : BaseFragment(), RecipesContract.View {
         progressBar.visibility = View.VISIBLE
         swipeRefreshLayout.isRefreshing = false
         recipesAdapter.recipes = arrayListOf()
-        presenter.loadRecipes(onlineRequired)
+        presenter.loadRecipes(onlineRequired, currentSort)
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -127,10 +128,11 @@ class RecipesFragment : BaseFragment(), RecipesContract.View {
     }
 
     override fun showRecipes(recipes: MutableList<Recipe>) {
-        recipesAdapter.apply {
-            this.recipes = recipes
-            sort(currentSort)
-        }
+
+        Log.d("ewrwerw", recipes.toString())
+
+        recipesAdapter.recipes.clear()
+        recipesAdapter.recipes = recipes
         setInvisibleRefreshing()
     }
 
@@ -149,7 +151,7 @@ class RecipesFragment : BaseFragment(), RecipesContract.View {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.action_report -> {
-                baseActivity.replaceFragment(ReportFragment.newInstance(), NavigationFragment.TAG)
+                baseActivity.replaceFragment(FeedbackFragment.newInstance(), NavigationFragment.TAG)
                 true
             }
             else -> super.onOptionsItemSelected(item)

@@ -1,6 +1,7 @@
 package ru.teamdroid.recipecraft.data.database
 
 import androidx.room.*
+import androidx.sqlite.db.SupportSQLiteQuery
 import io.reactivex.Completable
 import io.reactivex.Flowable
 import io.reactivex.Single
@@ -8,9 +9,8 @@ import ru.teamdroid.recipecraft.data.database.entities.*
 
 @Dao
 interface RecipesDao {
-
-    @Query("SELECT * FROM recipe")
-    fun getAllRecipes(): Flowable<MutableList<RecipeEntity>>
+    @RawQuery(observedEntities = [RecipeEntity::class])
+    fun getAllRecipes(sortQuery: SupportSQLiteQuery): Flowable<MutableList<RecipeEntity>>
 
     @Query("SELECT * FROM recipe WHERE idRecipe IN (:listRecipesIds)")
     fun getRecipesByIds(listRecipesIds: List<Int>): Flowable<MutableList<RecipeEntity>>

@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.Fragment
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
@@ -16,10 +17,11 @@ import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.fragment_favorites.toolbar
 import kotlinx.android.synthetic.main.fragment_profile.*
 import org.jetbrains.anko.image
+
 import ru.teamdroid.recipecraft.R
 import ru.teamdroid.recipecraft.ui.base.BaseFragment
 import ru.teamdroid.recipecraft.ui.base.CircleTransform
-
+import ru.teamdroid.recipecraft.ui.base.Screens
 
 class ProfileFragment : BaseFragment() {
 
@@ -27,7 +29,18 @@ class ProfileFragment : BaseFragment() {
 
     private lateinit var mAuth: FirebaseAuth
     private lateinit var mGoogleSignInClient: GoogleSignInClient
-    private lateinit var mAuthListner: FirebaseAuth.AuthStateListener
+    private lateinit var mAuthListener: FirebaseAuth.AuthStateListener
+
+    private val clickListener = View.OnClickListener { view ->
+        when (view.tag) {
+            SIGN_IN -> signIn()
+            SIGN_OUT -> logout()
+            Screens.SETTINGS -> replaceScreen(SettingsFragment.newInstance())
+            Screens.ABOUT -> replaceScreen(AboutFragment.newInstance())
+            Screens.FAVORITE -> replaceScreen(FavoritesFragment.newInstance())
+            Screens.FEEDBACK -> replaceScreen(FeedbackFragment.newInstance())
+        }
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -42,33 +55,7 @@ class ProfileFragment : BaseFragment() {
 
         mAuth = FirebaseAuth.getInstance()
 
-
-        signInTextView.setOnClickListener {
-            signIn()
-        }
-
-        logoutTextView.setOnClickListener {
-            logout()
-        }
-
-
-        settingsTextView.setOnClickListener {
-            baseActivity.replaceFragment(SettingsFragment.newInstance(), NavigationFragment.TAG)
-        }
-
-        favoritesTextView.setOnClickListener {
-            baseActivity.replaceFragment(FavoritesFragment.newInstance(), NavigationFragment.TAG)
-        }
-
-        aboutTextView.setOnClickListener {
-            baseActivity.replaceFragment(AboutFragment.newInstance(), NavigationFragment.TAG)
-        }
-
-        feedbackTextView.setOnClickListener {
-            baseActivity.replaceFragment(ReportFragment.newInstance(), NavigationFragment.TAG)
-        }
-
-        mAuthListner = FirebaseAuth.AuthStateListener {
+        mAuthListener = FirebaseAuth.AuthStateListener {
             if (it.currentUser != null) {
                 usernameTextView.text = mAuth.currentUser?.displayName
                 Picasso.with(context)
@@ -86,8 +73,19 @@ class ProfileFragment : BaseFragment() {
             }
         }
 
-        mAuth.addAuthStateListener(mAuthListner)
+        settingsTextView.setOnClickListener(clickListener)
+        aboutTextView.setOnClickListener(clickListener)
+        favoritesTextView.setOnClickListener(clickListener)
+        feedbackTextView.setOnClickListener(clickListener)
+        signInTextView.setOnClickListener(clickListener)
+        logoutTextView.setOnClickListener(clickListener)
 
+        mAuth.addAuthStateListener(mAuthListener)
+
+    }
+
+    private fun replaceScreen(fragment: Fragment) {
+        baseActivity.replaceFragment(fragment, NavigationFragment.TAG)
     }
 
     private fun logout() {
@@ -128,7 +126,14 @@ class ProfileFragment : BaseFragment() {
                 }
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        mAuth.removeAuthStateListener(mAuthListener)
+    }
+
     companion object {
+        const val SIGN_IN = "SIGN_IN"
+        const val SIGN_OUT = "SIGN_OUT"
         const val RC_SIGN_IN = 123
         fun newInstance() = ProfileFragment()
     }

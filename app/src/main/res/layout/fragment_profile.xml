@@ -74,10 +74,11 @@
                 android:fontFamily="@font/ubuntu_regular"
                 android:paddingLeft="@dimen/size_medium"
                 android:paddingTop="@dimen/size_medium"
-                android:textColor="#475161"
                 android:paddingRight="@dimen/size_medium"
                 android:paddingBottom="@dimen/size_medium"
+                android:tag="@string/tag_settings"
                 android:text="@string/settings_application_text"
+                android:textColor="#475161"
                 android:textSize="16sp" />
 
             <TextView
@@ -86,16 +87,17 @@
                 android:layout_height="wrap_content"
                 android:background="?android:attr/selectableItemBackground"
                 android:clickable="true"
-                android:drawableStart="@drawable/ic_star_dark"
+                android:drawableStart="@drawable/ic_favorite"
                 android:drawablePadding="@dimen/size_smedium"
                 android:focusable="true"
-                android:textColor="#475161"
                 android:fontFamily="@font/ubuntu_regular"
                 android:paddingLeft="@dimen/size_medium"
                 android:paddingTop="@dimen/size_medium"
                 android:paddingRight="@dimen/size_medium"
                 android:paddingBottom="@dimen/size_medium"
+                android:tag="@string/tag_favorite"
                 android:text="@string/fragment_favorites_title"
+                android:textColor="#475161"
                 android:textSize="16sp" />
 
             <TextView
@@ -104,16 +106,17 @@
                 android:layout_height="wrap_content"
                 android:background="?android:attr/selectableItemBackground"
                 android:clickable="true"
-                android:drawableStart="@mipmap/ic_feedback"
+                android:drawableStart="@drawable/ic_feedback"
                 android:drawablePadding="@dimen/size_smedium"
                 android:focusable="true"
-                android:textColor="#475161"
                 android:fontFamily="@font/ubuntu_regular"
                 android:paddingLeft="@dimen/size_medium"
                 android:paddingTop="@dimen/size_medium"
                 android:paddingRight="@dimen/size_medium"
                 android:paddingBottom="@dimen/size_medium"
+                android:tag="@string/tag_feedback"
                 android:text="@string/feedback_text"
+                android:textColor="#475161"
                 android:textSize="16sp" />
 
             <TextView
@@ -129,9 +132,10 @@
                 android:paddingLeft="@dimen/size_medium"
                 android:paddingTop="@dimen/size_medium"
                 android:paddingRight="@dimen/size_medium"
-                android:textColor="#475161"
                 android:paddingBottom="@dimen/size_medium"
+                android:tag="@string/tag_about"
                 android:text="@string/about_application_text"
+                android:textColor="#475161"
                 android:textSize="16sp" />
 
             <TextView
@@ -148,9 +152,11 @@
                 android:paddingTop="@dimen/size_medium"
                 android:paddingRight="@dimen/size_medium"
                 android:paddingBottom="@dimen/size_medium"
+                android:tag="@string/tag_sign_in"
                 android:text="@string/sign_in_text"
                 android:textColor="#FF614C"
-                android:textSize="16sp" />
+                android:textSize="16sp"
+                android:visibility="invisible" />
 
             <TextView
                 android:id="@+id/logoutTextView"
@@ -165,11 +171,12 @@
                 android:paddingLeft="@dimen/size_medium"
                 android:paddingTop="@dimen/size_medium"
                 android:paddingRight="@dimen/size_medium"
-                android:visibility="invisible"
                 android:paddingBottom="@dimen/size_medium"
-                android:text="Выйти из аккаунта"
+                android:tag="@string/tag_sign_out"
+                android:text="@string/sign_out_text"
                 android:textColor="#475161"
-                android:textSize="16sp" />
+                android:textSize="16sp"
+                android:visibility="invisible" />
 
         </LinearLayout>
 

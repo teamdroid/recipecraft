@@ -1,5 +1,6 @@
 package ru.teamdroid.recipecraft.data.repository
 
+import androidx.sqlite.db.SimpleSQLiteQuery
 import io.reactivex.Completable
 import io.reactivex.Flowable
 import io.reactivex.Single
@@ -74,8 +75,9 @@ class RecipeDataSourceImpl @Inject constructor(private val recipeDao: RecipesDao
         return recipeDao.insertRecipeInstructions(recipeMapper.mapRecipeInstructions(listRecipeInstructions))
     }
 
-    override fun loadLocalRecipes(): Flowable<MutableList<Recipe>> {
-        return recipeDao.getAllRecipes()
+    override fun loadLocalRecipes(sortType: String): Flowable<MutableList<Recipe>> {
+        val sqlQuery = "SELECT * FROM recipe ORDER BY $sortType DESC"
+        return recipeDao.getAllRecipes(SimpleSQLiteQuery(sqlQuery))
                 .flatMap {
                     Flowable.fromIterable(it).flatMapSingle { recipe ->
                         recipeDao.getAllRecipeIngredientsById(recipe.idRecipe)
