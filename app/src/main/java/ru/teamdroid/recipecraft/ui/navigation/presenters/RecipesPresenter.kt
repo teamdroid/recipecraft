@@ -33,6 +33,10 @@ class RecipesPresenter @Inject constructor(private var repository: RecipeReposit
     }
 
     override fun loadRecipes(onlineRequired: Boolean, sortType: String) {
+
+
+        Log.d("wow", "heck $sortType")
+
         if (recipeDisposable != null) recipeDisposable?.dispose()
         recipeDisposable = repository.loadRecipes(onlineRequired, sortType)
                 .subscribeOn(ioScheduler)
