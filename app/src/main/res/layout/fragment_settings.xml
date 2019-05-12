@@ -37,29 +37,29 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-        <TextView
-            android:id="@+id/versionAppTextView"
-            android:layout_width="wrap_content"
-            android:layout_margin="@dimen/size_medium"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/ubuntu_medium"
-            android:textSize="16sp"
-            android:textColor="#475161"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:text="Показывать уведомления" />
+            <TextView
+                android:id="@+id/showNotificationsTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/size_medium"
+                android:fontFamily="@font/ubuntu_medium"
+                android:text="@string/show_notifications_text"
+                android:textColor="@color/color_main_text"
+                android:textSize="@dimen/text_size_small"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <Switch
-                android:id="@+id/switch1"
+                android:id="@+id/notificationSwitch"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/size_medium"
                 android:checked="true"
-                app:layout_constraintLeft_toRightOf="@id/versionAppTextView"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintBottom_toBottomOf="@id/versionAppTextView"
+                app:layout_constraintBottom_toBottomOf="@id/showNotificationsTextView"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@id/versionAppTextView" />
+                app:layout_constraintLeft_toRightOf="@id/showNotificationsTextView"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="@id/showNotificationsTextView" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

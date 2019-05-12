@@ -33,10 +33,9 @@
 
         <ImageView
             android:id="@+id/profileImageView"
-            android:layout_width="64dp"
-            android:layout_height="64dp"
+            android:layout_width="@dimen/size_xxxlarge"
+            android:layout_height="@dimen/size_xxxlarge"
             android:layout_margin="@dimen/size_medium"
-            android:background="@drawable/circle"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -46,7 +45,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/size_medium"
             android:fontFamily="@font/ubuntu_medium"
-            android:textSize="24sp"
+            android:textSize="@dimen/text_size_xlarge"
             app:layout_constraintBottom_toBottomOf="@id/profileImageView"
             app:layout_constraintLeft_toRightOf="@id/profileImageView"
             app:layout_constraintTop_toTopOf="@id/profileImageView" />
@@ -77,8 +76,8 @@
                 android:paddingBottom="@dimen/size_medium"
                 android:tag="@string/tag_settings"
                 android:text="@string/settings_application_text"
-                android:textColor="#475161"
-                android:textSize="16sp" />
+                android:textColor="@color/color_main_text"
+                android:textSize="@dimen/text_size_small" />
 
             <TextView
                 android:id="@+id/favoritesTextView"
@@ -96,8 +95,8 @@
                 android:paddingBottom="@dimen/size_medium"
                 android:tag="@string/tag_favorite"
                 android:text="@string/fragment_favorites_title"
-                android:textColor="#475161"
-                android:textSize="16sp" />
+                android:textColor="@color/color_main_text"
+                android:textSize="@dimen/text_size_small" />
 
             <TextView
                 android:id="@+id/feedbackTextView"
@@ -115,8 +114,8 @@
                 android:paddingBottom="@dimen/size_medium"
                 android:tag="@string/tag_feedback"
                 android:text="@string/feedback_text"
-                android:textColor="#475161"
-                android:textSize="16sp" />
+                android:textColor="@color/color_main_text"
+                android:textSize="@dimen/text_size_small" />
 
             <TextView
                 android:id="@+id/aboutTextView"
@@ -134,8 +133,8 @@
                 android:paddingBottom="@dimen/size_medium"
                 android:tag="@string/tag_about"
                 android:text="@string/about_application_text"
-                android:textColor="#475161"
-                android:textSize="16sp" />
+                android:textColor="@color/color_main_text"
+                android:textSize="@dimen/text_size_small" />
 
             <TextView
                 android:id="@+id/signInTextView"
@@ -153,8 +152,8 @@
                 android:paddingBottom="@dimen/size_medium"
                 android:tag="@string/tag_sign_in"
                 android:text="@string/sign_in_text"
-                android:textColor="#FF614C"
-                android:textSize="16sp"
+                android:textColor="@color/dark_orange_color"
+                android:textSize="@dimen/text_size_small"
                 android:visibility="invisible" />
 
             <TextView
@@ -173,8 +172,8 @@
                 android:paddingBottom="@dimen/size_medium"
                 android:tag="@string/tag_sign_out"
                 android:text="@string/sign_out_text"
-                android:textColor="#475161"
-                android:textSize="16sp"
+                android:textColor="@color/color_main_text"
+                android:textSize="@dimen/text_size_small"
                 android:visibility="invisible" />
 
         </LinearLayout>

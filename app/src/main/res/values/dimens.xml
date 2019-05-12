@@ -20,7 +20,7 @@
     <dimen name="text_size_small">17sp</dimen>
     <dimen name="text_size_medium">20sp</dimen>
     <dimen name="text_size_large">22sp</dimen>
-
+    <dimen name="text_size_xlarge">24sp</dimen>
 
     <dimen name="max_height_image">100dp</dimen>
     <dimen name="max_width_image">100dp</dimen>

@@ -16,7 +16,7 @@ class AboutFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupToolbar(toolbar, true, getString(R.string.fragment_about_title))
-        versionAppTextView.text = resources.getString(R.string.about_version_app, BuildConfig.VERSION_NAME)
+        showNotificationsTextView.text = resources.getString(R.string.about_version_app, BuildConfig.VERSION_NAME)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

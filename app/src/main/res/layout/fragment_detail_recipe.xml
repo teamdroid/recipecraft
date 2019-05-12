@@ -102,7 +102,7 @@
                     android:id="@+id/time_info_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@color/time_color_background"
+                    android:background="@color/bright_orange_color"
                     android:fontFamily="@font/ubuntu_medium"
                     android:padding="@dimen/size_medium"
                     android:textAlignment="center"

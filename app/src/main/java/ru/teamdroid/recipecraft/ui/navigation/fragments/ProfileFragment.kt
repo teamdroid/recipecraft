@@ -17,6 +17,7 @@ import ru.teamdroid.recipecraft.AppModule
 import ru.teamdroid.recipecraft.R
 import ru.teamdroid.recipecraft.ui.base.BaseFragment
 import ru.teamdroid.recipecraft.ui.base.CircleTransform
+import ru.teamdroid.recipecraft.ui.base.Constants
 import ru.teamdroid.recipecraft.ui.base.Screens
 import ru.teamdroid.recipecraft.ui.navigation.components.DaggerProfileComponent
 import ru.teamdroid.recipecraft.ui.navigation.contracts.ProfileContract
@@ -37,8 +38,8 @@ class ProfileFragment : BaseFragment(), ProfileContract.View {
             Screens.ABOUT -> replaceScreen(AboutFragment.newInstance())
             Screens.FAVORITE -> replaceScreen(FavoritesFragment.newInstance())
             Screens.FEEDBACK -> replaceScreen(FeedbackFragment.newInstance())
-            SIGN_IN -> signIn()
-            SIGN_OUT -> logout()
+            Constants.SIGN_IN -> signIn()
+            Constants.SIGN_OUT -> logout()
         }
     }
 
@@ -61,7 +62,8 @@ class ProfileFragment : BaseFragment(), ProfileContract.View {
 
         presenter.onAttachView()
 
-        listOf(settingsTextView, aboutTextView, favoritesTextView, feedbackTextView, signInTextView, logoutTextView).forEach {
+        listOf(settingsTextView, aboutTextView, favoritesTextView,
+                feedbackTextView, signInTextView, logoutTextView).forEach {
             it.setOnClickListener(clickListener)
         }
     }
@@ -97,7 +99,7 @@ class ProfileFragment : BaseFragment(), ProfileContract.View {
     }
 
     override fun signInWithGoogle(signInIntent: Intent) {
-        startActivityForResult(signInIntent, RC_SIGN_IN)
+        startActivityForResult(signInIntent, Constants.REQUEST_CODE_SIGN_IN)
     }
 
     override fun onDestroyView() {
@@ -112,7 +114,7 @@ class ProfileFragment : BaseFragment(), ProfileContract.View {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == RC_SIGN_IN) {
+        if (requestCode == Constants.REQUEST_CODE_SIGN_IN) {
             try {
                 presenter.firebaseAuthWithGoogle(GoogleSignIn.getSignedInAccountFromIntent(data).getResult(ApiException::class.java))
             } catch (e: ApiException) {
@@ -123,9 +125,6 @@ class ProfileFragment : BaseFragment(), ProfileContract.View {
 
     companion object {
         const val TAG = "ProfileFragment"
-        const val SIGN_IN = "SIGN_IN"
-        const val SIGN_OUT = "SIGN_OUT"
-        const val RC_SIGN_IN = 12
         fun newInstance() = ProfileFragment()
     }
 }
