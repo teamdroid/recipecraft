@@ -32,7 +32,7 @@ class NavigationFragment : BaseFragment() {
         with(tabLayout) {
 
             Screens.tabs.forEachIndexed { index, _ ->
-                setTabIcon(index, false);
+                setTabIcon(index, false)
             }
 
             addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
@@ -55,20 +55,15 @@ class NavigationFragment : BaseFragment() {
     }
 
     private fun setTabIcon(position: Int, isSelected: Boolean){
-        when(position){
-            0 -> {
-                tabLayout.getTabAt(position)?.setIcon(if(isSelected) R.drawable.ic_menu_craft_active
-                                                        else R.drawable.ic_menu_craft_inactive)
-            }
-            1 -> {
-                tabLayout.getTabAt(position)?.setIcon(if(isSelected) R.drawable.ic_menu_recipe_active
-                                                        else R.drawable.ic_menu_recipe_inactive)
-            }
-            2 -> {
-                tabLayout.getTabAt(position)?.setIcon(if(isSelected) R.drawable.ic_menu_profile_active
-                                                        else R.drawable.ic_menu_profile_inactive)
-            }
+        when(Screens.tabs[position]){
+            Screens.CRAFT -> changeIcon(position, if (isSelected) R.drawable.ic_menu_craft_active else R.drawable.ic_menu_craft_inactive)
+            Screens.RECIPES -> changeIcon(position, if (isSelected) R.drawable.ic_menu_recipe_active else R.drawable.ic_menu_recipe_inactive)
+            Screens.PROFILE -> changeIcon(position, if (isSelected) R.drawable.ic_menu_profile_active else R.drawable.ic_menu_profile_inactive)
         }
+    }
+
+    private fun changeIcon(position: Int, icon: Int) {
+        tabLayout.getTabAt(position)?.setIcon(icon)
     }
 
     fun replaceScreen(screenKey: String) {
@@ -86,7 +81,7 @@ class NavigationFragment : BaseFragment() {
         return when (screenKey) {
             Screens.CRAFT -> CraftFragment.newInstance()
             Screens.RECIPES -> RecipesFragment.newInstance()
-            Screens.FAVORITES -> FavoritesFragment.newInstance()
+            Screens.PROFILE -> FavoritesFragment.newInstance()
             else -> CraftFragment.newInstance()
         }
     }
