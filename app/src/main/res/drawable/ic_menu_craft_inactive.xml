@@ -1,4 +1,5 @@
-<vector xmlns:android="http://schemas.android.com/apk/res/android"
+<vector
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:viewportWidth="26"
     android:viewportHeight="33"
     android:width="26dp"
