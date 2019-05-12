@@ -4,8 +4,7 @@ import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
-import androidx.lifecycle.LifecycleRegistry
-import kotlinx.android.synthetic.main.fragment_report.*
+import kotlinx.android.synthetic.main.fragment_feedback.*
 import ru.teamdroid.recipecraft.R
 import ru.teamdroid.recipecraft.ui.base.BaseFragment
 import ru.teamdroid.recipecraft.ui.navigation.components.DaggerReportComponent
@@ -15,16 +14,12 @@ import ru.teamdroid.recipecraft.ui.navigation.modules.ReportPresenterModule
 import ru.teamdroid.recipecraft.ui.navigation.presenters.ReportPresenter
 import javax.inject.Inject
 
-class ReportFragment : BaseFragment(), ReportContract.View {
+class FeedbackFragment : BaseFragment(), ReportContract.View {
 
     @Inject
     internal lateinit var presenter: ReportPresenter
 
-    override val contentResId = R.layout.fragment_report
-
-    private val lifecycleRegistry = LifecycleRegistry(this)
-
-    override fun getLifecycle(): LifecycleRegistry = lifecycleRegistry
+    override val contentResId = R.layout.fragment_feedback
 
     private var reportDialog: ReportDialog? = null
 
@@ -92,6 +87,6 @@ class ReportFragment : BaseFragment(), ReportContract.View {
 
     companion object {
         const val TAG = "RecipesFragment"
-        fun newInstance() = ReportFragment()
+        fun newInstance() = FeedbackFragment()
     }
 }

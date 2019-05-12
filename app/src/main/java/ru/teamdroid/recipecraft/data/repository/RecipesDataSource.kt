@@ -9,7 +9,7 @@ import ru.teamdroid.recipecraft.data.model.Instruction
 import ru.teamdroid.recipecraft.data.model.Recipe
 
 interface RecipesDataSource {
-    fun loadLocalRecipes(): Flowable<MutableList<Recipe>>
+    fun loadLocalRecipes(sortType: String): Flowable<MutableList<Recipe>>
     fun loadBookmarkRecipes(): Flowable<MutableList<Recipe>>
     fun loadRemoteRecipes(): Flowable<MutableList<Recipe>>
     fun addRecipes(recipes: MutableList<Recipe>): Completable

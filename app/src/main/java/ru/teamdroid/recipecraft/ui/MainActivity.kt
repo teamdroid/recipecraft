@@ -17,9 +17,9 @@ class MainActivity : BaseActivity() {
         get() = (application as AndroidApplication).getRecipeRepositoryComponent()
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        setTheme(R.style.AppTheme)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
         with(baseContext) {
             if (getProperty(Constants.STARTUP, 1) == 1) isFirstStartup = true
             setProperty(Constants.STARTUP, getProperty(Constants.STARTUP, 1) + 1)

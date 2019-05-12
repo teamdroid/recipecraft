@@ -10,6 +10,6 @@ interface RecipesContract {
     }
 
     interface Presenter : BasePresenter<View> {
-        fun loadRecipes(onlineRequired: Boolean)
+        fun loadRecipes(onlineRequired: Boolean, sortType: String)
     }
 }

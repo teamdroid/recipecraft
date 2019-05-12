@@ -8,6 +8,10 @@
         <item name="colorAccent">@color/colorPrimary</item>
     </style>
 
+    <style name="AppTheme.Launcher">
+        <item name="android:windowBackground">@drawable/launch_screen</item>
+    </style>
+
     <style name="AppTabLayout" parent="Widget.Design.TabLayout">
         <item name="tabIndicatorHeight">0dp</item>
         <item name="tabPaddingStart">0dp</item>

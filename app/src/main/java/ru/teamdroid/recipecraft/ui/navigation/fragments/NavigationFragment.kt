@@ -77,7 +77,7 @@ class NavigationFragment : BaseFragment() {
         return when (screenKey) {
             Screens.CRAFT -> CraftFragment.newInstance()
             Screens.RECIPES -> RecipesFragment.newInstance()
-            Screens.PROFILE -> FavoritesFragment.newInstance()
+            Screens.PROFILE -> ProfileFragment.newInstance()
             else -> CraftFragment.newInstance()
         }
     }

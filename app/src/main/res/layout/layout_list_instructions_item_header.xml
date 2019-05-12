@@ -24,7 +24,7 @@
             android:layout_marginTop="@dimen/size_small"
             android:fontFamily="@font/ubuntu_medium"
             android:text="@string/instruction_title_header"
-            android:textColor="@color/ingredient_color_background"
+            android:textColor="@color/dark_orange_color"
             android:textSize="@dimen/text_size_small"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"

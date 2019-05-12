@@ -5,7 +5,7 @@ import ru.teamdroid.recipecraft.data.model.*
 
 class RecipeMapper : Mapper<Recipe, RecipeEntity> {
 
-    override fun map(value: Recipe): RecipeEntity = RecipeEntity(value.idRecipe, value.title, value.time, value.portion, value.type, value.isBookmarked)
+    override fun map(value: Recipe): RecipeEntity = RecipeEntity(value.idRecipe, value.title, value.time, value.portion, value.type, value.isBookmarked, value.ingredients.size)
     override fun reverseMap(value: RecipeEntity) = Recipe(value.idRecipe, value.title, value.time, value.portion)
 
     fun mapDetailRecipe(value: RecipeEntity, ingredientEntities: List<IngredientEntity>, listRecipeInstructions: MutableList<InstructionEntity>): Recipe {
@@ -46,7 +46,7 @@ class RecipeMapper : Mapper<Recipe, RecipeEntity> {
     fun mapRecipe(recipes: MutableList<Recipe>): MutableList<RecipeEntity> {
         val recipesEntities: MutableList<RecipeEntity> = arrayListOf()
         for (recipe in recipes) {
-            val recipeEntity = RecipeEntity(recipe.idRecipe, recipe.title, recipe.time, recipe.portion, recipe.type, recipe.isBookmarked)
+            val recipeEntity = RecipeEntity(recipe.idRecipe, recipe.title, recipe.time, recipe.portion, recipe.type, recipe.isBookmarked, recipe.ingredients.size)
             recipesEntities.add(recipeEntity)
         }
         return recipesEntities

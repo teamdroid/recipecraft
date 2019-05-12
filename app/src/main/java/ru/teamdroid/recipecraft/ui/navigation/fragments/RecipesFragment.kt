@@ -9,7 +9,6 @@ import android.widget.Adapter
 import android.widget.AdapterView
 import android.widget.AdapterView.OnItemSelectedListener
 import android.widget.ArrayAdapter
-import androidx.lifecycle.LifecycleRegistry
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_recipes.*
@@ -32,10 +31,6 @@ class RecipesFragment : BaseFragment(), RecipesContract.View {
     private var currentSort = SortRecipes.ByNewer
 
     override val contentResId = R.layout.fragment_recipes
-
-    private val lifecycleRegistry = LifecycleRegistry(this)
-
-    override fun getLifecycle(): LifecycleRegistry = lifecycleRegistry
 
     private val recipesAdapter by lazy {
         RecipesAdapter(
@@ -92,7 +87,7 @@ class RecipesFragment : BaseFragment(), RecipesContract.View {
                         2 -> currentSort = SortRecipes.ByIngredients
                         3 -> currentSort = SortRecipes.ByTime
                     }
-                    sort(currentSort)
+                    presenter.loadRecipes(isOnline(), currentSort)
                     notifyDataSetChanged()
                 }
             }
@@ -118,7 +113,7 @@ class RecipesFragment : BaseFragment(), RecipesContract.View {
         progressBar.visibility = View.VISIBLE
         swipeRefreshLayout.isRefreshing = false
         recipesAdapter.recipes = arrayListOf()
-        presenter.loadRecipes(onlineRequired)
+        presenter.loadRecipes(onlineRequired, currentSort)
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -127,10 +122,7 @@ class RecipesFragment : BaseFragment(), RecipesContract.View {
     }
 
     override fun showRecipes(recipes: MutableList<Recipe>) {
-        recipesAdapter.apply {
-            this.recipes = recipes
-            sort(currentSort)
-        }
+        recipesAdapter.recipes = recipes
         setInvisibleRefreshing()
     }
 
@@ -149,7 +141,7 @@ class RecipesFragment : BaseFragment(), RecipesContract.View {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.action_report -> {
-                baseActivity.replaceFragment(ReportFragment.newInstance(), NavigationFragment.TAG)
+                baseActivity.replaceFragment(FeedbackFragment.newInstance(), NavigationFragment.TAG)
                 true
             }
             else -> super.onOptionsItemSelected(item)

@@ -1,11 +1,8 @@
 package ru.teamdroid.recipecraft.ui.navigation.fragments
 
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
-import androidx.lifecycle.LifecycleRegistry
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_favorites.*
 import ru.teamdroid.recipecraft.R
@@ -24,10 +21,6 @@ class FavoritesFragment : BaseFragment(), FavoritesContract.View {
     internal lateinit var presenter: FavoritesPresenter
 
     override val contentResId = R.layout.fragment_favorites
-
-    private val lifecycleRegistry = LifecycleRegistry(this)
-
-    override fun getLifecycle(): LifecycleRegistry = lifecycleRegistry
 
     private val bookmarkRecipesAdapter by lazy {
         RecipesAdapter(
@@ -55,9 +48,9 @@ class FavoritesFragment : BaseFragment(), FavoritesContract.View {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setupToolbar(toolbar, false, getString(R.string.fragment_favorites_title))
+        setupToolbar(toolbar, true, getString(R.string.fragment_favorites_title))
 
-        with(ingredientsRecyclerView) {
+        with(favoriteRecipesRecyclerView) {
             adapter = bookmarkRecipesAdapter
             layoutManager = LinearLayoutManager(context)
         }
@@ -65,13 +58,14 @@ class FavoritesFragment : BaseFragment(), FavoritesContract.View {
         if (bookmarkRecipesAdapter.recipes.isEmpty()) {
             refresh()
         } else {
-            ingredientsRecyclerView.visibility = View.VISIBLE
+            favoriteRecipesRecyclerView.visibility = View.VISIBLE
             placeholderTextView.visibility = View.GONE
         }
 
         swipeRefreshLayout.setOnRefreshListener {
             refresh()
         }
+
     }
 
     private fun refresh() {
@@ -79,11 +73,6 @@ class FavoritesFragment : BaseFragment(), FavoritesContract.View {
         swipeRefreshLayout.isRefreshing = false
         bookmarkRecipesAdapter.recipes = ArrayList()
         presenter.loadRecipes()
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.menu_navigation, menu)
-        super.onCreateOptionsMenu(menu, inflater)
     }
 
     private fun onClick(position: Int) {
@@ -95,32 +84,30 @@ class FavoritesFragment : BaseFragment(), FavoritesContract.View {
         presenter.bookmarkRecipe(recipe)
     }
 
+    override fun showRecipes(recipes: MutableList<Recipe>) {
+        bookmarkRecipesAdapter.recipes = recipes
+        setInvisibleRefreshing()
+        if (recipes.isNotEmpty()) {
+            placeholderTextView.visibility = View.GONE
+            favoriteRecipesRecyclerView.visibility = View.VISIBLE
+        } else {
+            placeholderTextView.visibility = View.VISIBLE
+            favoriteRecipesRecyclerView.visibility = View.GONE
+        }
+    }
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
-            R.id.action_report -> {
-                baseActivity.replaceFragment(ReportFragment.newInstance(), NavigationFragment.TAG)
+            android.R.id.home -> {
+                onBack()
                 true
             }
             else -> super.onOptionsItemSelected(item)
         }
     }
 
-    override fun showRecipes(recipes: MutableList<Recipe>) {
-        bookmarkRecipesAdapter.recipes = recipes
-        if (isResumed) {
-            setInvisibleRefreshing()
-            if (recipes.isNotEmpty()) {
-                placeholderTextView.visibility = View.GONE
-                ingredientsRecyclerView.visibility = View.VISIBLE
-            } else {
-                placeholderTextView.visibility = View.VISIBLE
-                ingredientsRecyclerView.visibility = View.GONE
-            }
-        }
-    }
-
     override fun onDestroyView() {
-        ingredientsRecyclerView.adapter = null
+        favoriteRecipesRecyclerView.adapter = null
         super.onDestroyView()
     }
 

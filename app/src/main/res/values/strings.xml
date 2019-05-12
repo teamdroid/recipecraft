@@ -6,11 +6,11 @@
     <string name="available_feature_next_version_text">Функционал будет доступен в следующих версиях</string>
     <string name="fragment_craft_title">Создание рецепта</string>
     <string name="fragment_favorites_title">Избранное</string>
+    <string name="fragment_profile_title">Профиль</string>
     <string name="fragment_recipes_title">Рецепты</string>
     <string name="ok">Ок</string>
     <string name="first_startup_title">Внимание</string>
     <string name="first_startup_message">Спасибо за установку нашего приложения. \n\nВ данный момент проект находится в стадии альфы версии и не весь функционал может работать корректно. \n\nПожалуйста, в случае ошибки или пожелания дайте нам знать через обратную связь в верхнем правом углу экрана.</string>
-    <string name="menu_report">Report</string>
     <string name="report_title">Если у вас есть какие-то замечания или пожелания, пожалуйста, заполните анкету внизу</string>
     <string name="your_name_text">Ваше имя:</string>
     <string name="your_email_text">Ваш e-mail:</string>
@@ -60,6 +60,32 @@
     <string name="measure_text"> %s %s</string>
     <string name="no_favorite_recipes_text">Пока нет ни одного рецепта в избранном :(</string>
     <string name="star_inactive_content_description">star_inactive</string>
+    <string name="menu_sign_in">Войти</string>
+    <string name="menu_report">Обратная связь</string>
+    <string name="menu_logout">Выйти</string>
+    <string name="google_sign_in_failed">Google sign in failed</string>
+    <string name="user_logout_text">Вы вышли из своего аккаунта</string>
+    <string name="settings_application_text">Настройки приложения</string>
+    <string name="sign_in_text">Войти</string>
+    <string name="about_application_text">О приложении</string>
+    <string name="feedback_text">Обратная связь</string>
+    <string name="fragment_about_title">О приложении</string>
+    <string name="fragment_settings_application_title">Настройки приложения</string>
+    <string name="tag_settings">SETTINGS</string>
+    <string name="tag_about">ABOUT</string>
+    <string name="tag_feedback">FEEDBACK</string>
+    <string name="tag_favorite">FAVORITE</string>
+    <string name="tag_sign_out">SIGN_OUT</string>
+    <string name="tag_sign_in">SIGN_IN</string>
+
+    <string name="about_version_app">Текущая версия: %s</string>
+    <string name="sign_out_text">Выйти из аккаунта</string>
+    <string name="tag_navigation_craft">CRAFT</string>
+    <string name="tag_navigation_recipe">RECIPE</string>
+    <string name="tag_navigation_profile">PROFILE</string>
+    <string name="error_auth_text">Ошибка авторизации</string>
+    <string name="not_authorization_client_text">Неавторизованный</string>
+    <string name="show_notifications_text">Показывать уведомления</string>
 
     <string-array name="sort_recipes">
         <item>Рецепты (Cначала новые)</item>

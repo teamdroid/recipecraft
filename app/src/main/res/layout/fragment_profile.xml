@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/textWhite"
+    android:orientation="vertical">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appBarLayout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        app:elevation="0dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:theme="@style/Toolbar" />
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/appBarLayout">
+
+        <ImageView
+            android:id="@+id/profileImageView"
+            android:layout_width="@dimen/size_xxxlarge"
+            android:layout_height="@dimen/size_xxxlarge"
+            android:layout_margin="@dimen/size_medium"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/usernameTextView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/size_medium"
+            android:fontFamily="@font/ubuntu_medium"
+            android:textSize="@dimen/text_size_xlarge"
+            app:layout_constraintBottom_toBottomOf="@id/profileImageView"
+            app:layout_constraintLeft_toRightOf="@id/profileImageView"
+            app:layout_constraintTop_toTopOf="@id/profileImageView" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:orientation="vertical"
+            android:paddingTop="@dimen/size_medium"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/profileImageView">
+
+            <TextView
+                android:id="@+id/settingsTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="?android:attr/selectableItemBackground"
+                android:clickable="true"
+                android:drawableStart="@drawable/ic_settings"
+                android:drawablePadding="@dimen/size_smedium"
+                android:focusable="true"
+                android:fontFamily="@font/ubuntu_regular"
+                android:paddingLeft="@dimen/size_medium"
+                android:paddingTop="@dimen/size_medium"
+                android:paddingRight="@dimen/size_medium"
+                android:paddingBottom="@dimen/size_medium"
+                android:tag="@string/tag_settings"
+                android:text="@string/settings_application_text"
+                android:textColor="@color/color_main_text"
+                android:textSize="@dimen/text_size_small" />
+
+            <TextView
+                android:id="@+id/favoritesTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="?android:attr/selectableItemBackground"
+                android:clickable="true"
+                android:drawableStart="@drawable/ic_favorite"
+                android:drawablePadding="@dimen/size_smedium"
+                android:focusable="true"
+                android:fontFamily="@font/ubuntu_regular"
+                android:paddingLeft="@dimen/size_medium"
+                android:paddingTop="@dimen/size_medium"
+                android:paddingRight="@dimen/size_medium"
+                android:paddingBottom="@dimen/size_medium"
+                android:tag="@string/tag_favorite"
+                android:text="@string/fragment_favorites_title"
+                android:textColor="@color/color_main_text"
+                android:textSize="@dimen/text_size_small" />
+
+            <TextView
+                android:id="@+id/feedbackTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="?android:attr/selectableItemBackground"
+                android:clickable="true"
+                android:drawableStart="@drawable/ic_feedback"
+                android:drawablePadding="@dimen/size_smedium"
+                android:focusable="true"
+                android:fontFamily="@font/ubuntu_regular"
+                android:paddingLeft="@dimen/size_medium"
+                android:paddingTop="@dimen/size_medium"
+                android:paddingRight="@dimen/size_medium"
+                android:paddingBottom="@dimen/size_medium"
+                android:tag="@string/tag_feedback"
+                android:text="@string/feedback_text"
+                android:textColor="@color/color_main_text"
+                android:textSize="@dimen/text_size_small" />
+
+            <TextView
+                android:id="@+id/aboutTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="?android:attr/selectableItemBackground"
+                android:clickable="true"
+                android:drawableStart="@drawable/ic_about"
+                android:drawablePadding="@dimen/size_smedium"
+                android:focusable="true"
+                android:fontFamily="@font/ubuntu_regular"
+                android:paddingLeft="@dimen/size_medium"
+                android:paddingTop="@dimen/size_medium"
+                android:paddingRight="@dimen/size_medium"
+                android:paddingBottom="@dimen/size_medium"
+                android:tag="@string/tag_about"
+                android:text="@string/about_application_text"
+                android:textColor="@color/color_main_text"
+                android:textSize="@dimen/text_size_small" />
+
+            <TextView
+                android:id="@+id/signInTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="?android:attr/selectableItemBackground"
+                android:clickable="true"
+                android:drawableStart="@drawable/ic_sign_in"
+                android:drawablePadding="@dimen/size_smedium"
+                android:focusable="true"
+                android:fontFamily="@font/ubuntu_regular"
+                android:paddingLeft="@dimen/size_medium"
+                android:paddingTop="@dimen/size_medium"
+                android:paddingRight="@dimen/size_medium"
+                android:paddingBottom="@dimen/size_medium"
+                android:tag="@string/tag_sign_in"
+                android:text="@string/sign_in_text"
+                android:textColor="@color/dark_orange_color"
+                android:textSize="@dimen/text_size_small"
+                android:visibility="invisible" />
+
+            <TextView
+                android:id="@+id/logoutTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="?android:attr/selectableItemBackground"
+                android:clickable="true"
+                android:drawableStart="@drawable/ic_sign_out"
+                android:drawablePadding="@dimen/size_smedium"
+                android:focusable="true"
+                android:fontFamily="@font/ubuntu_regular"
+                android:paddingLeft="@dimen/size_medium"
+                android:paddingTop="@dimen/size_medium"
+                android:paddingRight="@dimen/size_medium"
+                android:paddingBottom="@dimen/size_medium"
+                android:tag="@string/tag_sign_out"
+                android:text="@string/sign_out_text"
+                android:textColor="@color/color_main_text"
+                android:textSize="@dimen/text_size_small"
+                android:visibility="invisible" />
+
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
