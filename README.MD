@@ -9,7 +9,7 @@
 ### Libraries Used 
 * Room
 * RxJava2
-* Firebase (Crashlytics)
+* Firebase (Authorization + Crashlytics)
 * Dagger
 * Retrofit
 * Picasso
