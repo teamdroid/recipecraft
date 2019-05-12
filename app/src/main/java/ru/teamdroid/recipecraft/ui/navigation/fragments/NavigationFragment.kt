@@ -1,10 +1,7 @@
 package ru.teamdroid.recipecraft.ui.navigation.fragments
 
-import android.graphics.PorterDuff
 import android.os.Bundle
 import android.view.View
-import androidx.annotation.ColorRes
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.fragment_nagivation.*
@@ -34,19 +31,15 @@ class NavigationFragment : BaseFragment() {
     private fun setupTabLayout() {
         with(tabLayout) {
 
-            Screens.tabs.forEachIndexed { index, _ ->
-                setTabColor(index, R.color.colorUnselected)
-            }
-
             addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
 
                 override fun onTabSelected(tab: TabLayout.Tab) {
-                    setTabColor(tab.position, R.color.colorActive)
+                    setTabIcon(tab.position, true)
                     replaceScreen(Screens.tabs[tab.position])
                 }
 
                 override fun onTabUnselected(tab: TabLayout.Tab) {
-                    setTabColor(tab.position, R.color.colorUnselected)
+                    setTabIcon(tab.position, false)
                 }
 
                 override fun onTabReselected(tab: TabLayout.Tab) {
@@ -57,8 +50,16 @@ class NavigationFragment : BaseFragment() {
         }
     }
 
-    private fun setTabColor(position: Int, @ColorRes colorRes: Int) {
-        tabLayout.getTabAt(position)?.let { tab -> tab.icon?.setColorFilter(ContextCompat.getColor(context, colorRes), PorterDuff.Mode.SRC_IN) }
+    private fun setTabIcon(position: Int, isSelected: Boolean){
+        when(Screens.tabs[position]){
+            Screens.CRAFT -> changeIcon(position, if (isSelected) R.drawable.ic_menu_craft_active else R.drawable.ic_menu_craft_inactive)
+            Screens.RECIPES -> changeIcon(position, if (isSelected) R.drawable.ic_menu_recipe_active else R.drawable.ic_menu_recipe_inactive)
+            Screens.PROFILE -> changeIcon(position, if (isSelected) R.drawable.ic_menu_profile_active else R.drawable.ic_menu_profile_inactive)
+        }
+    }
+
+    private fun changeIcon(position: Int, icon: Int) {
+        tabLayout.getTabAt(position)?.setIcon(icon)
     }
 
     fun replaceScreen(screenKey: String) {
@@ -76,7 +77,7 @@ class NavigationFragment : BaseFragment() {
         return when (screenKey) {
             Screens.CRAFT -> CraftFragment.newInstance()
             Screens.RECIPES -> RecipesFragment.newInstance()
-            Screens.FAVORITES -> FavoritesFragment.newInstance()
+            Screens.PROFILE -> FavoritesFragment.newInstance()
             else -> CraftFragment.newInstance()
         }
     }
