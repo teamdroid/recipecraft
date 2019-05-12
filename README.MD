@@ -7,7 +7,7 @@
 ### Architectural Pattern
 *  MVP
 ### Libraries Used 
-* Architecture Components: Room + Lifecycle
+* Room
 * RxJava2
 * Firebase (Crashlytics)
 * Dagger
