@@ -31,10 +31,6 @@ class NavigationFragment : BaseFragment() {
     private fun setupTabLayout() {
         with(tabLayout) {
 
-            Screens.tabs.forEachIndexed { index, _ ->
-                setTabIcon(index, false)
-            }
-
             addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
 
                 override fun onTabSelected(tab: TabLayout.Tab) {
