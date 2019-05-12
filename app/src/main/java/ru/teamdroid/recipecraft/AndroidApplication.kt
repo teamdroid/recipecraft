@@ -14,7 +14,7 @@ class AndroidApplication : Application() {
         super.onCreate()
         initializeDependencies()
         Stetho.initializeWithDefaults(this)
-        //LeakCanary.install(this)
+        LeakCanary.install(this)
     }
 
     private fun initializeDependencies() {
