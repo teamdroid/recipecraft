@@ -6,7 +6,6 @@ import android.view.MenuItem
 import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.core.widget.NestedScrollView
-import androidx.lifecycle.LifecycleRegistry
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_detail_recipe.*
 import org.jetbrains.anko.bundleOf
@@ -28,10 +27,6 @@ class DetailRecipeFragment : BaseFragment(), DetailRecipeContract.View {
     internal lateinit var presenter: DetailRecipePresenter
 
     override val contentResId = R.layout.fragment_detail_recipe
-
-    private val lifecycleRegistry = LifecycleRegistry(this)
-
-    override fun getLifecycle(): LifecycleRegistry = lifecycleRegistry
 
     private var recipe: Recipe? = null
 

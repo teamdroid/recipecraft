@@ -1,6 +1,5 @@
 package ru.teamdroid.recipecraft.data.repository
 
-import android.util.Log
 import io.reactivex.Completable
 import io.reactivex.Flowable
 import io.reactivex.Single
@@ -12,9 +11,6 @@ import javax.inject.Inject
 class RecipeRepository @Inject constructor(private val recipeDataSource: RecipesDataSource) {
 
     fun loadRecipes(forceRemote: Boolean, sortType : String): Flowable<MutableList<Recipe>> {
-
-        Log.d("ewrwerw", sortType)
-
         return if (forceRemote) {
             loadRemoteRecipes(sortType)
         } else {

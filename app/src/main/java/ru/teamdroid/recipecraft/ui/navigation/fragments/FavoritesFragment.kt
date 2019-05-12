@@ -3,7 +3,6 @@ package ru.teamdroid.recipecraft.ui.navigation.fragments
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
-import androidx.lifecycle.LifecycleRegistry
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_favorites.*
 import ru.teamdroid.recipecraft.R
@@ -22,10 +21,6 @@ class FavoritesFragment : BaseFragment(), FavoritesContract.View {
     internal lateinit var presenter: FavoritesPresenter
 
     override val contentResId = R.layout.fragment_favorites
-
-    private val lifecycleRegistry = LifecycleRegistry(this)
-
-    override fun getLifecycle(): LifecycleRegistry = lifecycleRegistry
 
     private val bookmarkRecipesAdapter by lazy {
         RecipesAdapter(

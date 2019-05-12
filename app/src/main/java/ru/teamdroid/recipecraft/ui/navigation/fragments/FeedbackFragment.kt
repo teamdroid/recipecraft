@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
-import androidx.lifecycle.LifecycleRegistry
 import kotlinx.android.synthetic.main.fragment_feedback.*
 import ru.teamdroid.recipecraft.R
 import ru.teamdroid.recipecraft.ui.base.BaseFragment
@@ -21,10 +20,6 @@ class FeedbackFragment : BaseFragment(), ReportContract.View {
     internal lateinit var presenter: ReportPresenter
 
     override val contentResId = R.layout.fragment_feedback
-
-    private val lifecycleRegistry = LifecycleRegistry(this)
-
-    override fun getLifecycle(): LifecycleRegistry = lifecycleRegistry
 
     private var reportDialog: ReportDialog? = null
 

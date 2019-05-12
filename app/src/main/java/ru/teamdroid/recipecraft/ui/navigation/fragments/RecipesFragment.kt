@@ -1,7 +1,6 @@
 package ru.teamdroid.recipecraft.ui.navigation.fragments
 
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
@@ -10,7 +9,6 @@ import android.widget.Adapter
 import android.widget.AdapterView
 import android.widget.AdapterView.OnItemSelectedListener
 import android.widget.ArrayAdapter
-import androidx.lifecycle.LifecycleRegistry
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_recipes.*
@@ -33,10 +31,6 @@ class RecipesFragment : BaseFragment(), RecipesContract.View {
     private var currentSort = SortRecipes.ByNewer
 
     override val contentResId = R.layout.fragment_recipes
-
-    private val lifecycleRegistry = LifecycleRegistry(this)
-
-    override fun getLifecycle(): LifecycleRegistry = lifecycleRegistry
 
     private val recipesAdapter by lazy {
         RecipesAdapter(
@@ -128,10 +122,6 @@ class RecipesFragment : BaseFragment(), RecipesContract.View {
     }
 
     override fun showRecipes(recipes: MutableList<Recipe>) {
-
-        Log.d("ewrwerw", recipes.toString())
-
-        recipesAdapter.recipes.clear()
         recipesAdapter.recipes = recipes
         setInvisibleRefreshing()
     }

@@ -37,7 +37,6 @@
             android:layout_height="64dp"
             android:layout_margin="@dimen/size_medium"
             android:background="@drawable/circle"
-            android:src="@drawable/ic_placeholder"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 

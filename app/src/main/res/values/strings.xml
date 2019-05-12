@@ -83,6 +83,8 @@
     <string name="tag_navigation_craft">CRAFT</string>
     <string name="tag_navigation_recipe">RECIPE</string>
     <string name="tag_navigation_profile">PROFILE</string>
+    <string name="error_auth_text">Ошибка авторизации</string>
+    <string name="not_authorization_client_text">Неавторизованный</string>
 
     <string-array name="sort_recipes">
         <item>Рецепты (Cначала новые)</item>

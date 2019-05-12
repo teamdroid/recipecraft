@@ -48,16 +48,5 @@ class RecipesAdapter(
         }
     }
 
-    fun sort(sortType: String) {
-        when (sortType) {
-            SortRecipes.ByNewer -> recipes.sortByDescending { it.idRecipe }
-            SortRecipes.ByIngredients -> recipes.sortBy { it.ingredients.size }
-            SortRecipes.ByTime -> recipes.sortBy { it.time }
-            SortRecipes.ByPortion -> recipes.sortByDescending { it.portion }
-
-        }
-    }
-
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view)
-
 }

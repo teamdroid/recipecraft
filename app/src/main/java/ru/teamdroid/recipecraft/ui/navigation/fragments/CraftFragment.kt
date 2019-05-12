@@ -6,7 +6,6 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
-import androidx.lifecycle.LifecycleRegistry
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_craft.*
@@ -32,8 +31,6 @@ class CraftFragment : BaseFragment(), CraftRecipeContract.View, OnSubmitClickLis
 
     override val contentResId = R.layout.fragment_craft
 
-    private val lifecycleRegistry = LifecycleRegistry(this)
-
     private val ingredientsAdapter by lazy {
         SimpleListAdapter(
                 onDeleteClickListener = {
@@ -53,8 +50,6 @@ class CraftFragment : BaseFragment(), CraftRecipeContract.View, OnSubmitClickLis
     }
 
     private var listIngredientsTitle: ArrayList<String> = arrayListOf()
-
-    override fun getLifecycle(): LifecycleRegistry = lifecycleRegistry
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
