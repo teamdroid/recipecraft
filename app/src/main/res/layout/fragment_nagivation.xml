@@ -26,17 +26,17 @@
         <com.google.android.material.tabs.TabItem
             android:layout_width="@dimen/size_large"
             android:layout_height="@dimen/size_large"
-            android:icon="@drawable/ic_navigation_craft" />
+            android:icon="@drawable/ic_menu_craft_inactive" />
 
         <com.google.android.material.tabs.TabItem
             android:layout_width="@dimen/size_large"
             android:layout_height="@dimen/size_large"
-            android:icon="@drawable/ic_navigation_catalog" />
+            android:icon="@drawable/ic_menu_recipe_inactive" />
 
         <com.google.android.material.tabs.TabItem
             android:layout_width="@dimen/size_large"
             android:layout_height="@dimen/size_large"
-            android:icon="@drawable/ic_navigation_favorites" />
+            android:icon="@drawable/ic_menu_profile_inactive" />
 
     </com.google.android.material.tabs.TabLayout>
 
