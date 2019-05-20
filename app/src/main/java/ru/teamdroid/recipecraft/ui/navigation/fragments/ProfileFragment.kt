@@ -108,8 +108,8 @@ class ProfileFragment : BaseFragment(), ProfileContract.View {
     }
 
     override fun onDestroy() {
-        presenter.onDestroy()
         super.onDestroy()
+        presenter.onDestroy()
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
