@@ -51,6 +51,8 @@ class CraftFragment : BaseFragment(), CraftRecipeContract.View, OnSubmitClickLis
 
     private var listIngredientsTitle: ArrayList<String> = arrayListOf()
 
+    var listSelectedIngredients: ArrayList<String> = arrayListOf()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         initializePresenter()
@@ -67,7 +69,6 @@ class CraftFragment : BaseFragment(), CraftRecipeContract.View, OnSubmitClickLis
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setupToolbar(toolbar, false, getString(R.string.fragment_craft_title))
 
         with(ingredientsRecyclerView) {
             adapter = ingredientsAdapter
@@ -86,6 +87,19 @@ class CraftFragment : BaseFragment(), CraftRecipeContract.View, OnSubmitClickLis
             selectIngredientsDialog.setTargetFragment(this, Constants.REQUEST_CODE)
             selectIngredientsDialog.show(requireFragmentManager(), TAG)
         }
+
+        ingredientsAdapter.setFragment(this)
+        ingredientsAdapter.setIngredientList(listIngredientsTitle);
+        loadRecipeCardView.setOnClickListener {
+            onSubmitClicked(listSelectedIngredients)
+        }
+
+        addIngredientsViewButton.setOnClickListener {
+            ingredientsAdapter.addItems("")
+        }
+
+
+        ingredientsAdapter.items = arrayListOf("", "", "")
 
     }
 
@@ -116,7 +130,6 @@ class CraftFragment : BaseFragment(), CraftRecipeContract.View, OnSubmitClickLis
     private fun onDeleteClick(ingredient: String) {
         ingredientsAdapter.items.remove(ingredient)
         ingredientsAdapter.notifyDataSetChanged()
-
         if (!ingredientsAdapter.isEmpty()) {
             presenter.findRecipeByIngredients(ingredientsAdapter.items, ingredientsAdapter.itemCount)
             setPlaceholderIfEmpty(false)
@@ -145,7 +158,6 @@ class CraftFragment : BaseFragment(), CraftRecipeContract.View, OnSubmitClickLis
     }
 
     override fun onSubmitClicked(list: ArrayList<String>) {
-        ingredientsAdapter.items = list
         if (list.isNotEmpty()) {
             setPlaceholderIfEmpty(false)
             presenter.findRecipeByIngredients(list, list.size)
@@ -156,16 +168,13 @@ class CraftFragment : BaseFragment(), CraftRecipeContract.View, OnSubmitClickLis
         }
     }
 
+
     private fun setPlaceholderIfEmpty(isEmpty: Boolean) {
         if (!isEmpty) {
-            emptyIngredients.visibility = View.INVISIBLE
             emptyRecipes.visibility = View.INVISIBLE
-            ingredientsCardView.visibility = View.VISIBLE
             recipesRecyclerView.visibility = View.VISIBLE
         } else {
-            emptyIngredients.visibility = View.VISIBLE
             emptyRecipes.visibility = View.VISIBLE
-            ingredientsCardView.visibility = View.INVISIBLE
             recipesRecyclerView.visibility = View.INVISIBLE
         }
     }

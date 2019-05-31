@@ -1,5 +1,6 @@
 package ru.teamdroid.recipecraft.ui.navigation.adapters
 
+import android.text.Editable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,6 +10,7 @@ import ru.teamdroid.recipecraft.R
 import ru.teamdroid.recipecraft.data.model.Ingredient
 import ru.teamdroid.recipecraft.ui.base.ViewType
 import java.text.DecimalFormat
+import javax.annotation.meta.When
 
 class IngredientsAdapter(var onItemClickListener: (position: Int) -> Unit) : RecyclerView.Adapter<IngredientsAdapter.ViewHolder>() {
 
@@ -30,7 +32,7 @@ class IngredientsAdapter(var onItemClickListener: (position: Int) -> Unit) : Rec
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         with(holder.itemView) {
             setOnClickListener { onItemClickListener.invoke(position) }
-            titleTexView.text = items[position].title.toLowerCase()
+            titleTextView.text = items[position].title.toLowerCase()
             measureTextView.text = resources.getString(
                     R.string.measure_text,
                     DecimalFormat("#.#").format(items[position].amount).toLowerCase().takeUnless { it == "0" } ?: "",

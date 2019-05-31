@@ -7,9 +7,11 @@
     <color name="colorUnselected">#000000</color>
     <color name="textWhite">#FFF</color>
     <color name="textRed">#c90000</color>
+    <color name="textGray">#828383</color>
     <color name="dark_orange_color">#FF614C</color>
     <color name="bright_orange_color">#FF7F4D</color>
     <color name="light_orange_color">#FF9D4D</color>
     <color name="color_main_text">#475161</color>
     <color name="colorBackgroundList">#EBE8D8</color>
+    <color name="colorBackgroundIngredients">#FF614C</color>
 </resources>

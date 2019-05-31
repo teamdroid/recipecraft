@@ -21,7 +21,7 @@
 
 
     <TextView
-        android:id="@+id/titleTexView"
+        android:id="@+id/titleTextView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/size_xlarge"
@@ -46,10 +46,10 @@
         android:layout_marginEnd="@dimen/size_small"
         android:fontFamily="@font/ubuntu_light"
         android:gravity="start"
-        app:layout_constraintBottom_toBottomOf="@+id/titleTexView"
+        app:layout_constraintBottom_toBottomOf="@+id/titleTextView"
         app:layout_constraintHorizontal_chainStyle="packed"
-        app:layout_constraintLeft_toRightOf="@id/titleTexView"
+        app:layout_constraintLeft_toRightOf="@id/titleTextView"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/titleTexView" />
+        app:layout_constraintTop_toTopOf="@+id/titleTextView" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

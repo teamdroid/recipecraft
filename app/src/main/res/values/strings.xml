@@ -39,6 +39,7 @@
     <string name="instructions_title_text">Инструкции</string>
     <string name="instructions_text">%d) %s</string>
     <string name="select_ingredients_text_btn">Выбрать ингредиенты</string>
+    <string name="select_ingredient_text">Выбрать</string>
     <string name="selected_ingredients_text">Выбранные ингредиенты</string>
     <string name="relevant_recipes_text">Подходящие рецепты</string>
     <string name="cancel">Отменить</string>
@@ -71,6 +72,7 @@
     <string name="feedback_text">Обратная связь</string>
     <string name="fragment_about_title">О приложении</string>
     <string name="fragment_settings_application_title">Настройки приложения</string>
+    <string name="search">Поиск</string>
     <string name="tag_settings">SETTINGS</string>
     <string name="tag_about">ABOUT</string>
     <string name="tag_feedback">FEEDBACK</string>
