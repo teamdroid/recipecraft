@@ -5,7 +5,9 @@ import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
 
 data class Recipe(
+        @SerializedName("id_recipe")
         var idRecipe: Int = 0,
+        @SerializedName("title_ru")
         var title: String = "",
         var time: Long = 0,
         var portion: Int = 0,

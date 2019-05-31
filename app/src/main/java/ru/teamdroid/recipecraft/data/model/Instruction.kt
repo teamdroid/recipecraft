@@ -2,10 +2,13 @@ package ru.teamdroid.recipecraft.data.model
 
 import android.os.Parcel
 import android.os.Parcelable
+import com.google.gson.annotations.SerializedName
 
 class Instruction(
+        @SerializedName("id_instruction")
         var idInstruction: Int = 0,
         var idRecipe: Int = 0,
+        @SerializedName("title_ru")
         var title: String = ""
 ) : Parcelable {
 

@@ -5,12 +5,14 @@ import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
 
 class Ingredient(
+        @SerializedName("id_ingredient")
         var idIngredient: Int = 0,
         var title: String = "",
         var id: Int = 0,
         var amount: Double = 0.0,
+        @SerializedName("id_unit_measure")
         var idUnitMeasure: Int = 0,
-        @SerializedName("measureTitle")
+        @SerializedName("measure_title")
         var measureTitle: String = ""
 ) : Parcelable {
 
