@@ -6,7 +6,7 @@ import io.reactivex.Flowable
 import io.reactivex.Single
 import io.reactivex.functions.BiFunction
 import ru.teamdroid.recipecraft.data.api.RecipeService
-import ru.teamdroid.recipecraft.data.api.ReportMessage
+import ru.teamdroid.recipecraft.data.api.FeedbackMessage
 import ru.teamdroid.recipecraft.data.api.Response
 import ru.teamdroid.recipecraft.data.base.RecipeMapper
 import ru.teamdroid.recipecraft.data.database.RecipesDao
@@ -126,7 +126,7 @@ class RecipeDataSourceImpl @Inject constructor(private val recipeDao: RecipesDao
 
     override fun loadRemoteRecipes(): Flowable<MutableList<Recipe>> = recipeService.getAllRecipes("ru")
 
-    override fun sendReportMessage(reportMessage: ReportMessage): Single<Response> = recipeService.sendReportMessage(reportMessage)
+    override fun sendReportMessage(feedbackMessage: FeedbackMessage): Single<Response> = recipeService.sendFeedback(feedbackMessage)
 
     override fun getInstructionsById(idRecipe: Int): Single<MutableList<Instruction>> = recipeDao.getInstructionsById(idRecipe).map { recipeMapper.reverseInstructions(it) }
 }

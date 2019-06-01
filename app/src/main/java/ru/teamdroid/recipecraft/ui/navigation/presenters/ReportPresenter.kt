@@ -2,7 +2,7 @@ package ru.teamdroid.recipecraft.ui.navigation.presenters
 
 import io.reactivex.Scheduler
 import io.reactivex.disposables.CompositeDisposable
-import ru.teamdroid.recipecraft.data.api.ReportMessage
+import ru.teamdroid.recipecraft.data.api.FeedbackMessage
 import ru.teamdroid.recipecraft.data.repository.RecipeRepository
 import ru.teamdroid.recipecraft.ui.navigation.contracts.ReportContract
 import ru.teamdroid.recipecraft.util.schedulers.RunOn
@@ -17,7 +17,7 @@ class ReportPresenter @Inject constructor(private var repository: RecipeReposito
     private var compositeDisposable: CompositeDisposable = CompositeDisposable()
 
     fun sendReportMessage(name: String, email: String, message: String) {
-        compositeDisposable.add(repository.sendReportMessage(ReportMessage(name, email, message))
+        compositeDisposable.add(repository.sendReportMessage(FeedbackMessage(name, email, message))
                 .subscribeOn(ioScheduler)
                 .observeOn(uiScheduler)
                 .subscribe({ view.onSuccess() }, { view.onFailure() }))

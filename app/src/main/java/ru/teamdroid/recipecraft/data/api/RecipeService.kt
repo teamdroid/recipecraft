@@ -12,6 +12,6 @@ interface RecipeService {
     @GET("getRecipes?")
     fun getAllRecipes(@Query("lang") language: String): Flowable<MutableList<Recipe>>
 
-    @POST("sendReportMessage")
-    fun sendReportMessage(@Body reportMessage: ReportMessage): Single<Response>
+    @POST("sendFeedbackMessage/")
+    fun sendFeedback(@Body feedbackMessage: FeedbackMessage): Single<Response>
 }

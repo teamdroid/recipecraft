@@ -3,7 +3,7 @@ package ru.teamdroid.recipecraft.data.repository
 import io.reactivex.Completable
 import io.reactivex.Flowable
 import io.reactivex.Single
-import ru.teamdroid.recipecraft.data.api.ReportMessage
+import ru.teamdroid.recipecraft.data.api.FeedbackMessage
 import ru.teamdroid.recipecraft.data.api.Response
 import ru.teamdroid.recipecraft.data.model.Instruction
 import ru.teamdroid.recipecraft.data.model.Recipe
@@ -18,7 +18,7 @@ interface RecipesDataSource {
     fun addInstructions(recipes: MutableList<Recipe>): Completable
     fun addUnitMeasure(recipes: MutableList<Recipe>): Completable
     fun bookmark(recipe: Recipe): Completable
-    fun sendReportMessage(reportMessage: ReportMessage): Single<Response>
+    fun sendReportMessage(feedbackMessage: FeedbackMessage): Single<Response>
     fun getInstructionsById(idRecipe: Int): Single<MutableList<Instruction>>
     fun loadIngredientsTitle(): Single<List<String>>
     fun findRecipesByIngredients(listIngredients: List<String>, count: Int): Flowable<MutableList<Recipe>>
