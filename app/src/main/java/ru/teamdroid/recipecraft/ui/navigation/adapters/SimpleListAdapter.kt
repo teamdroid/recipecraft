@@ -59,11 +59,16 @@ class SimpleListAdapter(var onDeleteClickListener: (ingredient: String) -> Unit)
             titleIngredientTextView.setOnItemClickListener { parent, view, positionIngredient, id ->
                 selectedIngredient(holder, position)
             }
-
             deleteButton.setOnClickListener {
                 deleteIngredient(holder, position)
             }
         }
+    }
+
+    override fun onViewRecycled(holder: ViewHolder) {
+        super.onViewRecycled(holder)
+        holder.unbindViewHolder(holder.itemView)
+
     }
 
     private fun selectedIngredient(holder: ViewHolder, position: Int) {
@@ -76,18 +81,28 @@ class SimpleListAdapter(var onDeleteClickListener: (ingredient: String) -> Unit)
 
     private fun deleteIngredient(holder: ViewHolder, position: Int) {
         with(holder.itemView) {
-            if (items.size > 3)
+            if (items.size > 3) {
                 onDeleteClickListener.invoke(items[position])
-
-            items[position] = titleIngredientTextView.text.toString()
-
-            titleIngredientTextView.isEnabled = true
-            titleIngredientTextView.text = null
-            deleteButton.visibility = View.INVISIBLE
+            } else {
+                items[position] = ""
+                titleIngredientTextView.isEnabled = true
+                titleIngredientTextView.text = null
+                deleteButton.visibility = View.INVISIBLE
+            }
         }
     }
 
     fun isEmpty(): Boolean = items.isEmpty()
 
-    class ViewHolder(view: View) : RecyclerView.ViewHolder(view)
+    class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+
+        fun unbindViewHolder(view: View) {
+            with(view) {
+                if (titleIngredientTextView.isEnabled) {
+                    titleIngredientTextView.text = null
+                    deleteButton.visibility = View.INVISIBLE
+                }
+            }
+        }
+    }
 }
