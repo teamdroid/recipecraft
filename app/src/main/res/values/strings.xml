@@ -38,7 +38,7 @@
     <string name="information_detail_recipe_text">Время: %d мин. | Порций: %d \nИнгредиентов: %s | Инструкций: %s</string>
     <string name="instructions_title_text">Инструкции</string>
     <string name="instructions_text">%d) %s</string>
-    <string name="select_ingredients_text_btn">Выбрать ингредиенты</string>
+    <string name="select_ingredients_text_btn">Выбери ингредиенты</string>
     <string name="select_ingredient_text">Выбрать</string>
     <string name="selected_ingredients_text">Выбранные ингредиенты</string>
     <string name="relevant_recipes_text">Подходящие рецепты</string>
@@ -79,6 +79,8 @@
     <string name="tag_favorite">FAVORITE</string>
     <string name="tag_sign_out">SIGN_OUT</string>
     <string name="tag_sign_in">SIGN_IN</string>
+    <string name="found_Recipes">Найдено</string>
+    <string name="found_RecipesWord">рецепта</string>
 
     <string name="about_version_app">Текущая версия: %s</string>
     <string name="sign_out_text">Выйти из аккаунта</string>

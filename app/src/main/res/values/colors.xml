@@ -8,6 +8,8 @@
     <color name="textWhite">#FFF</color>
     <color name="textRed">#c90000</color>
     <color name="textGray">#828383</color>
+    <color name="textHighGray">#989B9B</color>
+    <color name="textHighBlack">#475161</color>
     <color name="dark_orange_color">#FF614C</color>
     <color name="bright_orange_color">#FF7F4D</color>
     <color name="light_orange_color">#FF9D4D</color>

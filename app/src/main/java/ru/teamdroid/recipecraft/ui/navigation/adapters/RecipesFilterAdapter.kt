@@ -1,25 +1,21 @@
 package ru.teamdroid.recipecraft.ui.navigation.adapters
 
-import android.icu.lang.UCharacter.GraphemeClusterBreak.V
-import android.opengl.Visibility
 import android.text.Editable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.layout_list_ingredients_item_with_buttons.view.*
 import ru.teamdroid.recipecraft.ui.navigation.fragments.CraftFragment
 
 
-class SimpleListAdapter(var onDeleteClickListener: (ingredient: String) -> Unit) : RecyclerView.Adapter<SimpleListAdapter.ViewHolder>() {
+class RecipesFilterAdapter(var onDeleteClickListener: (ingredient: String) -> Unit) : RecyclerView.Adapter<RecipesFilterAdapter.ViewHolder>() {
 
     var craftFragment: CraftFragment? = null
 
     private var listIngredients: ArrayList<String> = arrayListOf()
 
-    var ingredientIsEnabled: Boolean = false
 
     var items: MutableList<String> = arrayListOf()
         set(value) {
@@ -54,11 +50,15 @@ class SimpleListAdapter(var onDeleteClickListener: (ingredient: String) -> Unit)
             ingredientsNumberTextView.isEnabled = false
             ingredientsNumberTextView.text = Editable.Factory.getInstance().newEditable((position + 1).toString().plus("."))
 
+            setStateView(holder, position)
+
             titleIngredientTextView.text = Editable.Factory.getInstance().newEditable(items[position])
-            titleIngredientTextView.setAdapter(ArrayAdapter<String>(context, android.R.layout.simple_dropdown_item_1line, arrayListOf("chesnok", "yaponka", "che")))//listIngredients arrayListOf("chesnok", "yaponka", "che")
+            titleIngredientTextView.setAdapter(ArrayAdapter<String>(context, android.R.layout.simple_dropdown_item_1line, listIngredients))
             titleIngredientTextView.setOnItemClickListener { parent, view, positionIngredient, id ->
                 selectedIngredient(holder, position)
             }
+            titleIngredientTextView.dropDownAnchor = ingredientCardView.id
+
             deleteButton.setOnClickListener {
                 deleteIngredient(holder, position)
             }
@@ -71,11 +71,24 @@ class SimpleListAdapter(var onDeleteClickListener: (ingredient: String) -> Unit)
 
     }
 
+    private fun setStateView(holder: ViewHolder, position: Int) {
+        with(holder.itemView) {
+            if (items[position] != "") {
+                titleIngredientTextView.isEnabled = false
+                deleteButton.visibility = View.VISIBLE
+            } else {
+                titleIngredientTextView.isEnabled = true
+                deleteButton.visibility = View.INVISIBLE
+            }
+        }
+    }
+
     private fun selectedIngredient(holder: ViewHolder, position: Int) {
         with(holder.itemView) {
             items[position] = titleIngredientTextView.text.toString()
             deleteButton.visibility = View.VISIBLE
             titleIngredientTextView.isEnabled = false
+            setSelectedIngredientList(items)
         }
     }
 
@@ -83,13 +96,25 @@ class SimpleListAdapter(var onDeleteClickListener: (ingredient: String) -> Unit)
         with(holder.itemView) {
             if (items.size > 3) {
                 onDeleteClickListener.invoke(items[position])
+                titleIngredientTextView.isEnabled = true
+                titleIngredientTextView.text = null
+                deleteButton.visibility = View.INVISIBLE
             } else {
                 items[position] = ""
                 titleIngredientTextView.isEnabled = true
                 titleIngredientTextView.text = null
                 deleteButton.visibility = View.INVISIBLE
             }
+            setSelectedIngredientList(items)
         }
+    }
+
+    private fun setSelectedIngredientList(selectedIngredientsList: List<String>) {
+        var finalList: ArrayList<String> = arrayListOf()
+        for (ingredient: String in selectedIngredientsList) {
+            if (ingredient != "") finalList.add(ingredient)
+        }
+        craftFragment?.listSelectedIngredients = finalList
     }
 
     fun isEmpty(): Boolean = items.isEmpty()
@@ -99,9 +124,11 @@ class SimpleListAdapter(var onDeleteClickListener: (ingredient: String) -> Unit)
         fun unbindViewHolder(view: View) {
             with(view) {
                 if (titleIngredientTextView.isEnabled) {
-                    titleIngredientTextView.text = null
                     deleteButton.visibility = View.INVISIBLE
                 }
+                deleteButton.setOnClickListener(null)
+                titleIngredientTextView.setOnItemClickListener(null)
+                titleIngredientTextView.setAdapter(null)
             }
         }
     }

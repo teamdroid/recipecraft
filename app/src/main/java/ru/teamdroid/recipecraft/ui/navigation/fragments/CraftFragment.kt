@@ -16,7 +16,7 @@ import ru.teamdroid.recipecraft.ui.base.Constants
 import ru.teamdroid.recipecraft.ui.base.customs.CustomGridLayoutManager
 import ru.teamdroid.recipecraft.ui.base.listeners.OnSubmitClickListener
 import ru.teamdroid.recipecraft.ui.navigation.adapters.RecipesAdapter
-import ru.teamdroid.recipecraft.ui.navigation.adapters.SimpleListAdapter
+import ru.teamdroid.recipecraft.ui.navigation.adapters.RecipesFilterAdapter
 import ru.teamdroid.recipecraft.ui.navigation.components.DaggerCraftComponent
 import ru.teamdroid.recipecraft.ui.navigation.contracts.CraftRecipeContract
 import ru.teamdroid.recipecraft.ui.navigation.dialogs.SelectIngredientsDialog
@@ -32,7 +32,7 @@ class CraftFragment : BaseFragment(), CraftRecipeContract.View, OnSubmitClickLis
     override val contentResId = R.layout.fragment_craft
 
     private val ingredientsAdapter by lazy {
-        SimpleListAdapter(
+        RecipesFilterAdapter(
                 onDeleteClickListener = {
                     onDeleteClick(it)
                 })
@@ -140,13 +140,18 @@ class CraftFragment : BaseFragment(), CraftRecipeContract.View, OnSubmitClickLis
         }
     }
 
-    override fun setIngredientsTitle(listIngredientsTitle: List<String>) {
-        this.listIngredientsTitle.addAll(listIngredientsTitle)
+    override fun setIngredientsTitle(_listIngredientsTitle: List<String>) {
+        this.listIngredientsTitle.addAll(_listIngredientsTitle)
     }
 
     override fun showRecipes(listRecipe: MutableList<Recipe>) {
         recipesAdapter.apply {
             recipes = listRecipe
+            recipesCountTextView.visibility = View.VISIBLE
+            sortImageView.visibility = View.VISIBLE
+            filterImageView.visibility = View.VISIBLE
+            val string = getString(R.string.found_Recipes) + " ${recipes.size} " + getString(R.string.found_RecipesWord)
+            recipesCountTextView.text = string
             notifyDataSetChanged()
             if (listRecipe.isEmpty()) Toast.makeText(context, R.string.not_found_text, Toast.LENGTH_SHORT).show()
         }
@@ -171,10 +176,8 @@ class CraftFragment : BaseFragment(), CraftRecipeContract.View, OnSubmitClickLis
 
     private fun setPlaceholderIfEmpty(isEmpty: Boolean) {
         if (!isEmpty) {
-            emptyRecipes.visibility = View.INVISIBLE
             recipesRecyclerView.visibility = View.VISIBLE
         } else {
-            emptyRecipes.visibility = View.VISIBLE
             recipesRecyclerView.visibility = View.INVISIBLE
         }
     }
