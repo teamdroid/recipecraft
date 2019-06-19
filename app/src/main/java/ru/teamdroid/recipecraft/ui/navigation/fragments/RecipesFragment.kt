@@ -1,6 +1,7 @@
 package ru.teamdroid.recipecraft.ui.navigation.fragments
 
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
@@ -28,7 +29,7 @@ class RecipesFragment : BaseFragment(), RecipesContract.View {
     @Inject
     internal lateinit var presenter: RecipesPresenter
 
-    private var currentSort = SortRecipes.ByNewer
+    private var currentSort = ""
 
     override val contentResId = R.layout.fragment_recipes
 
@@ -67,7 +68,7 @@ class RecipesFragment : BaseFragment(), RecipesContract.View {
             layoutManager = LinearLayoutManager(context)
         }
 
-        if (recipesAdapter.recipes.isEmpty()) refresh(false)
+        if (recipesAdapter.recipes.isEmpty()) refresh(false, SortRecipes.ByNewer)
 
         sortAdapter = ArrayAdapter.createFromResource(
                 context,
@@ -80,16 +81,12 @@ class RecipesFragment : BaseFragment(), RecipesContract.View {
 
         spinner_nav.onItemSelectedListener = object : OnItemSelectedListener {
             override fun onItemSelected(adapter: AdapterView<*>, v: View?, i: Int, lng: Long) {
-                with(recipesAdapter) {
                     when (i) {
-                        0 -> currentSort = SortRecipes.ByNewer
-                        1 -> currentSort = SortRecipes.ByPortion
-                        2 -> currentSort = SortRecipes.ByIngredients
-                        3 -> currentSort = SortRecipes.ByTime
+                        0 -> refresh(false, SortRecipes.ByNewer)
+                        1 -> refresh(false, SortRecipes.ByPortion)
+                        2 -> refresh(false, SortRecipes.ByIngredients)
+                        3 -> refresh(false, SortRecipes.ByTime)
                     }
-                    presenter.loadRecipes(isOnline(), currentSort)
-                    notifyDataSetChanged()
-                }
             }
 
             override fun onNothingSelected(parentView: AdapterView<*>) {}
@@ -109,11 +106,14 @@ class RecipesFragment : BaseFragment(), RecipesContract.View {
         presenter.bookmarkRecipe(recipe)
     }
 
-    private fun refresh(onlineRequired: Boolean) {
-        progressBar.visibility = View.VISIBLE
-        swipeRefreshLayout.isRefreshing = false
-        recipesAdapter.recipes = arrayListOf()
-        presenter.loadRecipes(onlineRequired, currentSort)
+    private fun refresh(onlineRequired: Boolean, sort : String = currentSort) {
+        if (onlineRequired || sort != currentSort) {
+            currentSort = sort
+            progressBar.visibility = View.VISIBLE
+            swipeRefreshLayout.isRefreshing = false
+            recipesAdapter.recipes = arrayListOf()
+            presenter.loadRecipes(onlineRequired, currentSort)
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -134,7 +134,7 @@ class RecipesFragment : BaseFragment(), RecipesContract.View {
     }
 
     override fun showBookmarked(isBookmarked: Boolean) {
-        val snackBar = Snackbar.make(constraintLayout, if (isBookmarked) getString(R.string.bookmarked) else getString(R.string.unbookmark_text), 500)
+        val snackBar = Snackbar.make(swipeRefreshLayout, if (isBookmarked) getString(R.string.bookmarked) else getString(R.string.unbookmark_text), 500)
         snackBar.setAction(getString(R.string.close_text)) { snackBar.dismiss() }.setActionTextColor(resources.getColor(R.color.textWhite)).show()
     }
 

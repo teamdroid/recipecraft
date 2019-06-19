@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.layout_list_recipes_item.view.*
 import ru.teamdroid.recipecraft.R
 import ru.teamdroid.recipecraft.data.model.Recipe
-import ru.teamdroid.recipecraft.ui.base.SortRecipes
+import android.graphics.BitmapFactory
 
 class RecipesAdapter(
         var onItemClickListener: (position: Int) -> Unit,
@@ -38,7 +38,7 @@ class RecipesAdapter(
             ingredientsTextView.text = recipes[position].ingredients.size.toString()
             timeTextView.text = recipes[position].time.toString()
             portionTextView.text = recipes[position].portion.toString()
-
+            imageView.setImageBitmap(BitmapFactory.decodeFile(recipes[position].image))
             with(favoriteImageView) {
                 if (recipes[position].isBookmarked) setImageDrawable(ContextCompat.getDrawable(context, R.drawable.star_active)) else setImageDrawable(ContextCompat.getDrawable(context, R.drawable.star_inactive))
                 setOnClickListener {

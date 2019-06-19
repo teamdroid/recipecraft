@@ -2,6 +2,7 @@ package ru.teamdroid.recipecraft
 
 import android.app.Application
 import com.facebook.stetho.Stetho
+import com.squareup.leakcanary.LeakCanary
 import ru.teamdroid.recipecraft.data.components.DaggerRecipeRepositoryComponent
 import ru.teamdroid.recipecraft.data.components.RecipeRepositoryComponent
 
