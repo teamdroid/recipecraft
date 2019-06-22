@@ -8,7 +8,6 @@ import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.layout_list_recipes_item.view.*
 import ru.teamdroid.recipecraft.R
 import ru.teamdroid.recipecraft.data.model.Recipe
-import ru.teamdroid.recipecraft.ui.base.SortRecipes
 
 class RecipesAdapter(
         var onItemClickListener: (position: Int) -> Unit,

@@ -79,8 +79,7 @@
     <string name="tag_favorite">FAVORITE</string>
     <string name="tag_sign_out">SIGN_OUT</string>
     <string name="tag_sign_in">SIGN_IN</string>
-    <string name="found_Recipes">Найдено</string>
-    <string name="found_RecipesWord">рецепта</string>
+    <string name="found_recipes">Найдено %d рецепта</string>
 
     <string name="about_version_app">Текущая версия: %s</string>
     <string name="sign_out_text">Выйти из аккаунта</string>

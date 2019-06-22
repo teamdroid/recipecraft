@@ -9,7 +9,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.layout_list_ingredients_item.view.*
 import kotlinx.android.synthetic.main.layout_list_instructions_item.view.*
 import ru.teamdroid.recipecraft.R
 import ru.teamdroid.recipecraft.data.model.Instruction

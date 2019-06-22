@@ -12,14 +12,12 @@ import kotlinx.android.synthetic.main.fragment_craft.*
 import ru.teamdroid.recipecraft.R
 import ru.teamdroid.recipecraft.data.model.Recipe
 import ru.teamdroid.recipecraft.ui.base.BaseFragment
-import ru.teamdroid.recipecraft.ui.base.Constants
 import ru.teamdroid.recipecraft.ui.base.customs.CustomGridLayoutManager
 import ru.teamdroid.recipecraft.ui.base.listeners.OnSubmitClickListener
 import ru.teamdroid.recipecraft.ui.navigation.adapters.RecipesAdapter
 import ru.teamdroid.recipecraft.ui.navigation.adapters.RecipesFilterAdapter
 import ru.teamdroid.recipecraft.ui.navigation.components.DaggerCraftComponent
 import ru.teamdroid.recipecraft.ui.navigation.contracts.CraftRecipeContract
-import ru.teamdroid.recipecraft.ui.navigation.dialogs.SelectIngredientsDialog
 import ru.teamdroid.recipecraft.ui.navigation.modules.CraftPresenterModule
 import ru.teamdroid.recipecraft.ui.navigation.presenters.CraftPresenter
 import javax.inject.Inject
@@ -51,8 +49,6 @@ class CraftFragment : BaseFragment(), CraftRecipeContract.View, OnSubmitClickLis
 
     private var listIngredientsTitle: ArrayList<String> = arrayListOf()
 
-    var listSelectedIngredients: ArrayList<String> = arrayListOf()
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         initializePresenter()
@@ -82,25 +78,17 @@ class CraftFragment : BaseFragment(), CraftRecipeContract.View, OnSubmitClickLis
 
         setPlaceholderIfEmpty(ingredientsAdapter.isEmpty())
 
-        button.setOnClickListener {
-            val selectIngredientsDialog = SelectIngredientsDialog.newInstance(listIngredientsTitle)
-            selectIngredientsDialog.setTargetFragment(this, Constants.REQUEST_CODE)
-            selectIngredientsDialog.show(requireFragmentManager(), TAG)
-        }
+        ingredientsAdapter.setIngredientList(listIngredientsTitle)
 
-        ingredientsAdapter.setFragment(this)
-        ingredientsAdapter.setIngredientList(listIngredientsTitle);
         loadRecipeCardView.setOnClickListener {
-            onSubmitClicked(listSelectedIngredients)
+            onSubmitClicked(ingredientsAdapter.listSelectedIngredients)
         }
 
         addIngredientsViewButton.setOnClickListener {
             ingredientsAdapter.addItems("")
         }
 
-
         ingredientsAdapter.items = arrayListOf("", "", "")
-
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -140,8 +128,8 @@ class CraftFragment : BaseFragment(), CraftRecipeContract.View, OnSubmitClickLis
         }
     }
 
-    override fun setIngredientsTitle(_listIngredientsTitle: List<String>) {
-        this.listIngredientsTitle.addAll(_listIngredientsTitle)
+    override fun setIngredientsTitle(listIngredientsTitle: List<String>) {
+        this.listIngredientsTitle.addAll(listIngredientsTitle)
     }
 
     override fun showRecipes(listRecipe: MutableList<Recipe>) {
@@ -150,8 +138,7 @@ class CraftFragment : BaseFragment(), CraftRecipeContract.View, OnSubmitClickLis
             recipesCountTextView.visibility = View.VISIBLE
             sortImageView.visibility = View.VISIBLE
             filterImageView.visibility = View.VISIBLE
-            val string = getString(R.string.found_Recipes) + " ${recipes.size} " + getString(R.string.found_RecipesWord)
-            recipesCountTextView.text = string
+            recipesCountTextView.text = getString(R.string.found_recipes, recipes.size)
             notifyDataSetChanged()
             if (listRecipe.isEmpty()) Toast.makeText(context, R.string.not_found_text, Toast.LENGTH_SHORT).show()
         }
@@ -168,6 +155,7 @@ class CraftFragment : BaseFragment(), CraftRecipeContract.View, OnSubmitClickLis
             presenter.findRecipeByIngredients(list, list.size)
         } else {
             setPlaceholderIfEmpty(true)
+            recipesCountTextView.text = getString(R.string.found_recipes, 0)
             recipesAdapter.recipes.clear()
             recipesAdapter.notifyDataSetChanged()
         }
@@ -183,7 +171,7 @@ class CraftFragment : BaseFragment(), CraftRecipeContract.View, OnSubmitClickLis
     }
 
     override fun onDestroyView() {
-        button.setOnClickListener(null)
+        selecting_ingredients_text.setOnClickListener(null)
         ingredientsRecyclerView.adapter = null
         recipesRecyclerView.adapter = null
         super.onDestroyView()

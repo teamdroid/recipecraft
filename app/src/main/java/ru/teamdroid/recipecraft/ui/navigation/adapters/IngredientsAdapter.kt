@@ -1,6 +1,5 @@
 package ru.teamdroid.recipecraft.ui.navigation.adapters
 
-import android.text.Editable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,7 +9,6 @@ import ru.teamdroid.recipecraft.R
 import ru.teamdroid.recipecraft.data.model.Ingredient
 import ru.teamdroid.recipecraft.ui.base.ViewType
 import java.text.DecimalFormat
-import javax.annotation.meta.When
 
 class IngredientsAdapter(var onItemClickListener: (position: Int) -> Unit) : RecyclerView.Adapter<IngredientsAdapter.ViewHolder>() {
 

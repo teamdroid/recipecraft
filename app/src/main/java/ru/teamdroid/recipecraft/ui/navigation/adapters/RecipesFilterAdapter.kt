@@ -7,15 +7,12 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.layout_list_ingredients_item_with_buttons.view.*
-import ru.teamdroid.recipecraft.ui.navigation.fragments.CraftFragment
-
 
 class RecipesFilterAdapter(var onDeleteClickListener: (ingredient: String) -> Unit) : RecyclerView.Adapter<RecipesFilterAdapter.ViewHolder>() {
 
-    var craftFragment: CraftFragment? = null
-
     private var listIngredients: ArrayList<String> = arrayListOf()
 
+    var listSelectedIngredients: ArrayList<String> = arrayListOf()
 
     var items: MutableList<String> = arrayListOf()
         set(value) {
@@ -28,12 +25,9 @@ class RecipesFilterAdapter(var onDeleteClickListener: (ingredient: String) -> Un
         notifyDataSetChanged()
     }
 
-    fun setFragment(_craftFragment: CraftFragment) {
-        craftFragment = _craftFragment
-    }
 
-    fun setIngredientList(_listIngredients: ArrayList<String>) {
-        listIngredients = _listIngredients
+    fun setIngredientList(listIngredients: ArrayList<String>) {
+        this.listIngredients = listIngredients
     }
 
     override fun getItemCount() = items.size
@@ -52,11 +46,14 @@ class RecipesFilterAdapter(var onDeleteClickListener: (ingredient: String) -> Un
 
             setStateView(holder, position)
 
-            titleIngredientTextView.text = Editable.Factory.getInstance().newEditable(items[position])
-            titleIngredientTextView.setAdapter(ArrayAdapter<String>(context, android.R.layout.simple_dropdown_item_1line, listIngredients))
-            titleIngredientTextView.setOnItemClickListener { parent, view, positionIngredient, id ->
-                selectedIngredient(holder, position)
+            with(titleIngredientTextView) {
+                text = Editable.Factory.getInstance().newEditable(items[position])
+                setAdapter(ArrayAdapter<String>(context, android.R.layout.simple_dropdown_item_1line, listIngredients))
+                setOnItemClickListener { _, _, _, _ ->
+                    selectedIngredient(holder, position)
+                }
             }
+
             titleIngredientTextView.dropDownAnchor = ingredientCardView.id
 
             deleteButton.setOnClickListener {
@@ -68,12 +65,11 @@ class RecipesFilterAdapter(var onDeleteClickListener: (ingredient: String) -> Un
     override fun onViewRecycled(holder: ViewHolder) {
         super.onViewRecycled(holder)
         holder.unbindViewHolder(holder.itemView)
-
     }
 
     private fun setStateView(holder: ViewHolder, position: Int) {
         with(holder.itemView) {
-            if (items[position] != "") {
+            if (items[position].isNotBlank()) {
                 titleIngredientTextView.isEnabled = false
                 deleteButton.visibility = View.VISIBLE
             } else {
@@ -110,24 +106,23 @@ class RecipesFilterAdapter(var onDeleteClickListener: (ingredient: String) -> Un
     }
 
     private fun setSelectedIngredientList(selectedIngredientsList: List<String>) {
-        var finalList: ArrayList<String> = arrayListOf()
+        val finalList: ArrayList<String> = arrayListOf()
         for (ingredient: String in selectedIngredientsList) {
-            if (ingredient != "") finalList.add(ingredient)
+            if (ingredient.isNotBlank()) finalList.add(ingredient)
         }
-        craftFragment?.listSelectedIngredients = finalList
+        listSelectedIngredients = finalList
     }
 
     fun isEmpty(): Boolean = items.isEmpty()
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-
         fun unbindViewHolder(view: View) {
             with(view) {
                 if (titleIngredientTextView.isEnabled) {
                     deleteButton.visibility = View.INVISIBLE
                 }
                 deleteButton.setOnClickListener(null)
-                titleIngredientTextView.setOnItemClickListener(null)
+                titleIngredientTextView.onItemClickListener = null
                 titleIngredientTextView.setAdapter(null)
             }
         }
