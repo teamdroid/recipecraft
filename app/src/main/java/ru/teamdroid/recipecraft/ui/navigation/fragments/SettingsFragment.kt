@@ -16,14 +16,20 @@ class SettingsFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         setupToolbar(toolbar, true, getString(R.string.fragment_settings_application_title))
+
         with(notificationSwitch) {
-            isChecked = context.getProperty(Constants.NOTIFICATION, 0) == 1
+            isChecked = context.getProperty(Constants.NOTIFICATION, 1) == 1
             jumpDrawablesToCurrentState()
-            setOnClickListener {
-                if (isChecked) {
-                    context.setProperty(Constants.NOTIFICATION, 1)
-                } else {
+        }
+
+        constraintLayout.setOnClickListener {
+            with(notificationSwitch) {
+                isChecked = if (isChecked) {
                     context.setProperty(Constants.NOTIFICATION, 0)
+                    false
+                } else {
+                    context.setProperty(Constants.NOTIFICATION, 1)
+                    true
                 }
             }
         }
