@@ -17,10 +17,11 @@ class DetailRecipePresenter @Inject constructor(private var repository: RecipeRe
     private var compositeDisposable: CompositeDisposable = CompositeDisposable()
 
     override fun bookmarkRecipe(recipe: Recipe) {
+        recipe.isBookmarked = !recipe.isBookmarked
         compositeDisposable.add(repository.bookmark(recipe)
                 .subscribeOn(ioScheduler)
                 .observeOn(uiScheduler)
-                .subscribe({ view.showBookmarked(!recipe.isBookmarked) }, { }))
+                .subscribe({ view.showBookmarked(recipe.isBookmarked) }, { }))
     }
 
     override fun onDetachView() { }

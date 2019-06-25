@@ -77,7 +77,7 @@ class DetailRecipeFragment : BaseFragment(), DetailRecipeContract.View {
         ingredientsAdapter.items = recipe?.ingredients ?: arrayListOf()
         instructionsAdapter.items = recipe?.instructions ?: arrayListOf()
 
-        recipe?.isBookmarked?.let { isBookmarked(it) }
+        recipe?.isBookmarked?.let { setShowBookmark(it) }
 
         nestedScrollView.setOnScrollChangeListener { v: NestedScrollView?, _: Int, _: Int, _: Int, _: Int ->
             val react = Rect()
@@ -100,17 +100,19 @@ class DetailRecipeFragment : BaseFragment(), DetailRecipeContract.View {
 
     }
 
-    override fun showBookmarked(isBookmarked: Boolean) {
-        recipe?.let { it.isBookmarked = !it.isBookmarked }
-        isBookmarked(isBookmarked)
-        val snackBar = Snackbar.make(coordinatorLayout, if (isBookmarked) getString(R.string.bookmarked) else getString(R.string.unbookmark_text), 500)
-        snackBar.setAction(getString(R.string.close_text)) { snackBar.dismiss() }.setActionTextColor(resources.getColor(R.color.textWhite)).show()
+    override fun showBookmarked(isBookmark: Boolean) {
+        recipe?.let {
+            it.isBookmarked = isBookmark
+            setShowBookmark(it.isBookmarked)
+            val snackBar = Snackbar.make(coordinatorLayout, if (it.isBookmarked) getString(R.string.bookmarked) else getString(R.string.unbookmark_text), 500)
+            snackBar.setAction(getString(R.string.close_text)) { snackBar.dismiss() }.setActionTextColor(resources.getColor(R.color.textWhite)).show()
+        }
     }
 
-    private fun isBookmarked(isBookmarked: Boolean) {
-        if (isBookmarked) favoriteImageView.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.star_active)) else favoriteImageView.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.star_inactive))
+    private fun setShowBookmark(isBookmark: Boolean) {
+        if (isBookmark) favoriteImageView.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.star_active))
+        else favoriteImageView.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.star_inactive))
     }
-
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {

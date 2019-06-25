@@ -5,7 +5,7 @@ import ru.teamdroid.recipecraft.ui.base.BasePresenter
 
 interface DetailRecipeContract {
     interface View {
-        fun showBookmarked(isBookmarked: Boolean)
+        fun showBookmarked(isBookmark: Boolean)
     }
 
     interface Presenter : BasePresenter<View> {
