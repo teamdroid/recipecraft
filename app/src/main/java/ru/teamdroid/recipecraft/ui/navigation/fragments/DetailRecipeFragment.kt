@@ -1,5 +1,6 @@
 package ru.teamdroid.recipecraft.ui.navigation.fragments
 
+import android.graphics.BitmapFactory
 import android.graphics.Rect
 import android.os.Bundle
 import android.view.MenuItem
@@ -92,7 +93,7 @@ class DetailRecipeFragment : BaseFragment(), DetailRecipeContract.View {
         ingredient_info_text.text = resources.getString(R.string.ingredients_info_text, recipe?.ingredients?.size.toString())
         time_info_text.text = resources.getString(R.string.time_info_text, recipe?.time.toString())
         portion_info_text.text = resources.getString(R.string.portion_info_text, recipe?.portion.toString())
-
+        toolbarImage.setImageBitmap(BitmapFactory.decodeFile(recipe?.image))
         favoriteImageView.setOnClickListener {
             recipe?.let { presenter.bookmarkRecipe(it) }
         }

@@ -72,7 +72,7 @@ class ProfileFragment : BaseFragment(), ProfileContract.View {
         usernameTextView.text = displayName
         Picasso.with(context)
                 .load(photoUrl)
-                .placeholder(R.drawable.ic_placeholder)
+                .placeholder(R.drawable.ic_profile_placeholder)
                 .transform(CircleTransform())
                 .into(profileImageView)
         signInTextView.visibility = View.GONE
@@ -81,7 +81,7 @@ class ProfileFragment : BaseFragment(), ProfileContract.View {
 
     override fun showUserSignOut() {
         usernameTextView.text = getString(R.string.not_authorization_client_text)
-        profileImageView.image = ContextCompat.getDrawable(context, R.drawable.ic_placeholder)
+        profileImageView.image = ContextCompat.getDrawable(context, R.drawable.ic_profile_placeholder)
         signInTextView.visibility = View.VISIBLE
         logoutTextView.visibility = View.GONE
     }
