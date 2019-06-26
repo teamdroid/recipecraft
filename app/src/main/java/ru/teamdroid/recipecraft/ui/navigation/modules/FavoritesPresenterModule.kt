@@ -2,13 +2,12 @@ package ru.teamdroid.recipecraft.ui.navigation.modules
 
 import dagger.Module
 import dagger.Provides
-import ru.teamdroid.recipecraft.ui.navigation.contracts.FavoritesContract
+import ru.teamdroid.recipecraft.ui.navigation.views.FavoritesView
 
 @Module
-class FavoritesPresenterModule(private val view: FavoritesContract.View) {
-
+class FavoritesPresenterModule(private val view: FavoritesView) {
     @Provides
-    fun provideView(): FavoritesContract.View {
+    fun provideView(): FavoritesView {
         return view
     }
 }
