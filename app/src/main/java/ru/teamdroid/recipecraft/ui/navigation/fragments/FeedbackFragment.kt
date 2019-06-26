@@ -4,37 +4,35 @@ import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
+import com.arellomobile.mvp.presenter.InjectPresenter
+import com.arellomobile.mvp.presenter.ProvidePresenter
 import kotlinx.android.synthetic.main.fragment_feedback.*
 import ru.teamdroid.recipecraft.R
-import ru.teamdroid.recipecraft.ui.base.BaseFragment
-import ru.teamdroid.recipecraft.ui.navigation.components.DaggerReportComponent
-import ru.teamdroid.recipecraft.ui.navigation.contracts.ReportContract
+import ru.teamdroid.recipecraft.ui.base.BaseMoxyFragment
+import ru.teamdroid.recipecraft.ui.navigation.components.DaggerFeedbackComponent
 import ru.teamdroid.recipecraft.ui.navigation.dialogs.ReportDialog
-import ru.teamdroid.recipecraft.ui.navigation.modules.ReportPresenterModule
-import ru.teamdroid.recipecraft.ui.navigation.presenters.ReportPresenter
+import ru.teamdroid.recipecraft.ui.navigation.presenters.FeedbackPresenter
+import ru.teamdroid.recipecraft.ui.navigation.views.FeedbackView
 import javax.inject.Inject
 
-class FeedbackFragment : BaseFragment(), ReportContract.View {
+class FeedbackFragment : BaseMoxyFragment(), FeedbackView {
 
     @Inject
-    internal lateinit var presenter: ReportPresenter
+    @InjectPresenter
+    lateinit var presenter: FeedbackPresenter
+
+    @ProvidePresenter
+    fun providePresenter(): FeedbackPresenter {
+        DaggerFeedbackComponent.builder()
+                .recipeRepositoryComponent(baseActivity.recipeRepositoryComponent)
+                .build()
+                .inject(this)
+        return presenter
+    }
 
     override val contentResId = R.layout.fragment_feedback
 
     private var reportDialog: ReportDialog? = null
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        initializePresenter()
-    }
-
-    private fun initializePresenter() {
-        DaggerReportComponent.builder()
-                .reportPresenterModule(ReportPresenterModule(this))
-                .recipeRepositoryComponent(baseActivity.recipeRepositoryComponent)
-                .build()
-                .inject(this)
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

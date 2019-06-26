@@ -7,6 +7,8 @@ import android.view.View
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import com.arellomobile.mvp.presenter.InjectPresenter
+import com.arellomobile.mvp.presenter.ProvidePresenter
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.common.api.ApiException
 import com.squareup.picasso.Picasso
@@ -15,22 +17,33 @@ import kotlinx.android.synthetic.main.fragment_profile.*
 import org.jetbrains.anko.image
 import ru.teamdroid.recipecraft.AppModule
 import ru.teamdroid.recipecraft.R
-import ru.teamdroid.recipecraft.ui.base.BaseFragment
+import ru.teamdroid.recipecraft.ui.base.BaseMoxyFragment
 import ru.teamdroid.recipecraft.ui.base.CircleTransform
 import ru.teamdroid.recipecraft.ui.base.Constants
 import ru.teamdroid.recipecraft.ui.base.Screens
 import ru.teamdroid.recipecraft.ui.navigation.components.DaggerProfileComponent
-import ru.teamdroid.recipecraft.ui.navigation.contracts.ProfileContract
 import ru.teamdroid.recipecraft.ui.navigation.modules.ProfilePresenterModule
 import ru.teamdroid.recipecraft.ui.navigation.presenters.ProfilePresenter
+import ru.teamdroid.recipecraft.ui.navigation.views.ProfileView
 import javax.inject.Inject
 
-class ProfileFragment : BaseFragment(), ProfileContract.View {
+class ProfileFragment : BaseMoxyFragment(), ProfileView {
 
     override val contentResId = R.layout.fragment_profile
 
     @Inject
-    internal lateinit var presenter: ProfilePresenter
+    @InjectPresenter
+    lateinit var presenter: ProfilePresenter
+
+    @ProvidePresenter
+    fun providePresenter(): ProfilePresenter {
+        DaggerProfileComponent.builder()
+                .profilePresenterModule(ProfilePresenterModule())
+                .appModule(AppModule(baseActivity.application))
+                .build()
+                .inject(this)
+        return presenter
+    }
 
     private val clickListener = View.OnClickListener { view ->
         when (view.tag) {
@@ -41,19 +54,6 @@ class ProfileFragment : BaseFragment(), ProfileContract.View {
             Constants.SIGN_IN -> signIn()
             Constants.SIGN_OUT -> logout()
         }
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        initializePresenter()
-    }
-
-    private fun initializePresenter() {
-        DaggerProfileComponent.builder()
-                .profilePresenterModule(ProfilePresenterModule(this))
-                .appModule(AppModule(baseActivity.application))
-                .build()
-                .inject(this)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
