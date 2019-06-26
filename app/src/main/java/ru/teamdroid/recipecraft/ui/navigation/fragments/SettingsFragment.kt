@@ -5,12 +5,12 @@ import android.view.MenuItem
 import android.view.View
 import kotlinx.android.synthetic.main.fragment_settings.*
 import ru.teamdroid.recipecraft.R
-import ru.teamdroid.recipecraft.ui.base.BaseFragment
+import ru.teamdroid.recipecraft.ui.base.BaseMoxyFragment
 import ru.teamdroid.recipecraft.ui.base.Constants
 import ru.teamdroid.recipecraft.ui.base.extensions.getProperty
 import ru.teamdroid.recipecraft.ui.base.extensions.setProperty
 
-class SettingsFragment : BaseFragment() {
+class SettingsFragment : BaseMoxyFragment() {
 
     override val contentResId = R.layout.fragment_settings
 

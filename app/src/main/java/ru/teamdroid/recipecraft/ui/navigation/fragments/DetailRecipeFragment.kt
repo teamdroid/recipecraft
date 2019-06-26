@@ -7,25 +7,36 @@ import android.view.MenuItem
 import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.core.widget.NestedScrollView
+import com.arellomobile.mvp.presenter.InjectPresenter
+import com.arellomobile.mvp.presenter.ProvidePresenter
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_detail_recipe.*
 import org.jetbrains.anko.bundleOf
 import ru.teamdroid.recipecraft.R
 import ru.teamdroid.recipecraft.data.model.Recipe
-import ru.teamdroid.recipecraft.ui.base.BaseFragment
+import ru.teamdroid.recipecraft.ui.base.BaseMoxyFragment
 import ru.teamdroid.recipecraft.ui.base.customs.CustomGridLayoutManager
 import ru.teamdroid.recipecraft.ui.navigation.adapters.IngredientsAdapter
 import ru.teamdroid.recipecraft.ui.navigation.adapters.InstructionAdapter
 import ru.teamdroid.recipecraft.ui.navigation.components.DaggerDetailRecipeComponent
-import ru.teamdroid.recipecraft.ui.navigation.contracts.DetailRecipeContract
-import ru.teamdroid.recipecraft.ui.navigation.modules.DetailRecipePresenterModule
 import ru.teamdroid.recipecraft.ui.navigation.presenters.DetailRecipePresenter
+import ru.teamdroid.recipecraft.ui.navigation.views.DetailRecipeView
 import javax.inject.Inject
 
-class DetailRecipeFragment : BaseFragment(), DetailRecipeContract.View {
+class DetailRecipeFragment : BaseMoxyFragment(), DetailRecipeView {
 
     @Inject
-    internal lateinit var presenter: DetailRecipePresenter
+    @InjectPresenter
+    lateinit var presenter: DetailRecipePresenter
+
+    @ProvidePresenter
+    fun providePresenter(): DetailRecipePresenter {
+        DaggerDetailRecipeComponent.builder()
+                .recipeRepositoryComponent(baseActivity.recipeRepositoryComponent)
+                .build()
+                .inject(this)
+        return presenter
+    }
 
     override val contentResId = R.layout.fragment_detail_recipe
 
@@ -48,16 +59,6 @@ class DetailRecipeFragment : BaseFragment(), DetailRecipeContract.View {
         arguments.let {
             recipe = it?.getParcelable(RECIPE)
         }
-
-        initializePresenter()
-    }
-
-    private fun initializePresenter() {
-        DaggerDetailRecipeComponent.builder()
-                .detailRecipePresenterModule(DetailRecipePresenterModule(this))
-                .recipeRepositoryComponent(baseActivity.recipeRepositoryComponent)
-                .build()
-                .inject(this)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

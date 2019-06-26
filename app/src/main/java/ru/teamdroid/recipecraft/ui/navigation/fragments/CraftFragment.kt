@@ -7,27 +7,39 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.arellomobile.mvp.presenter.InjectPresenter
+import com.arellomobile.mvp.presenter.ProvidePresenter
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_craft.*
 import ru.teamdroid.recipecraft.R
 import ru.teamdroid.recipecraft.data.model.Recipe
-import ru.teamdroid.recipecraft.ui.base.BaseFragment
+import ru.teamdroid.recipecraft.ui.base.BaseMoxyFragment
 import ru.teamdroid.recipecraft.ui.base.Constants
 import ru.teamdroid.recipecraft.ui.base.customs.CustomGridLayoutManager
 import ru.teamdroid.recipecraft.ui.base.listeners.OnSubmitClickListener
 import ru.teamdroid.recipecraft.ui.navigation.adapters.RecipesAdapter
 import ru.teamdroid.recipecraft.ui.navigation.adapters.SimpleListAdapter
 import ru.teamdroid.recipecraft.ui.navigation.components.DaggerCraftComponent
-import ru.teamdroid.recipecraft.ui.navigation.contracts.CraftRecipeContract
 import ru.teamdroid.recipecraft.ui.navigation.dialogs.SelectIngredientsDialog
-import ru.teamdroid.recipecraft.ui.navigation.modules.CraftPresenterModule
 import ru.teamdroid.recipecraft.ui.navigation.presenters.CraftPresenter
+import ru.teamdroid.recipecraft.ui.navigation.views.CraftRecipeView
 import javax.inject.Inject
 
-class CraftFragment : BaseFragment(), CraftRecipeContract.View, OnSubmitClickListener {
+class CraftFragment : BaseMoxyFragment(), CraftRecipeView, OnSubmitClickListener {
 
     @Inject
-    internal lateinit var presenter: CraftPresenter
+    @InjectPresenter
+    lateinit var presenter: CraftPresenter
+
+    @ProvidePresenter
+    fun providePresenter(): CraftPresenter {
+        DaggerCraftComponent.builder()
+                .recipeRepositoryComponent(baseActivity.recipeRepositoryComponent)
+                .build()
+                .inject(this)
+        return presenter
+    }
+
 
     override val contentResId = R.layout.fragment_craft
 
@@ -53,16 +65,7 @@ class CraftFragment : BaseFragment(), CraftRecipeContract.View, OnSubmitClickLis
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        initializePresenter()
         presenter.loadIngredientsTitle()
-    }
-
-    private fun initializePresenter() {
-        DaggerCraftComponent.builder()
-                .craftPresenterModule(CraftPresenterModule(this))
-                .recipeRepositoryComponent(baseActivity.recipeRepositoryComponent)
-                .build()
-                .inject(this)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -134,7 +137,6 @@ class CraftFragment : BaseFragment(), CraftRecipeContract.View, OnSubmitClickLis
     override fun showRecipes(listRecipe: MutableList<Recipe>) {
         recipesAdapter.apply {
             recipes = listRecipe
-            notifyDataSetChanged()
             if (listRecipe.isEmpty()) Toast.makeText(context, R.string.not_found_text, Toast.LENGTH_SHORT).show()
         }
     }

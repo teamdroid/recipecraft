@@ -4,21 +4,32 @@ import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.arellomobile.mvp.presenter.InjectPresenter
+import com.arellomobile.mvp.presenter.ProvidePresenter
 import kotlinx.android.synthetic.main.fragment_favorites.*
 import ru.teamdroid.recipecraft.R
 import ru.teamdroid.recipecraft.data.model.Recipe
-import ru.teamdroid.recipecraft.ui.base.BaseFragment
+import ru.teamdroid.recipecraft.ui.base.BaseMoxyFragment
 import ru.teamdroid.recipecraft.ui.navigation.adapters.RecipesAdapter
 import ru.teamdroid.recipecraft.ui.navigation.components.DaggerFavoritesComponent
-import ru.teamdroid.recipecraft.ui.navigation.contracts.FavoritesContract
-import ru.teamdroid.recipecraft.ui.navigation.modules.FavoritesPresenterModule
 import ru.teamdroid.recipecraft.ui.navigation.presenters.FavoritesPresenter
+import ru.teamdroid.recipecraft.ui.navigation.views.FavoritesView
 import javax.inject.Inject
 
-class FavoritesFragment : BaseFragment(), FavoritesContract.View {
+class FavoritesFragment : BaseMoxyFragment(), FavoritesView {
 
     @Inject
-    internal lateinit var presenter: FavoritesPresenter
+    @InjectPresenter
+    lateinit var presenter: FavoritesPresenter
+
+    @ProvidePresenter
+    fun providePresenter(): FavoritesPresenter {
+        DaggerFavoritesComponent.builder()
+                .recipeRepositoryComponent(baseActivity.recipeRepositoryComponent)
+                .build()
+                .inject(this)
+        return presenter
+    }
 
     override val contentResId = R.layout.fragment_favorites
 
@@ -31,19 +42,6 @@ class FavoritesFragment : BaseFragment(), FavoritesContract.View {
                     onFavoriteClick(it)
                 }
         )
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        initializePresenter()
-    }
-
-    private fun initializePresenter() {
-        DaggerFavoritesComponent.builder()
-                .favoritesPresenterModule(FavoritesPresenterModule(this))
-                .recipeRepositoryComponent(baseActivity.recipeRepositoryComponent)
-                .build()
-                .inject(this)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
