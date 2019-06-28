@@ -46,11 +46,13 @@ class ProfilePresenter @Inject constructor(private var googleSignInClient: Googl
         }
     }
 
-    fun onAttachView() {
+    override fun attachView(view: ProfileView?) {
+        super.attachView(view)
         firebaseAuth.addAuthStateListener(firebaseAuthListener)
     }
 
-    fun onDetachView() {
+    override fun destroyView(view: ProfileView?) {
+        super.destroyView(view)
         firebaseAuth.removeAuthStateListener(firebaseAuthListener)
     }
 

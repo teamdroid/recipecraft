@@ -38,9 +38,11 @@ class RecipesFragment : BaseMoxyFragment(), RecipeView {
         return presenter
     }
 
+    override val contentResId = R.layout.fragment_recipes
+
     private var currentSort = ""
 
-    override val contentResId = R.layout.fragment_recipes
+    private var scrollViewPosition: Int = 0
 
     private val recipesAdapter by lazy {
         RecipesAdapter(
@@ -139,9 +141,15 @@ class RecipesFragment : BaseMoxyFragment(), RecipeView {
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+        nestedScrollView.verticalScrollbarPosition = scrollViewPosition
+    }
+
     override fun onDestroyView() {
         recipesRecyclerView.adapter = null
         spinner_nav.adapter = null
+        scrollViewPosition = nestedScrollView.verticalScrollbarPosition
         super.onDestroyView()
     }
 

@@ -60,8 +60,6 @@ class ProfileFragment : BaseMoxyFragment(), ProfileView {
         super.onViewCreated(view, savedInstanceState)
         setupToolbar(toolbar, false, getString(R.string.fragment_profile_title))
 
-        presenter.onAttachView()
-
         listOf(settingsTextView, aboutTextView, favoritesTextView,
                 feedbackTextView, signInTextView, logoutTextView).forEach {
             it.setOnClickListener(clickListener)
@@ -100,16 +98,6 @@ class ProfileFragment : BaseMoxyFragment(), ProfileView {
 
     override fun signInWithGoogle(signInIntent: Intent) {
         startActivityForResult(signInIntent, Constants.REQUEST_CODE_SIGN_IN)
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        presenter.onDetachView()
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        presenter.onDestroy()
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
