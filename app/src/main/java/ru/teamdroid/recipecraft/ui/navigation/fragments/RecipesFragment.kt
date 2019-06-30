@@ -93,7 +93,7 @@ class RecipesFragment : BaseMoxyFragment(), RecipeView {
         }
 
         swipeRefreshLayout.setOnRefreshListener {
-            refresh(isOnline())
+            refresh(isNetworkAvailable())
         }
     }
 

@@ -53,10 +53,10 @@ abstract class BaseMoxyFragment : MvpAppCompatFragment(), OnBackPressedListener 
         fragmentManager?.popBackStack()
     }
 
-    fun isOnline(): Boolean {
+    fun isNetworkAvailable(): Boolean {
         val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         val activeNetwork: NetworkInfo? = connectivityManager.activeNetworkInfo
-        return activeNetwork?.isConnectedOrConnecting == true
+        return activeNetwork?.isConnected == true
     }
 
     override fun getContext(): Context {
