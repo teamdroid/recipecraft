@@ -36,7 +36,7 @@ class RecipesPresenter @Inject constructor(private var repository: RecipeReposit
         compositeDisposable.add(repository.bookmark(recipe)
                 .subscribeOn(ioScheduler)
                 .observeOn(uiScheduler)
-                .subscribe({ }, { }))
+                .subscribe({ viewState.showBookmarked(recipe.isBookmarked) }, { }))
     }
 
     private fun handleSuccess(list: MutableList<Recipe>, onlineRequired: Boolean, sortType: String) {

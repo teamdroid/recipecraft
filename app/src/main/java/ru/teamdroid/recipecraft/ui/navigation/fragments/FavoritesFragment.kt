@@ -53,7 +53,7 @@ class FavoritesFragment : BaseMoxyFragment(), FavoritesView {
             layoutManager = LinearLayoutManager(context)
         }
 
-        if (bookmarkRecipesAdapter.recipes.isEmpty()) {
+        if (bookmarkRecipesAdapter.listRecipes.isEmpty()) {
             refresh()
         } else {
             favoriteRecipesRecyclerView.visibility = View.VISIBLE
@@ -69,21 +69,20 @@ class FavoritesFragment : BaseMoxyFragment(), FavoritesView {
     private fun refresh() {
         progressBar.visibility = View.VISIBLE
         swipeRefreshLayout.isRefreshing = false
-        bookmarkRecipesAdapter.recipes = ArrayList()
+        bookmarkRecipesAdapter.listRecipes = ArrayList()
         presenter.loadRecipes()
     }
 
     private fun onClick(position: Int) {
-        baseActivity.replaceFragment(DetailRecipeFragment.newInstance(bookmarkRecipesAdapter.recipes[position]), NavigationFragment.TAG)
+        baseActivity.replaceFragment(DetailRecipeFragment.newInstance(bookmarkRecipesAdapter.listRecipes[position]), NavigationFragment.TAG)
     }
 
     private fun onFavoriteClick(recipe: Recipe) {
-        recipe.isBookmarked = !recipe.isBookmarked
         presenter.bookmarkRecipe(recipe)
     }
 
     override fun showRecipes(recipes: MutableList<Recipe>) {
-        bookmarkRecipesAdapter.recipes = recipes
+        bookmarkRecipesAdapter.listRecipes = recipes
         setInvisibleRefreshing()
         if (recipes.isNotEmpty()) {
             placeholderTextView.visibility = View.GONE

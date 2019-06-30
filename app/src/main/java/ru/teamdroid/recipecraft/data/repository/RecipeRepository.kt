@@ -30,7 +30,10 @@ class RecipeRepository @Inject constructor(private val recipeDataSource: Recipes
 
     fun findRecipeByIngredients(listIngredients: List<String>, count: Int): Flowable<MutableList<Recipe>> = recipeDataSource.findRecipesByIngredients(listIngredients, count)
 
-    fun bookmark(recipe: Recipe): Completable = recipeDataSource.bookmark(recipe)
+    fun bookmark(recipe: Recipe): Completable {
+        recipe.isBookmarked = !recipe.isBookmarked
+        return recipeDataSource.bookmark(recipe)
+    }
 
     fun sendReportMessage(feedbackMessage: FeedbackMessage): Single<Response> = recipeDataSource.sendReportMessage(feedbackMessage)
 

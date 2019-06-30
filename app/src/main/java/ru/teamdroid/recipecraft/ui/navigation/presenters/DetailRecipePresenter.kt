@@ -19,7 +19,6 @@ class DetailRecipePresenter @Inject constructor(private var repository: RecipeRe
     private var compositeDisposable: CompositeDisposable = CompositeDisposable()
 
     fun bookmarkRecipe(recipe: Recipe) {
-        recipe.isBookmarked = !recipe.isBookmarked
         compositeDisposable.add(repository.bookmark(recipe)
                 .subscribeOn(ioScheduler)
                 .observeOn(uiScheduler)

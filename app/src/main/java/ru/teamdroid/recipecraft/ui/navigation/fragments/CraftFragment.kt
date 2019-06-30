@@ -40,7 +40,6 @@ class CraftFragment : BaseMoxyFragment(), CraftRecipeView, OnSubmitClickListener
         return presenter
     }
 
-
     override val contentResId = R.layout.fragment_craft
 
     private val ingredientsAdapter by lazy {
@@ -108,11 +107,10 @@ class CraftFragment : BaseMoxyFragment(), CraftRecipeView, OnSubmitClickListener
     }
 
     private fun onClick(position: Int) {
-        baseActivity.replaceFragment(DetailRecipeFragment.newInstance(recipesAdapter.recipes[position]), NavigationFragment.TAG)
+        baseActivity.replaceFragment(DetailRecipeFragment.newInstance(recipesAdapter.listRecipes[position]), NavigationFragment.TAG)
     }
 
     private fun onFavoriteClick(recipe: Recipe) {
-        recipe.isBookmarked = !recipe.isBookmarked
         presenter.bookmarkRecipe(recipe)
     }
 
@@ -124,7 +122,7 @@ class CraftFragment : BaseMoxyFragment(), CraftRecipeView, OnSubmitClickListener
             presenter.findRecipeByIngredients(ingredientsAdapter.items, ingredientsAdapter.itemCount)
             setPlaceholderIfEmpty(false)
         } else {
-            recipesAdapter.recipes.clear()
+            recipesAdapter.listRecipes.clear()
             recipesAdapter.notifyDataSetChanged()
             setPlaceholderIfEmpty(true)
         }
@@ -135,10 +133,8 @@ class CraftFragment : BaseMoxyFragment(), CraftRecipeView, OnSubmitClickListener
     }
 
     override fun showRecipes(listRecipe: MutableList<Recipe>) {
-        recipesAdapter.apply {
-            recipes = listRecipe
-            if (listRecipe.isEmpty()) Toast.makeText(context, R.string.not_found_text, Toast.LENGTH_SHORT).show()
-        }
+        recipesAdapter.updateRecipes(listRecipe)
+        if (listRecipe.isEmpty()) Toast.makeText(context, R.string.not_found_text, Toast.LENGTH_SHORT).show()
     }
 
     override fun showBookmarked(isBookmarked: Boolean) {
@@ -153,7 +149,7 @@ class CraftFragment : BaseMoxyFragment(), CraftRecipeView, OnSubmitClickListener
             presenter.findRecipeByIngredients(list, list.size)
         } else {
             setPlaceholderIfEmpty(true)
-            recipesAdapter.recipes.clear()
+            recipesAdapter.listRecipes.clear()
             recipesAdapter.notifyDataSetChanged()
         }
     }

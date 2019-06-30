@@ -12,6 +12,7 @@ import android.widget.ArrayAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.arellomobile.mvp.presenter.InjectPresenter
 import com.arellomobile.mvp.presenter.ProvidePresenter
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_recipes.*
 import ru.teamdroid.recipecraft.R
 import ru.teamdroid.recipecraft.data.model.Recipe
@@ -22,6 +23,7 @@ import ru.teamdroid.recipecraft.ui.navigation.components.DaggerRecipesComponent
 import ru.teamdroid.recipecraft.ui.navigation.presenters.RecipesPresenter
 import ru.teamdroid.recipecraft.ui.navigation.views.RecipeView
 import javax.inject.Inject
+
 
 class RecipesFragment : BaseMoxyFragment(), RecipeView {
 
@@ -66,7 +68,7 @@ class RecipesFragment : BaseMoxyFragment(), RecipeView {
             layoutManager = LinearLayoutManager(context)
         }
 
-        if (recipesAdapter.recipes.isEmpty()) refresh(false, SortRecipes.ByNewer)
+        if (recipesAdapter.listRecipes.isEmpty()) refresh(false, SortRecipes.ByNewer)
 
         sortAdapter = ArrayAdapter.createFromResource(
                 context,
@@ -96,11 +98,10 @@ class RecipesFragment : BaseMoxyFragment(), RecipeView {
     }
 
     private fun onClick(position: Int) {
-        baseActivity.replaceFragment(DetailRecipeFragment.newInstance(recipesAdapter.recipes[position]), NavigationFragment.TAG)
+        baseActivity.replaceFragment(DetailRecipeFragment.newInstance(recipesAdapter.listRecipes[position]), NavigationFragment.TAG)
     }
 
     private fun onFavoriteClick(recipe: Recipe) {
-        recipe.isBookmarked = !recipe.isBookmarked
         presenter.bookmarkRecipe(recipe)
     }
 
@@ -109,7 +110,8 @@ class RecipesFragment : BaseMoxyFragment(), RecipeView {
             currentSort = sort
             progressBar.visibility = View.VISIBLE
             swipeRefreshLayout.isRefreshing = false
-            recipesAdapter.recipes = arrayListOf()
+            recipesAdapter.listRecipes.clear()
+            recipesAdapter.notifyDataSetChanged()
             presenter.loadRecipes(onlineRequired, currentSort)
         }
     }
@@ -119,8 +121,8 @@ class RecipesFragment : BaseMoxyFragment(), RecipeView {
         super.onCreateOptionsMenu(menu, inflater)
     }
 
-    override fun showRecipes(recipes: MutableList<Recipe>) {
-        recipesAdapter.recipes = recipes
+    override fun showRecipes(listRecipes: MutableList<Recipe>) {
+        recipesAdapter.updateRecipes(listRecipes)
         setInvisibleRefreshing()
     }
 
@@ -129,6 +131,11 @@ class RecipesFragment : BaseMoxyFragment(), RecipeView {
             progressBar.visibility = View.GONE
             swipeRefreshLayout.isRefreshing = false
         }
+    }
+
+    override fun showBookmarked(isBookmarked: Boolean) {
+        val snackBar = Snackbar.make(constraintLayout, if (isBookmarked) getString(R.string.bookmarked) else getString(R.string.unbookmark_text), 500)
+        snackBar.setAction(getString(R.string.close_text)) { snackBar.dismiss() }.setActionTextColor(resources.getColor(R.color.textWhite)).show()
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
