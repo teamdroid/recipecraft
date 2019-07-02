@@ -40,6 +40,7 @@
     <string name="instructions_text">%d) %s</string>
     <string name="select_ingredients_text_btn">Выбери ингредиенты</string>
     <string name="select_ingredient_text">Выбрать</string>
+    <string name="ingredienets_not_found">Ничего не найдено</string>
     <string name="selected_ingredients_text">Выбранные ингредиенты</string>
     <string name="relevant_recipes_text">Подходящие рецепты</string>
     <string name="cancel">Отменить</string>

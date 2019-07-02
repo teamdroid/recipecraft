@@ -9,6 +9,7 @@ import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_craft.*
+import org.jetbrains.anko.sdk25.coroutines.onClick
 import ru.teamdroid.recipecraft.R
 import ru.teamdroid.recipecraft.data.model.Recipe
 import ru.teamdroid.recipecraft.ui.base.BaseFragment
@@ -76,19 +77,18 @@ class CraftFragment : BaseFragment(), CraftRecipeContract.View, OnSubmitClickLis
             layoutManager = LinearLayoutManager(context)
         }
 
-        setPlaceholderIfEmpty(ingredientsAdapter.isEmpty())
-
         ingredientsAdapter.setIngredientList(listIngredientsTitle)
 
         loadRecipeCardView.setOnClickListener {
             onSubmitClicked(ingredientsAdapter.listSelectedIngredients)
         }
 
+        //onSubmitClicked(ingredientsAdapter.listSelectedIngredients)
+
         addIngredientsViewButton.setOnClickListener {
             ingredientsAdapter.addItems("")
         }
 
-        ingredientsAdapter.items = arrayListOf("", "", "")
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -116,10 +116,14 @@ class CraftFragment : BaseFragment(), CraftRecipeContract.View, OnSubmitClickLis
     }
 
     private fun onDeleteClick(ingredient: String) {
-        ingredientsAdapter.items.remove(ingredient)
+        if (ingredientsAdapter.items.size > 3)
+            ingredientsAdapter.items.remove(ingredient)
         ingredientsAdapter.notifyDataSetChanged()
-        if (!ingredientsAdapter.isEmpty()) {
-            presenter.findRecipeByIngredients(ingredientsAdapter.items, ingredientsAdapter.itemCount)
+
+        ingredientsAdapter.setSelectedIngredientList(ingredientsAdapter.items)
+
+        if (!ingredientsAdapter.listSelectedIngredients.isEmpty()) {
+            presenter.findRecipeByIngredients(ingredientsAdapter.listSelectedIngredients, ingredientsAdapter.listSelectedIngredients.size)
             setPlaceholderIfEmpty(false)
         } else {
             recipesAdapter.recipes.clear()
@@ -165,8 +169,14 @@ class CraftFragment : BaseFragment(), CraftRecipeContract.View, OnSubmitClickLis
     private fun setPlaceholderIfEmpty(isEmpty: Boolean) {
         if (!isEmpty) {
             recipesRecyclerView.visibility = View.VISIBLE
+            recipesCountTextView.visibility = View.VISIBLE
+            sortImageView.visibility = View.VISIBLE
+            filterImageView.visibility = View.VISIBLE
         } else {
             recipesRecyclerView.visibility = View.INVISIBLE
+            recipesCountTextView.visibility = View.INVISIBLE
+            sortImageView.visibility = View.INVISIBLE
+            filterImageView.visibility = View.INVISIBLE
         }
     }
 

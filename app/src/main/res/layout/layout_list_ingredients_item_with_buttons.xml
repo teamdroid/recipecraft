@@ -1,72 +1,76 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                                                   xmlns:app="http://schemas.android.com/apk/res-auto"
-                                                   android:id="@+id/containerConstraintLayout"
-                                                   android:layout_width="match_parent"
-                                                   android:layout_height="wrap_content"
-                                                   android:layout_marginBottom="@dimen/size_ssmall"
-                                                   android:layout_marginTop="@dimen/size_ssmall"
-                                                   android:background="?android:attr/selectableItemBackground">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/containerConstraintLayout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="@dimen/size_ssmall"
+    android:layout_marginTop="@dimen/size_ssmall"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    android:background="?android:attr/selectableItemBackground">
 
     <androidx.cardview.widget.CardView
-            android:id="@+id/ingredientCardView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:cardCornerRadius="@dimen/size_xsmall"
-            android:clickable="true"
-            android:focusable="true"
-            app:layout_constraintTop_toTopOf="parent">
+        android:id="@+id/ingredientCardView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="@dimen/size_xsmall"
+        android:clickable="true"
+        android:focusable="true"
+        app:layout_constraintTop_toTopOf="parent">
 
         <RelativeLayout
-                android:id="@+id/ingredientConstraintLayout"
-                android:orientation="horizontal"
-                android:background="@color/dark_orange_color"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+            android:id="@+id/ingredientRelativeLayout"
+            android:orientation="horizontal"
+            android:background="@color/dark_orange_color"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
             <AutoCompleteTextView
-                    android:id="@+id/ingredientsNumberTextView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/size_small"
-                    android:layout_marginStart="@dimen/size_small"
-                    android:textColor="@color/textWhite"
-                    android:background="@android:color/transparent"
-                    android:fontFamily="@font/ubuntu_regular"
-                    android:textSize="@dimen/text_size_small"
-                    android:layout_centerVertical="true"/>
+                android:id="@+id/ingredientsNumberTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/size_small"
+                android:layout_marginStart="@dimen/size_small"
+                android:textColor="@color/textGray"
+                android:background="@android:color/transparent"
+                android:fontFamily="@font/ubuntu_regular"
+                android:textSize="@dimen/text_size_small"
+                android:layout_centerVertical="true" />
 
             <AutoCompleteTextView
-                    android:id="@+id/titleIngredientTextView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="12dp"
-                    android:layout_marginEnd="10dp"
-                    android:width="@dimen/max_width_image"
-                    android:textColor="@color/textWhite"
-                    android:background="@android:color/transparent"
-                    android:fontFamily="@font/ubuntu_regular"
-                    android:textColorHint="@color/textWhite"
-                    android:hint="@string/select_ingredient_text"
-                    android:textSize="@dimen/text_size_small"
-                    android:layout_toEndOf="@+id/ingredientsNumberTextView"
-                    android:layout_toStartOf="@+id/deleteButton"
-                    android:layout_centerVertical="true"/>
+                android:id="@+id/titleIngredientTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:layout_marginEnd="10dp"
+                android:width="@dimen/max_width_image"
+                android:background="@android:color/transparent"
+                android:fontFamily="@font/ubuntu_regular"
+                android:textColorHint="@color/textGray"
+                android:hint="@string/select_ingredient_text"
+                android:textSize="@dimen/text_size_small"
+                android:textColor="@color/textGray"
+                android:completionThreshold="1"
+                android:inputType="textCapWords"
+                android:layout_toEndOf="@+id/ingredientsNumberTextView"
+                android:layout_toStartOf="@+id/deleteButton"
+                android:layout_centerVertical="true" />
 
             <ImageView
-                    android:id="@+id/deleteButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_marginEnd="@dimen/size_small"
-                    android:layout_marginBottom="@dimen/size_small"
-                    android:background="?android:attr/selectableItemBackgroundBorderless"
-                    android:clickable="true"
-                    android:contentDescription="@string/clear_text"
-                    android:focusable="true"
-                    android:src="@drawable/ic_clear_grey"
-                    android:visibility="invisible"
-                    android:layout_centerVertical="true"/>
+                android:id="@+id/deleteButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="@dimen/size_small"
+                android:layout_marginBottom="@dimen/size_small"
+                android:background="?android:attr/selectableItemBackgroundBorderless"
+                android:clickable="true"
+                android:contentDescription="@string/clear_text"
+                android:focusable="true"
+                android:src="@drawable/ic_clear_grey"
+                android:visibility="visible"
+                android:layout_centerVertical="true" />
 
         </RelativeLayout>
 
