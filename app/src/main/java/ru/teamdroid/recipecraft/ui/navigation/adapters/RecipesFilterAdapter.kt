@@ -11,6 +11,7 @@ import kotlinx.android.synthetic.main.layout_list_ingredients_item_with_buttons.
 import org.jetbrains.anko.image
 import org.jetbrains.anko.textColor
 import ru.teamdroid.recipecraft.R
+import android.text.TextWatcher as TextWatcher1
 import kotlinx.android.synthetic.main.fragment_favorites.view.placeholderTextView as placeholderTextView1
 
 class RecipesFilterAdapter(var onDeleteClickListener: (ingredient: String) -> Unit) : RecyclerView.Adapter<RecipesFilterAdapter.ViewHolder>() {
@@ -60,10 +61,22 @@ class RecipesFilterAdapter(var onDeleteClickListener: (ingredient: String) -> Un
                 }
                 setOnFocusChangeListener { v, hasFocus ->
                     setColorViewStateWithBorder(holder, position, hasFocus)
-                    setNotSelectedIngredients(holder, position, hasFocus)
                 }
-            }
+                addTextChangedListener(object : android.text.TextWatcher {
+                    override fun afterTextChanged(s: Editable?) {
+                        items[position] = s.toString()
+                    }
 
+                    override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+
+                    }
+
+                    override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+
+                    }
+
+                })
+            }
             deleteButton.setOnClickListener {
                 deleteIngredient(holder, position)
             }
@@ -113,7 +126,7 @@ class RecipesFilterAdapter(var onDeleteClickListener: (ingredient: String) -> Un
         with(holder.itemView) {
             if (!hasFocus) {
                 items[position] = titleIngredientTextView.text.toString()
-                setSelectedIngredientList(items)
+                setSelectedIngredientList()
             }
         }
     }
@@ -146,7 +159,7 @@ class RecipesFilterAdapter(var onDeleteClickListener: (ingredient: String) -> Un
             items[position] = titleIngredientTextView.text.toString()
             deleteButton.visibility = View.VISIBLE
             titleIngredientTextView.isEnabled = false
-            setSelectedIngredientList(items)
+            setSelectedIngredientList()
             setStateView(holder, position)
         }
     }
@@ -165,13 +178,12 @@ class RecipesFilterAdapter(var onDeleteClickListener: (ingredient: String) -> Un
     }
 
 
-    public fun setSelectedIngredientList(selectedIngredientsList: List<String>): ArrayList<String> {
+    public fun setSelectedIngredientList() {
         val finalList: ArrayList<String> = arrayListOf()
-        for (ingredient: String in selectedIngredientsList) {
+        for (ingredient: String in items) {
             if (ingredient.isNotBlank()) finalList.add(ingredient)
         }
         listSelectedIngredients = finalList
-        return listSelectedIngredients
     }
 
     fun isEmpty(): Boolean = items.isEmpty()

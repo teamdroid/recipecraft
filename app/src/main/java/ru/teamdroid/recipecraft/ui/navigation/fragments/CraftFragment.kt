@@ -80,6 +80,7 @@ class CraftFragment : BaseFragment(), CraftRecipeContract.View, OnSubmitClickLis
         ingredientsAdapter.setIngredientList(listIngredientsTitle)
 
         loadRecipeCardView.setOnClickListener {
+            ingredientsAdapter.setSelectedIngredientList()
             onSubmitClicked(ingredientsAdapter.listSelectedIngredients)
         }
 
@@ -120,7 +121,7 @@ class CraftFragment : BaseFragment(), CraftRecipeContract.View, OnSubmitClickLis
             ingredientsAdapter.items.remove(ingredient)
         ingredientsAdapter.notifyDataSetChanged()
 
-        ingredientsAdapter.setSelectedIngredientList(ingredientsAdapter.items)
+        ingredientsAdapter.setSelectedIngredientList()
 
         if (!ingredientsAdapter.listSelectedIngredients.isEmpty()) {
             presenter.findRecipeByIngredients(ingredientsAdapter.listSelectedIngredients, ingredientsAdapter.listSelectedIngredients.size)
