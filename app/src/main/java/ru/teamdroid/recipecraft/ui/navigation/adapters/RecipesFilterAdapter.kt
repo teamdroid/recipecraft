@@ -6,19 +6,19 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.fragment_favorites.view.*
 import kotlinx.android.synthetic.main.layout_list_ingredients_item_with_buttons.view.*
 import org.jetbrains.anko.image
 import org.jetbrains.anko.textColor
-import ru.teamdroid.recipecraft.R
-import android.text.TextWatcher as TextWatcher1
-import kotlinx.android.synthetic.main.fragment_favorites.view.placeholderTextView as placeholderTextView1
+import android.text.TextWatcher
 
-class RecipesFilterAdapter(var onDeleteClickListener: (ingredient: String) -> Unit) : RecyclerView.Adapter<RecipesFilterAdapter.ViewHolder>() {
+
+class RecipesFilterAdapter(var onDeleteClickListener: (ingredientPosition: Int) -> Unit) : RecyclerView.Adapter<RecipesFilterAdapter.ViewHolder>() {
 
     private var listIngredients: ArrayList<String> = arrayListOf()
 
     var listSelectedIngredients: ArrayList<String> = arrayListOf()
+
+    var ingredientTextWatcher: TextWatcher? = null
 
     var items: MutableList<String> = arrayListOf("", "", "")
         set(value) {
@@ -39,7 +39,7 @@ class RecipesFilterAdapter(var onDeleteClickListener: (ingredient: String) -> Un
     override fun getItemCount() = items.size
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.layout_list_ingredients_item_with_buttons, parent, false)
+        val view = LayoutInflater.from(parent.context).inflate(ru.teamdroid.recipecraft.R.layout.layout_list_ingredients_item_with_buttons, parent, false)
         return ViewHolder(view)
     }
 
@@ -52,19 +52,22 @@ class RecipesFilterAdapter(var onDeleteClickListener: (ingredient: String) -> Un
 
             setStateView(holder, position)
 
-            titleIngredientTextView.setDropDownBackgroundResource(R.drawable.ic_clear_grey)
+            titleIngredientTextView.setDropDownBackgroundResource(ru.teamdroid.recipecraft.R.drawable.ic_clear_grey)
             with(titleIngredientTextView) {
                 text = Editable.Factory.getInstance().newEditable(items[position])
-                setAdapter(ArrayAdapter<String>(context, R.layout.simple_dropdown_item, listIngredients))
+                setAdapter(ArrayAdapter<String>(context, ru.teamdroid.recipecraft.R.layout.simple_dropdown_item, listIngredients))
                 setOnItemClickListener { _, _, _, _ ->
                     selectedIngredient(holder, position)
                 }
                 setOnFocusChangeListener { v, hasFocus ->
                     setColorViewStateWithBorder(holder, position, hasFocus)
                 }
-                addTextChangedListener(object : android.text.TextWatcher {
+
+                //можно использовать объект который выше, ingredientTextWatcher чтобы очищать слушатель (см. unbindViewHolder метод в самом низу)
+                //но в таком случае, вроде как идут какие то траблы с позицией, можешь в дебаге посмотреть
+                addTextChangedListener(object : TextWatcher {
                     override fun afterTextChanged(s: Editable?) {
-                        items[position] = s.toString()
+                        setChangedText(holder, position)
                     }
 
                     override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
@@ -74,7 +77,6 @@ class RecipesFilterAdapter(var onDeleteClickListener: (ingredient: String) -> Un
                     override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
 
                     }
-
                 })
             }
             deleteButton.setOnClickListener {
@@ -107,26 +109,25 @@ class RecipesFilterAdapter(var onDeleteClickListener: (ingredient: String) -> Un
         with(holder.itemView) {
             when (isEnabled) {
                 true -> {
-                    ingredientsNumberTextView.textColor = resources.getColor(R.color.textGray)
-                    titleIngredientTextView.textColor = resources.getColor(R.color.textGray)
-                    ingredientRelativeLayout.background = resources.getDrawable(R.color.dark_orange_color_12_opacity)
-                    deleteButton.image = resources.getDrawable(R.drawable.cancel_gray)
+                    ingredientsNumberTextView.textColor = resources.getColor(ru.teamdroid.recipecraft.R.color.textGray)
+                    titleIngredientTextView.textColor = resources.getColor(ru.teamdroid.recipecraft.R.color.textGray)
+                    ingredientRelativeLayout.background = resources.getDrawable(ru.teamdroid.recipecraft.R.color.dark_orange_color_12_opacity)
+                    deleteButton.image = resources.getDrawable(ru.teamdroid.recipecraft.R.drawable.cancel_gray)
                 }
                 false -> {
-                    ingredientsNumberTextView.textColor = resources.getColor(R.color.textWhite)
-                    titleIngredientTextView.textColor = resources.getColor(R.color.textWhite)
-                    ingredientRelativeLayout.background = resources.getDrawable(R.color.dark_orange_color)
-                    deleteButton.image = resources.getDrawable(R.drawable.ic_clear_grey)
+                    ingredientsNumberTextView.textColor = resources.getColor(ru.teamdroid.recipecraft.R.color.textWhite)
+                    titleIngredientTextView.textColor = resources.getColor(ru.teamdroid.recipecraft.R.color.textWhite)
+                    ingredientRelativeLayout.background = resources.getDrawable(ru.teamdroid.recipecraft.R.color.dark_orange_color)
+                    deleteButton.image = resources.getDrawable(ru.teamdroid.recipecraft.R.drawable.ic_clear_grey)
                 }
             }
         }
     }
 
-    private fun setNotSelectedIngredients(holder: ViewHolder, position: Int, hasFocus: Boolean) {
-        with(holder.itemView) {
-            if (!hasFocus) {
+    private fun setChangedText(holder: ViewHolder, position: Int) {
+        if (position in 0..items.size - 1) {
+            with(holder.itemView) {
                 items[position] = titleIngredientTextView.text.toString()
-                setSelectedIngredientList()
             }
         }
     }
@@ -140,13 +141,13 @@ class RecipesFilterAdapter(var onDeleteClickListener: (ingredient: String) -> Un
             with(holder.itemView) {
                 when (viewHasFocus) {
                     true -> {
-                        ingredientsNumberTextView.textColor = resources.getColor(R.color.dark_orange_color)
-                        titleIngredientTextView.textColor = resources.getColor(R.color.dark_orange_color)
+                        ingredientsNumberTextView.textColor = resources.getColor(ru.teamdroid.recipecraft.R.color.dark_orange_color)
+                        titleIngredientTextView.textColor = resources.getColor(ru.teamdroid.recipecraft.R.color.dark_orange_color)
                         titleIngredientTextView.hint = ""
-                        ingredientRelativeLayout.background = resources.getDrawable(R.drawable.change_choice_ingredients_view)
+                        ingredientRelativeLayout.background = resources.getDrawable(ru.teamdroid.recipecraft.R.drawable.change_choice_ingredients_view)
                     }
                     false -> {
-                        titleIngredientTextView.hint = resources.getString(R.string.select_ingredient_text)
+                        titleIngredientTextView.hint = resources.getString(ru.teamdroid.recipecraft.R.string.select_ingredient_text)
                         setStateView(holder, position)
                     }
                 }
@@ -156,10 +157,8 @@ class RecipesFilterAdapter(var onDeleteClickListener: (ingredient: String) -> Un
 
     private fun selectedIngredient(holder: ViewHolder, position: Int) {
         with(holder.itemView) {
-            items[position] = titleIngredientTextView.text.toString()
             deleteButton.visibility = View.VISIBLE
             titleIngredientTextView.isEnabled = false
-            setSelectedIngredientList()
             setStateView(holder, position)
         }
     }
@@ -171,9 +170,10 @@ class RecipesFilterAdapter(var onDeleteClickListener: (ingredient: String) -> Un
                 setColorViewState(holder, true)
             }
             titleIngredientTextView.isEnabled = true
-            titleIngredientTextView.text = null
+            if (items[position] != "")
+                titleIngredientTextView.text = null
             deleteButton.visibility = View.INVISIBLE
-            onDeleteClickListener.invoke(items[position])
+            onDeleteClickListener.invoke(position)
         }
     }
 
@@ -189,12 +189,13 @@ class RecipesFilterAdapter(var onDeleteClickListener: (ingredient: String) -> Un
     fun isEmpty(): Boolean = items.isEmpty()
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        fun unbindViewHolder(view: View) {
+        fun unbindViewHolder(view: View) { //ingredientTextWatcher: TextWatcher
             with(view) {
                 if (titleIngredientTextView.isEnabled) {
                     deleteButton.visibility = View.INVISIBLE
                 }
                 deleteButton.setOnClickListener(null)
+                //titleIngredientTextView.removeTextChangedListener(ingredientTextWatcher)
                 titleIngredientTextView.onItemClickListener = null
                 titleIngredientTextView.setAdapter(null)
             }

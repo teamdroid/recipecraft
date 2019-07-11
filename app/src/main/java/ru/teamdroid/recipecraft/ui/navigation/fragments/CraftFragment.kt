@@ -84,7 +84,7 @@ class CraftFragment : BaseFragment(), CraftRecipeContract.View, OnSubmitClickLis
             onSubmitClicked(ingredientsAdapter.listSelectedIngredients)
         }
 
-        //onSubmitClicked(ingredientsAdapter.listSelectedIngredients)
+        onSubmitClicked(ingredientsAdapter.listSelectedIngredients)
 
         addIngredientsViewButton.setOnClickListener {
             ingredientsAdapter.addItems("")
@@ -116,11 +116,11 @@ class CraftFragment : BaseFragment(), CraftRecipeContract.View, OnSubmitClickLis
         presenter.bookmarkRecipe(recipe)
     }
 
-    private fun onDeleteClick(ingredient: String) {
+    private fun onDeleteClick(ingredientPosition: Int) {
         if (ingredientsAdapter.items.size > 3)
-            ingredientsAdapter.items.remove(ingredient)
-        ingredientsAdapter.notifyDataSetChanged()
+            ingredientsAdapter.items.removeAt(ingredientPosition)
 
+        ingredientsAdapter.notifyDataSetChanged()
         ingredientsAdapter.setSelectedIngredientList()
 
         if (!ingredientsAdapter.listSelectedIngredients.isEmpty()) {
