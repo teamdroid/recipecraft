@@ -10,27 +10,41 @@ import android.widget.AdapterView
 import android.widget.AdapterView.OnItemSelectedListener
 import android.widget.ArrayAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.arellomobile.mvp.presenter.InjectPresenter
+import com.arellomobile.mvp.presenter.ProvidePresenter
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_recipes.*
 import ru.teamdroid.recipecraft.R
 import ru.teamdroid.recipecraft.data.model.Recipe
-import ru.teamdroid.recipecraft.ui.base.BaseFragment
+import ru.teamdroid.recipecraft.ui.base.BaseMoxyFragment
 import ru.teamdroid.recipecraft.ui.base.SortRecipes
 import ru.teamdroid.recipecraft.ui.navigation.adapters.RecipesAdapter
 import ru.teamdroid.recipecraft.ui.navigation.components.DaggerRecipesComponent
-import ru.teamdroid.recipecraft.ui.navigation.contracts.RecipesContract
-import ru.teamdroid.recipecraft.ui.navigation.modules.RecipesPresenterModule
 import ru.teamdroid.recipecraft.ui.navigation.presenters.RecipesPresenter
+import ru.teamdroid.recipecraft.ui.navigation.views.RecipeView
 import javax.inject.Inject
 
-class RecipesFragment : BaseFragment(), RecipesContract.View {
+
+class RecipesFragment : BaseMoxyFragment(), RecipeView {
 
     @Inject
-    internal lateinit var presenter: RecipesPresenter
+    @InjectPresenter
+    lateinit var presenter: RecipesPresenter
 
-    private var currentSort = SortRecipes.ByNewer
+    @ProvidePresenter
+    fun providePresenter(): RecipesPresenter {
+        DaggerRecipesComponent.builder()
+                .recipeRepositoryComponent(baseActivity.recipeRepositoryComponent)
+                .build()
+                .inject(this)
+        return presenter
+    }
 
     override val contentResId = R.layout.fragment_recipes
+
+    private var currentSort = ""
+
+    private var scrollViewPosition: Int = 0
 
     private val recipesAdapter by lazy {
         RecipesAdapter(
@@ -45,19 +59,6 @@ class RecipesFragment : BaseFragment(), RecipesContract.View {
 
     private lateinit var sortAdapter: Adapter
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        initializePresenter()
-    }
-
-    private fun initializePresenter() {
-        DaggerRecipesComponent.builder()
-                .recipesPresenterModule(RecipesPresenterModule(this))
-                .recipeRepositoryComponent(baseActivity.recipeRepositoryComponent)
-                .build()
-                .inject(this)
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupToolbar(toolbar, false, "")
@@ -67,7 +68,7 @@ class RecipesFragment : BaseFragment(), RecipesContract.View {
             layoutManager = LinearLayoutManager(context)
         }
 
-        if (recipesAdapter.recipes.isEmpty()) refresh(false)
+        if (recipesAdapter.listRecipes.isEmpty()) refresh(false, SortRecipes.ByNewer)
 
         sortAdapter = ArrayAdapter.createFromResource(
                 context,
@@ -80,40 +81,39 @@ class RecipesFragment : BaseFragment(), RecipesContract.View {
 
         spinner_nav.onItemSelectedListener = object : OnItemSelectedListener {
             override fun onItemSelected(adapter: AdapterView<*>, v: View?, i: Int, lng: Long) {
-                with(recipesAdapter) {
                     when (i) {
-                        0 -> currentSort = SortRecipes.ByNewer
-                        1 -> currentSort = SortRecipes.ByPortion
-                        2 -> currentSort = SortRecipes.ByIngredients
-                        3 -> currentSort = SortRecipes.ByTime
+                        0 -> refresh(false, SortRecipes.ByNewer)
+                        1 -> refresh(false, SortRecipes.ByPortion)
+                        2 -> refresh(false, SortRecipes.ByIngredients)
+                        3 -> refresh(false, SortRecipes.ByTime)
                     }
-                    presenter.loadRecipes(isOnline(), currentSort)
-                    notifyDataSetChanged()
-                }
             }
 
             override fun onNothingSelected(parentView: AdapterView<*>) {}
         }
 
         swipeRefreshLayout.setOnRefreshListener {
-            refresh(isOnline())
+            refresh(isNetworkAvailable())
         }
     }
 
     private fun onClick(position: Int) {
-        baseActivity.replaceFragment(DetailRecipeFragment.newInstance(recipesAdapter.recipes[position]), NavigationFragment.TAG)
+        baseActivity.replaceFragment(DetailRecipeFragment.newInstance(recipesAdapter.listRecipes[position]), NavigationFragment.TAG)
     }
 
     private fun onFavoriteClick(recipe: Recipe) {
-        recipe.isBookmarked = !recipe.isBookmarked
         presenter.bookmarkRecipe(recipe)
     }
 
-    private fun refresh(onlineRequired: Boolean) {
-        progressBar.visibility = View.VISIBLE
-        swipeRefreshLayout.isRefreshing = false
-        recipesAdapter.recipes = arrayListOf()
-        presenter.loadRecipes(onlineRequired, currentSort)
+    private fun refresh(onlineRequired: Boolean, sort: String = currentSort) {
+        if (onlineRequired || sort != currentSort) {
+            currentSort = sort
+            progressBar.visibility = View.VISIBLE
+            swipeRefreshLayout.isRefreshing = false
+            recipesAdapter.listRecipes.clear()
+            recipesAdapter.notifyDataSetChanged()
+            presenter.loadRecipes(onlineRequired, currentSort)
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -121,8 +121,8 @@ class RecipesFragment : BaseFragment(), RecipesContract.View {
         super.onCreateOptionsMenu(menu, inflater)
     }
 
-    override fun showRecipes(recipes: MutableList<Recipe>) {
-        recipesAdapter.recipes = recipes
+    override fun showRecipes(listRecipes: MutableList<Recipe>) {
+        recipesAdapter.updateRecipes(listRecipes)
         setInvisibleRefreshing()
     }
 
@@ -148,9 +148,15 @@ class RecipesFragment : BaseFragment(), RecipesContract.View {
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+        nestedScrollView.verticalScrollbarPosition = scrollViewPosition
+    }
+
     override fun onDestroyView() {
         recipesRecyclerView.adapter = null
         spinner_nav.adapter = null
+        scrollViewPosition = nestedScrollView.verticalScrollbarPosition
         super.onDestroyView()
     }
 

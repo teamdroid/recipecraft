@@ -7,6 +7,8 @@ import android.view.View
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import com.arellomobile.mvp.presenter.InjectPresenter
+import com.arellomobile.mvp.presenter.ProvidePresenter
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.common.api.ApiException
 import com.squareup.picasso.Picasso
@@ -15,22 +17,33 @@ import kotlinx.android.synthetic.main.fragment_profile.*
 import org.jetbrains.anko.image
 import ru.teamdroid.recipecraft.AppModule
 import ru.teamdroid.recipecraft.R
-import ru.teamdroid.recipecraft.ui.base.BaseFragment
+import ru.teamdroid.recipecraft.ui.base.BaseMoxyFragment
 import ru.teamdroid.recipecraft.ui.base.CircleTransform
 import ru.teamdroid.recipecraft.ui.base.Constants
 import ru.teamdroid.recipecraft.ui.base.Screens
 import ru.teamdroid.recipecraft.ui.navigation.components.DaggerProfileComponent
-import ru.teamdroid.recipecraft.ui.navigation.contracts.ProfileContract
 import ru.teamdroid.recipecraft.ui.navigation.modules.ProfilePresenterModule
 import ru.teamdroid.recipecraft.ui.navigation.presenters.ProfilePresenter
+import ru.teamdroid.recipecraft.ui.navigation.views.ProfileView
 import javax.inject.Inject
 
-class ProfileFragment : BaseFragment(), ProfileContract.View {
+class ProfileFragment : BaseMoxyFragment(), ProfileView {
 
     override val contentResId = R.layout.fragment_profile
 
     @Inject
-    internal lateinit var presenter: ProfilePresenter
+    @InjectPresenter
+    lateinit var presenter: ProfilePresenter
+
+    @ProvidePresenter
+    fun providePresenter(): ProfilePresenter {
+        DaggerProfileComponent.builder()
+                .profilePresenterModule(ProfilePresenterModule())
+                .appModule(AppModule(baseActivity.application))
+                .build()
+                .inject(this)
+        return presenter
+    }
 
     private val clickListener = View.OnClickListener { view ->
         when (view.tag) {
@@ -43,24 +56,9 @@ class ProfileFragment : BaseFragment(), ProfileContract.View {
         }
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        initializePresenter()
-    }
-
-    private fun initializePresenter() {
-        DaggerProfileComponent.builder()
-                .profilePresenterModule(ProfilePresenterModule(this))
-                .appModule(AppModule(baseActivity.application))
-                .build()
-                .inject(this)
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupToolbar(toolbar, false, getString(R.string.fragment_profile_title))
-
-        presenter.onAttachView()
 
         listOf(settingsTextView, aboutTextView, favoritesTextView,
                 feedbackTextView, signInTextView, logoutTextView).forEach {
@@ -72,7 +70,7 @@ class ProfileFragment : BaseFragment(), ProfileContract.View {
         usernameTextView.text = displayName
         Picasso.with(context)
                 .load(photoUrl)
-                .placeholder(R.drawable.ic_placeholder)
+                .placeholder(R.drawable.ic_profile_placeholder)
                 .transform(CircleTransform())
                 .into(profileImageView)
         signInTextView.visibility = View.GONE
@@ -81,7 +79,7 @@ class ProfileFragment : BaseFragment(), ProfileContract.View {
 
     override fun showUserSignOut() {
         usernameTextView.text = getString(R.string.not_authorization_client_text)
-        profileImageView.image = ContextCompat.getDrawable(context, R.drawable.ic_placeholder)
+        profileImageView.image = ContextCompat.getDrawable(context, R.drawable.ic_profile_placeholder)
         signInTextView.visibility = View.VISIBLE
         logoutTextView.visibility = View.GONE
     }
@@ -100,16 +98,6 @@ class ProfileFragment : BaseFragment(), ProfileContract.View {
 
     override fun signInWithGoogle(signInIntent: Intent) {
         startActivityForResult(signInIntent, Constants.REQUEST_CODE_SIGN_IN)
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        presenter.onDetachView()
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        presenter.onDestroy()
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

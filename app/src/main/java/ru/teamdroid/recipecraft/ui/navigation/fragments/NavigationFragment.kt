@@ -7,10 +7,10 @@ import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.fragment_nagivation.*
 import org.jetbrains.anko.bundleOf
 import ru.teamdroid.recipecraft.R
-import ru.teamdroid.recipecraft.ui.base.BaseFragment
+import ru.teamdroid.recipecraft.ui.base.BaseMoxyFragment
 import ru.teamdroid.recipecraft.ui.base.Screens
 
-class NavigationFragment : BaseFragment() {
+class NavigationFragment : BaseMoxyFragment() {
 
     override val contentResId = R.layout.fragment_nagivation
 

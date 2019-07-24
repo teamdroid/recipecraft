@@ -7,26 +7,36 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.arellomobile.mvp.presenter.InjectPresenter
+import com.arellomobile.mvp.presenter.ProvidePresenter
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_craft.*
-import org.jetbrains.anko.sdk25.coroutines.onClick
 import ru.teamdroid.recipecraft.R
 import ru.teamdroid.recipecraft.data.model.Recipe
-import ru.teamdroid.recipecraft.ui.base.BaseFragment
+import ru.teamdroid.recipecraft.ui.base.BaseMoxyFragment
 import ru.teamdroid.recipecraft.ui.base.customs.CustomGridLayoutManager
 import ru.teamdroid.recipecraft.ui.base.listeners.OnSubmitClickListener
 import ru.teamdroid.recipecraft.ui.navigation.adapters.RecipesAdapter
 import ru.teamdroid.recipecraft.ui.navigation.adapters.RecipesFilterAdapter
 import ru.teamdroid.recipecraft.ui.navigation.components.DaggerCraftComponent
-import ru.teamdroid.recipecraft.ui.navigation.contracts.CraftRecipeContract
-import ru.teamdroid.recipecraft.ui.navigation.modules.CraftPresenterModule
 import ru.teamdroid.recipecraft.ui.navigation.presenters.CraftPresenter
+import ru.teamdroid.recipecraft.ui.navigation.views.CraftRecipeView
 import javax.inject.Inject
 
-class CraftFragment : BaseFragment(), CraftRecipeContract.View, OnSubmitClickListener {
+class CraftFragment : BaseMoxyFragment(), CraftRecipeView, OnSubmitClickListener {
 
     @Inject
-    internal lateinit var presenter: CraftPresenter
+    @InjectPresenter
+    lateinit var presenter: CraftPresenter
+
+    @ProvidePresenter
+    fun providePresenter(): CraftPresenter {
+        DaggerCraftComponent.builder()
+                .recipeRepositoryComponent(baseActivity.recipeRepositoryComponent)
+                .build()
+                .inject(this)
+        return presenter
+    }
 
     override val contentResId = R.layout.fragment_craft
 
@@ -52,16 +62,7 @@ class CraftFragment : BaseFragment(), CraftRecipeContract.View, OnSubmitClickLis
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        initializePresenter()
         presenter.loadIngredientsTitle()
-    }
-
-    private fun initializePresenter() {
-        DaggerCraftComponent.builder()
-                .craftPresenterModule(CraftPresenterModule(this))
-                .recipeRepositoryComponent(baseActivity.recipeRepositoryComponent)
-                .build()
-                .inject(this)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -108,11 +109,10 @@ class CraftFragment : BaseFragment(), CraftRecipeContract.View, OnSubmitClickLis
     }
 
     private fun onClick(position: Int) {
-        baseActivity.replaceFragment(DetailRecipeFragment.newInstance(recipesAdapter.recipes[position]), NavigationFragment.TAG)
+        baseActivity.replaceFragment(DetailRecipeFragment.newInstance(recipesAdapter.listRecipes[position]), NavigationFragment.TAG)
     }
 
     private fun onFavoriteClick(recipe: Recipe) {
-        recipe.isBookmarked = !recipe.isBookmarked
         presenter.bookmarkRecipe(recipe)
     }
 
@@ -127,7 +127,7 @@ class CraftFragment : BaseFragment(), CraftRecipeContract.View, OnSubmitClickLis
             presenter.findRecipeByIngredients(ingredientsAdapter.listSelectedIngredients, ingredientsAdapter.listSelectedIngredients.size)
             setPlaceholderIfEmpty(false)
         } else {
-            recipesAdapter.recipes.clear()
+            recipesAdapter.listRecipes.clear()
             recipesAdapter.notifyDataSetChanged()
             setPlaceholderIfEmpty(true)
         }
@@ -139,14 +139,16 @@ class CraftFragment : BaseFragment(), CraftRecipeContract.View, OnSubmitClickLis
 
     override fun showRecipes(listRecipe: MutableList<Recipe>) {
         recipesAdapter.apply {
-            recipes = listRecipe
+            listRecipe.addAll(listRecipe)
             recipesCountTextView.visibility = View.VISIBLE
             sortImageView.visibility = View.VISIBLE
             filterImageView.visibility = View.VISIBLE
-            recipesCountTextView.text = getString(R.string.found_recipes, recipes.size)
+            recipesCountTextView.text = getString(R.string.found_recipes, listRecipe.size)
             notifyDataSetChanged()
             if (listRecipe.isEmpty()) Toast.makeText(context, R.string.not_found_text, Toast.LENGTH_SHORT).show()
         }
+        recipesAdapter.updateRecipes(listRecipe)
+        if (listRecipe.isEmpty()) Toast.makeText(context, R.string.not_found_text, Toast.LENGTH_SHORT).show()
     }
 
     override fun showBookmarked(isBookmarked: Boolean) {
@@ -161,7 +163,7 @@ class CraftFragment : BaseFragment(), CraftRecipeContract.View, OnSubmitClickLis
         } else {
             setPlaceholderIfEmpty(true)
             recipesCountTextView.text = getString(R.string.found_recipes, 0)
-            recipesAdapter.recipes.clear()
+            recipesAdapter.listRecipes.clear()
             recipesAdapter.notifyDataSetChanged()
         }
     }

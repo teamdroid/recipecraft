@@ -1,30 +1,42 @@
 package ru.teamdroid.recipecraft.ui.navigation.fragments
 
+import android.graphics.BitmapFactory
 import android.graphics.Rect
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.core.widget.NestedScrollView
+import com.arellomobile.mvp.presenter.InjectPresenter
+import com.arellomobile.mvp.presenter.ProvidePresenter
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_detail_recipe.*
 import org.jetbrains.anko.bundleOf
 import ru.teamdroid.recipecraft.R
 import ru.teamdroid.recipecraft.data.model.Recipe
-import ru.teamdroid.recipecraft.ui.base.BaseFragment
+import ru.teamdroid.recipecraft.ui.base.BaseMoxyFragment
 import ru.teamdroid.recipecraft.ui.base.customs.CustomGridLayoutManager
 import ru.teamdroid.recipecraft.ui.navigation.adapters.IngredientsAdapter
 import ru.teamdroid.recipecraft.ui.navigation.adapters.InstructionAdapter
 import ru.teamdroid.recipecraft.ui.navigation.components.DaggerDetailRecipeComponent
-import ru.teamdroid.recipecraft.ui.navigation.contracts.DetailRecipeContract
-import ru.teamdroid.recipecraft.ui.navigation.modules.DetailRecipePresenterModule
 import ru.teamdroid.recipecraft.ui.navigation.presenters.DetailRecipePresenter
+import ru.teamdroid.recipecraft.ui.navigation.views.DetailRecipeView
 import javax.inject.Inject
 
-class DetailRecipeFragment : BaseFragment(), DetailRecipeContract.View {
+class DetailRecipeFragment : BaseMoxyFragment(), DetailRecipeView {
 
     @Inject
-    internal lateinit var presenter: DetailRecipePresenter
+    @InjectPresenter
+    lateinit var presenter: DetailRecipePresenter
+
+    @ProvidePresenter
+    fun providePresenter(): DetailRecipePresenter {
+        DaggerDetailRecipeComponent.builder()
+                .recipeRepositoryComponent(baseActivity.recipeRepositoryComponent)
+                .build()
+                .inject(this)
+        return presenter
+    }
 
     override val contentResId = R.layout.fragment_detail_recipe
 
@@ -47,16 +59,6 @@ class DetailRecipeFragment : BaseFragment(), DetailRecipeContract.View {
         arguments.let {
             recipe = it?.getParcelable(RECIPE)
         }
-
-        initializePresenter()
-    }
-
-    private fun initializePresenter() {
-        DaggerDetailRecipeComponent.builder()
-                .detailRecipePresenterModule(DetailRecipePresenterModule(this))
-                .recipeRepositoryComponent(baseActivity.recipeRepositoryComponent)
-                .build()
-                .inject(this)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -76,7 +78,7 @@ class DetailRecipeFragment : BaseFragment(), DetailRecipeContract.View {
         ingredientsAdapter.items = recipe?.ingredients ?: arrayListOf()
         instructionsAdapter.items = recipe?.instructions ?: arrayListOf()
 
-        recipe?.isBookmarked?.let { isBookmarked(it) }
+        recipe?.isBookmarked?.let { setShowBookmark(it) }
 
         nestedScrollView.setOnScrollChangeListener { v: NestedScrollView?, _: Int, _: Int, _: Int, _: Int ->
             val react = Rect()
@@ -92,24 +94,26 @@ class DetailRecipeFragment : BaseFragment(), DetailRecipeContract.View {
         ingredient_info_text.text = resources.getString(R.string.ingredients_info_text, recipe?.ingredients?.size.toString())
         time_info_text.text = resources.getString(R.string.time_info_text, recipe?.time.toString())
         portion_info_text.text = resources.getString(R.string.portion_info_text, recipe?.portion.toString())
-
+        toolbarImage.setImageBitmap(BitmapFactory.decodeFile(recipe?.image))
         favoriteImageView.setOnClickListener {
             recipe?.let { presenter.bookmarkRecipe(it) }
         }
 
     }
 
-    override fun showBookmarked(isBookmarked: Boolean) {
-        recipe?.let { it.isBookmarked = !it.isBookmarked }
-        isBookmarked(isBookmarked)
-        val snackBar = Snackbar.make(coordinatorLayout, if (isBookmarked) getString(R.string.bookmarked) else getString(R.string.unbookmark_text), 500)
-        snackBar.setAction(getString(R.string.close_text)) { snackBar.dismiss() }.setActionTextColor(resources.getColor(R.color.textWhite)).show()
+    override fun showBookmarked(isBookmark: Boolean) {
+        recipe?.let {
+            it.isBookmarked = isBookmark
+            setShowBookmark(it.isBookmarked)
+            val snackBar = Snackbar.make(coordinatorLayout, if (it.isBookmarked) getString(R.string.bookmarked) else getString(R.string.unbookmark_text), 500)
+            snackBar.setAction(getString(R.string.close_text)) { snackBar.dismiss() }.setActionTextColor(resources.getColor(R.color.textWhite)).show()
+        }
     }
 
-    private fun isBookmarked(isBookmarked: Boolean) {
-        if (isBookmarked) favoriteImageView.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.star_active)) else favoriteImageView.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.star_inactive))
+    private fun setShowBookmark(isBookmark: Boolean) {
+        if (isBookmark) favoriteImageView.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.star_active))
+        else favoriteImageView.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.star_inactive))
     }
-
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {

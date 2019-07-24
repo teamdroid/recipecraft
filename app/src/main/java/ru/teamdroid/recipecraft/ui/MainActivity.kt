@@ -5,13 +5,13 @@ import androidx.fragment.app.Fragment
 import ru.teamdroid.recipecraft.AndroidApplication
 import ru.teamdroid.recipecraft.R
 import ru.teamdroid.recipecraft.data.components.RecipeRepositoryComponent
-import ru.teamdroid.recipecraft.ui.base.BaseActivity
+import ru.teamdroid.recipecraft.ui.base.BaseMoxyActivity
 import ru.teamdroid.recipecraft.ui.base.Constants
 import ru.teamdroid.recipecraft.ui.base.extensions.getProperty
 import ru.teamdroid.recipecraft.ui.base.extensions.setProperty
 import ru.teamdroid.recipecraft.ui.navigation.fragments.NavigationFragment
 
-class MainActivity : BaseActivity() {
+class MainActivity : BaseMoxyActivity() {
 
     val recipeRepositoryComponent: RecipeRepositoryComponent
         get() = (application as AndroidApplication).getRecipeRepositoryComponent()

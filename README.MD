@@ -6,7 +6,8 @@
 * Kotlin
 ### Architectural Pattern
 *  MVP
-### Libraries Used 
+### Libraries Used
+* Moxy
 * Room
 * RxJava2
 * Firebase (Authorization + Crashlytics)

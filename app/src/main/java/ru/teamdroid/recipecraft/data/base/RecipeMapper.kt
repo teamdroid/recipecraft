@@ -1,16 +1,20 @@
 package ru.teamdroid.recipecraft.data.base
 
+import ru.teamdroid.recipecraft.data.Config
 import ru.teamdroid.recipecraft.data.database.entities.*
 import ru.teamdroid.recipecraft.data.model.*
+import ru.teamdroid.recipecraft.util.FileUtils
+import java.net.URL
+import javax.inject.Inject
 
-class RecipeMapper : Mapper<Recipe, RecipeEntity> {
+class RecipeMapper @Inject constructor(var FileUtils: FileUtils) : Mapper<Recipe, RecipeEntity> {
 
-    override fun map(value: Recipe): RecipeEntity = RecipeEntity(value.idRecipe, value.title, value.time, value.portion, value.type, value.isBookmarked, value.ingredients.size)
+    override fun map(value: Recipe): RecipeEntity = RecipeEntity(value.idRecipe, value.title, value.time, value.portion, value.type, value.image, value.isBookmarked, value.ingredients.size)
     override fun reverseMap(value: RecipeEntity) = Recipe(value.idRecipe, value.title, value.time, value.portion)
 
     fun mapDetailRecipe(value: RecipeEntity, ingredientEntities: List<IngredientEntity>, listRecipeInstructions: MutableList<InstructionEntity>): Recipe {
 
-        val recipe = Recipe(value.idRecipe, value.title, value.time, value.portion, value.type, value.isBookmarked)
+        val recipe = Recipe(value.idRecipe, value.title, value.time, value.portion, value.type, value.image, value.isBookmarked)
 
         ingredientEntities.forEach { ingredientEntity ->
             recipe.ingredients.add(Ingredient(ingredientEntity.idIngredient, ingredientEntity.title, 0, ingredientEntity.amount, ingredientEntity.idUnitMeasure, ingredientEntity.title_unit_measure))
@@ -45,10 +49,15 @@ class RecipeMapper : Mapper<Recipe, RecipeEntity> {
 
     fun mapRecipe(recipes: MutableList<Recipe>): MutableList<RecipeEntity> {
         val recipesEntities: MutableList<RecipeEntity> = arrayListOf()
+
         for (recipe in recipes) {
-            val recipeEntity = RecipeEntity(recipe.idRecipe, recipe.title, recipe.time, recipe.portion, recipe.type, recipe.isBookmarked, recipe.ingredients.size)
+            recipe.image = FileUtils.saveFileByUrl(URL(Config.BASE_DOMAIN + recipe.image))
+
+            val recipeEntity = RecipeEntity(recipe.idRecipe, recipe.title, recipe.time, recipe.portion, recipe.type, recipe.image, recipe.isBookmarked, recipe.ingredients.size)
+
             recipesEntities.add(recipeEntity)
         }
+
         return recipesEntities
     }
 

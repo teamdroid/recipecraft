@@ -10,12 +10,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
-import androidx.fragment.app.Fragment
+import com.arellomobile.mvp.MvpAppCompatFragment
 import ru.teamdroid.recipecraft.R
 import ru.teamdroid.recipecraft.ui.MainActivity
 import ru.teamdroid.recipecraft.ui.base.listeners.OnBackPressedListener
 
-abstract class BaseFragment : Fragment(), OnBackPressedListener {
+abstract class BaseMoxyFragment : MvpAppCompatFragment(), OnBackPressedListener {
 
     protected val baseActivity: MainActivity
         get() = activity as MainActivity
@@ -53,10 +53,10 @@ abstract class BaseFragment : Fragment(), OnBackPressedListener {
         fragmentManager?.popBackStack()
     }
 
-    fun isOnline(): Boolean {
+    fun isNetworkAvailable(): Boolean {
         val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         val activeNetwork: NetworkInfo? = connectivityManager.activeNetworkInfo
-        return activeNetwork?.isConnectedOrConnecting == true
+        return activeNetwork?.isConnected == true
     }
 
     override fun getContext(): Context {

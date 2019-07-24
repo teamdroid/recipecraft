@@ -9,15 +9,9 @@ import dagger.Module
 import dagger.Provides
 import ru.teamdroid.recipecraft.R
 import ru.teamdroid.recipecraft.ui.base.ActivityScope
-import ru.teamdroid.recipecraft.ui.navigation.contracts.ProfileContract
 
 @Module
-class ProfilePresenterModule(private val view: ProfileContract.View) {
-
-    @Provides
-    fun provideView(): ProfileContract.View {
-        return view
-    }
+class ProfilePresenterModule {
 
     @Provides
     @ActivityScope

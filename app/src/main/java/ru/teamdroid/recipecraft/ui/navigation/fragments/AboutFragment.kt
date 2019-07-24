@@ -7,9 +7,9 @@ import kotlinx.android.synthetic.main.fragment_about.*
 import kotlinx.android.synthetic.main.fragment_favorites.toolbar
 import ru.teamdroid.recipecraft.BuildConfig
 import ru.teamdroid.recipecraft.R
-import ru.teamdroid.recipecraft.ui.base.BaseFragment
+import ru.teamdroid.recipecraft.ui.base.BaseMoxyFragment
 
-class AboutFragment : BaseFragment() {
+class AboutFragment : BaseMoxyFragment() {
 
     override val contentResId = R.layout.fragment_about
 

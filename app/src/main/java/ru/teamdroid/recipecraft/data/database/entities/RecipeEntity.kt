@@ -16,6 +16,8 @@ data class RecipeEntity(
         var portion: Int = 0,
         @ColumnInfo(name = "type")
         var type: String = "",
+        @ColumnInfo(name = "image")
+        var image: String = "",
         @ColumnInfo(name = "isBookmarked")
         var isBookmarked: Boolean = false,
         @ColumnInfo(name = "countIngredients")

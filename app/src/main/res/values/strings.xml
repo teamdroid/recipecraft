@@ -19,7 +19,7 @@
     <string name="fragment_report_title">Обратная связь</string>
     <string name="error_input_text">Введите все поля</string>
     <string name="thanks_feedback">Спасибо за ваше письмо</string>
-    <string name="error_feedback">К сожалению, ваще сообщение не отправилось</string>
+    <string name="error_feedback">К сожалению, ваще сообщение не отправилось. Отправьте заново через несколько минут.</string>
     <string name="watch_button">Посмотреть</string>
     <string name="favoriteButton">В избранное</string>
     <string name="language">ru</string>
