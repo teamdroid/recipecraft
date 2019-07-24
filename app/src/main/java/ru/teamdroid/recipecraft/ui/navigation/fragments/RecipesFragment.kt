@@ -24,7 +24,6 @@ import ru.teamdroid.recipecraft.ui.navigation.presenters.RecipesPresenter
 import ru.teamdroid.recipecraft.ui.navigation.views.RecipeView
 import javax.inject.Inject
 
-
 class RecipesFragment : BaseMoxyFragment(), RecipeView {
 
     @Inject
