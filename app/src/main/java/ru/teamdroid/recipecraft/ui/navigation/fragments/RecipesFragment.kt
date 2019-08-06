@@ -1,6 +1,7 @@
 package ru.teamdroid.recipecraft.ui.navigation.fragments
 
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
@@ -9,12 +10,16 @@ import android.widget.Adapter
 import android.widget.AdapterView
 import android.widget.AdapterView.OnItemSelectedListener
 import android.widget.ArrayAdapter
+import androidx.paging.PagedList
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.SimpleItemAnimator
 import com.arellomobile.mvp.presenter.InjectPresenter
 import com.arellomobile.mvp.presenter.ProvidePresenter
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_recipes.*
 import ru.teamdroid.recipecraft.R
+import ru.teamdroid.recipecraft.data.CustomLinearLayoutManager
 import ru.teamdroid.recipecraft.data.model.Recipe
 import ru.teamdroid.recipecraft.ui.base.BaseMoxyFragment
 import ru.teamdroid.recipecraft.ui.base.SortRecipes
@@ -62,12 +67,12 @@ class RecipesFragment : BaseMoxyFragment(), RecipeView {
         super.onViewCreated(view, savedInstanceState)
         setupToolbar(toolbar, false, "")
 
+        setUpRecyclerView(view)
         with(recipesRecyclerView) {
             adapter = recipesAdapter
-            layoutManager = LinearLayoutManager(context)
         }
 
-        if (recipesAdapter.listRecipes.isEmpty()) refresh(false, SortRecipes.ByNewer)
+        //таif (recipesAdapter.listRecipes.isEmpty()) refresh(false, SortRecipes.ByNewer)
 
         sortAdapter = ArrayAdapter.createFromResource(
                 context,
@@ -80,12 +85,12 @@ class RecipesFragment : BaseMoxyFragment(), RecipeView {
 
         spinner_nav.onItemSelectedListener = object : OnItemSelectedListener {
             override fun onItemSelected(adapter: AdapterView<*>, v: View?, i: Int, lng: Long) {
-                    when (i) {
-                        0 -> refresh(false, SortRecipes.ByNewer)
-                        1 -> refresh(false, SortRecipes.ByPortion)
-                        2 -> refresh(false, SortRecipes.ByIngredients)
-                        3 -> refresh(false, SortRecipes.ByTime)
-                    }
+                when (i) {
+                    0 -> refresh(false, SortRecipes.ByNewer)
+                    1 -> refresh(false, SortRecipes.ByPortion)
+                    2 -> refresh(false, SortRecipes.ByIngredients)
+                    3 -> refresh(false, SortRecipes.ByTime)
+                }
             }
 
             override fun onNothingSelected(parentView: AdapterView<*>) {}
@@ -111,13 +116,30 @@ class RecipesFragment : BaseMoxyFragment(), RecipeView {
             swipeRefreshLayout.isRefreshing = false
             recipesAdapter.listRecipes.clear()
             recipesAdapter.notifyDataSetChanged()
-            presenter.loadRecipes(onlineRequired, currentSort)
+            presenter.loadRecipes(onlineRequired, currentSort, 0)
         }
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.menu_navigation, menu)
         super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    private fun setUpRecyclerView(rootView: View) {
+
+        val customLinearLayoutManager = CustomLinearLayoutManager(activity!!.baseContext)
+
+        recipesRecyclerView.layoutManager = customLinearLayoutManager
+
+        recipesRecyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                if (customLinearLayoutManager.isOnNextPagePosition())
+                    Log.d("Check", "adapter.itemCount: " + recipesAdapter.itemCount.toString())
+                presenter.loadRecipes(false, currentSort, recipesAdapter.itemCount)
+            }
+        })
+        (recipesRecyclerView.getItemAnimator() as SimpleItemAnimator).supportsChangeAnimations = false
     }
 
     override fun showRecipes(listRecipes: MutableList<Recipe>) {

@@ -10,6 +10,7 @@ import kotlinx.android.synthetic.main.fragment_favorites.*
 import ru.teamdroid.recipecraft.R
 import ru.teamdroid.recipecraft.data.model.Recipe
 import ru.teamdroid.recipecraft.ui.base.BaseMoxyFragment
+import ru.teamdroid.recipecraft.ui.navigation.adapters.FavoritesAdapter
 import ru.teamdroid.recipecraft.ui.navigation.adapters.RecipesAdapter
 import ru.teamdroid.recipecraft.ui.navigation.components.DaggerFavoritesComponent
 import ru.teamdroid.recipecraft.ui.navigation.presenters.FavoritesPresenter
@@ -34,7 +35,7 @@ class FavoritesFragment : BaseMoxyFragment(), FavoritesView {
     override val contentResId = R.layout.fragment_favorites
 
     private val bookmarkRecipesAdapter by lazy {
-        RecipesAdapter(
+        FavoritesAdapter(
                 onItemClickListener = {
                     onClick(it)
                 },

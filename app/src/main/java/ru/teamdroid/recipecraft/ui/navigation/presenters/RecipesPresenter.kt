@@ -23,9 +23,9 @@ class RecipesPresenter @Inject constructor(private var repository: RecipeReposit
     private var compositeDisposable: CompositeDisposable = CompositeDisposable()
     private var recipeDisposable: Disposable? = null
 
-    fun loadRecipes(onlineRequired: Boolean, sortType: String) {
+    fun loadRecipes(onlineRequired: Boolean, sortType: String, offset: Int) {
         if (recipeDisposable != null) recipeDisposable?.dispose()
-        recipeDisposable = repository.loadRecipes(onlineRequired, sortType)
+        recipeDisposable = repository.loadRecipes(onlineRequired, sortType, offset)
                 .subscribeOn(ioScheduler)
                 .observeOn(uiScheduler)
                 .subscribe({ handleSuccess(it, onlineRequired, sortType) }, { handleError(it) }, { })
@@ -40,7 +40,7 @@ class RecipesPresenter @Inject constructor(private var repository: RecipeReposit
     }
 
     private fun handleSuccess(list: MutableList<Recipe>, onlineRequired: Boolean, sortType: String) {
-        if (list.isNotEmpty() || onlineRequired) viewState.showRecipes(list) else loadRecipes(true, sortType)
+        if (list.isNotEmpty() || onlineRequired) viewState.showRecipes(list) else loadRecipes(true, sortType, 0)
     }
 
     private fun handleError(error: Throwable) {

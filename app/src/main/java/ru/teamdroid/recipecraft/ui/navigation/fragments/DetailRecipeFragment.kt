@@ -136,7 +136,7 @@ class DetailRecipeFragment : BaseMoxyFragment(), DetailRecipeView {
     companion object {
         private const val RECIPE = "recipes"
 
-        fun newInstance(recipe: Recipe) = DetailRecipeFragment().apply {
+        fun newInstance(recipe: Recipe?) = DetailRecipeFragment().apply {
             arguments = bundleOf(RECIPE to recipe)
         }
     }

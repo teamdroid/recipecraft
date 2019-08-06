@@ -10,17 +10,17 @@ import javax.inject.Inject
 
 class RecipeRepository @Inject constructor(private val recipeDataSource: RecipesDataSource) {
 
-    fun loadRecipes(forceRemote: Boolean, sortType : String): Flowable<MutableList<Recipe>> {
+    fun loadRecipes(forceRemote: Boolean, sortType: String, offset: Int): Flowable<MutableList<Recipe>> {
         return if (forceRemote) {
             loadRemoteRecipes(sortType)
         } else {
-            recipeDataSource.loadLocalRecipes(sortType)
+            recipeDataSource.loadLocalRecipes(sortType, offset)
         }
     }
 
     private fun loadRemoteRecipes(sortType : String): Flowable<MutableList<Recipe>> {
         return recipeDataSource.loadRemoteRecipes().switchMap {
-            recipeDataSource.addRecipes(it).andThen(recipeDataSource.loadLocalRecipes(sortType))
+            recipeDataSource.addRecipes(it).andThen(recipeDataSource.loadLocalRecipes(sortType, 0))
         }
     }
 

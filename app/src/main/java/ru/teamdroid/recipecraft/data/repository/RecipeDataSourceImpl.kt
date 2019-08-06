@@ -75,8 +75,8 @@ class RecipeDataSourceImpl @Inject constructor(private val recipeDao: RecipesDao
         return recipeDao.insertRecipeInstructions(recipeMapper.mapRecipeInstructions(listRecipeInstructions))
     }
 
-    override fun loadLocalRecipes(sortType: String): Flowable<MutableList<Recipe>> {
-        val sqlQuery = "SELECT * FROM recipe ORDER BY $sortType DESC"
+    override fun loadLocalRecipes(sortType: String, offset: Int): Flowable<MutableList<Recipe>> {
+        val sqlQuery = "SELECT * FROM recipe ORDER BY $sortType DESC LIMIT 7 OFFSET $offset"
         return recipeDao.getAllRecipes(SimpleSQLiteQuery(sqlQuery))
                 .flatMap {
                     Flowable.fromIterable(it).flatMapSingle { recipe ->

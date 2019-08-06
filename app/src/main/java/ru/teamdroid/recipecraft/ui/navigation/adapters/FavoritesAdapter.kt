@@ -13,10 +13,11 @@ import ru.teamdroid.recipecraft.data.model.Recipe
 import ru.teamdroid.recipecraft.ui.base.RecipeDiffCallback
 import java.io.File
 
-class RecipesAdapter(
+class FavoritesAdapter(
         var onItemClickListener: (position: Int) -> Unit,
         var onFavoriteClickListener: (recipes: Recipe) -> Unit)
-    : RecyclerView.Adapter<RecipesAdapter.ViewHolder>() {
+    : RecyclerView.Adapter<FavoritesAdapter.ViewHolder>() {
+
 
     var listRecipes: MutableList<Recipe> = ArrayList()
         set(value) {
@@ -28,7 +29,7 @@ class RecipesAdapter(
 
     override fun getItemCount() = listRecipes.size
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FavoritesAdapter.ViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.layout_list_recipes_item, parent, false)
         return ViewHolder(view)
     }
@@ -56,12 +57,13 @@ class RecipesAdapter(
         }
     }
 
+
     fun updateRecipes(recipe: MutableList<Recipe>) {
         if (listRecipes.isNotEmpty()) {
             val diffCallback = RecipeDiffCallback(this.listRecipes, recipe)
             val diffResult = DiffUtil.calculateDiff(diffCallback)
 
-            //this.listRecipes.clear()
+            this.listRecipes.clear()
             this.listRecipes.addAll(recipe)
 
             diffResult.dispatchUpdatesTo(this)
