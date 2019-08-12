@@ -11,6 +11,7 @@ import ru.teamdroid.recipecraft.data.model.Recipe
 
 interface RecipesDataSource {
     fun loadLocalRecipes(sortType: String, offset: Int): Flowable<MutableList<Recipe>>
+    fun loadRecipesCount(): Single<Int>
     fun loadBookmarkRecipes(): Flowable<MutableList<Recipe>>
     fun loadRemoteRecipes(): Flowable<MutableList<Recipe>>
     fun addRecipes(recipes: MutableList<Recipe>): Completable

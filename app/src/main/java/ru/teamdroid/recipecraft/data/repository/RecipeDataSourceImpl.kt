@@ -19,6 +19,7 @@ class RecipeDataSourceImpl @Inject constructor(private val recipeDao: RecipesDao
                                                private val recipeService: RecipeService,
                                                private val recipeMapper: RecipeMapper) : RecipesDataSource {
 
+
     override fun addRecipes(recipes: MutableList<Recipe>): Completable {
         return recipeDao.insertRecipes(recipeMapper.mapRecipe(recipes))
                 .andThen(addIngredients(recipes))
@@ -100,6 +101,10 @@ class RecipeDataSourceImpl @Inject constructor(private val recipeDao: RecipesDao
                                         })
                     }.toList().toFlowable()
                 }
+    }
+
+    override fun loadRecipesCount(): Single<Int> {
+        return recipeDao.getRecipesCount()
     }
 
     override fun bookmark(recipe: Recipe): Completable {

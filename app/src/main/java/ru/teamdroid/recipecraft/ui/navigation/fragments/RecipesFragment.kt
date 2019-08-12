@@ -48,8 +48,6 @@ class RecipesFragment : BaseMoxyFragment(), RecipeView {
 
     private var currentSort = ""
 
-    private var scrollViewPosition: Int = 0
-
     private val recipesAdapter by lazy {
         RecipesAdapter(
                 onItemClickListener = {
@@ -67,12 +65,12 @@ class RecipesFragment : BaseMoxyFragment(), RecipeView {
         super.onViewCreated(view, savedInstanceState)
         setupToolbar(toolbar, false, "")
 
-        setUpRecyclerView(view)
+        setUpRecyclerView()
         with(recipesRecyclerView) {
             adapter = recipesAdapter
         }
 
-        //таif (recipesAdapter.listRecipes.isEmpty()) refresh(false, SortRecipes.ByNewer)
+        //if (recipesAdapter.itemCount == 0) refresh(false, SortRecipes.ByNewer)
 
         sortAdapter = ArrayAdapter.createFromResource(
                 context,
@@ -83,6 +81,7 @@ class RecipesFragment : BaseMoxyFragment(), RecipeView {
             spinner_nav.adapter = adapter
         }
 
+        // TODO: NEED FIX IT
         spinner_nav.onItemSelectedListener = object : OnItemSelectedListener {
             override fun onItemSelected(adapter: AdapterView<*>, v: View?, i: Int, lng: Long) {
                 when (i) {
@@ -114,7 +113,7 @@ class RecipesFragment : BaseMoxyFragment(), RecipeView {
             currentSort = sort
             progressBar.visibility = View.VISIBLE
             swipeRefreshLayout.isRefreshing = false
-            recipesAdapter.listRecipes.clear()
+            recipesAdapter.clear()
             recipesAdapter.notifyDataSetChanged()
             presenter.loadRecipes(onlineRequired, currentSort, 0)
         }
@@ -125,21 +124,22 @@ class RecipesFragment : BaseMoxyFragment(), RecipeView {
         super.onCreateOptionsMenu(menu, inflater)
     }
 
-    private fun setUpRecyclerView(rootView: View) {
+    private fun setUpRecyclerView() {
 
-        val customLinearLayoutManager = CustomLinearLayoutManager(activity!!.baseContext)
+        val customLinearLayoutManager = CustomLinearLayoutManager(context)
 
         recipesRecyclerView.layoutManager = customLinearLayoutManager
 
         recipesRecyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
 
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                if (customLinearLayoutManager.isOnNextPagePosition())
+                if (customLinearLayoutManager.isOnNextPagePosition()) {
                     Log.d("Check", "adapter.itemCount: " + recipesAdapter.itemCount.toString())
-                presenter.loadRecipes(false, currentSort, recipesAdapter.itemCount)
+                    presenter.loadCount(recipesAdapter.itemCount, currentSort)
+                }
             }
         })
-        (recipesRecyclerView.getItemAnimator() as SimpleItemAnimator).supportsChangeAnimations = false
+        (recipesRecyclerView.itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
     }
 
     override fun showRecipes(listRecipes: MutableList<Recipe>) {
@@ -171,13 +171,11 @@ class RecipesFragment : BaseMoxyFragment(), RecipeView {
 
     override fun onResume() {
         super.onResume()
-        nestedScrollView.verticalScrollbarPosition = scrollViewPosition
     }
 
     override fun onDestroyView() {
         recipesRecyclerView.adapter = null
         spinner_nav.adapter = null
-        scrollViewPosition = nestedScrollView.verticalScrollbarPosition
         super.onDestroyView()
     }
 

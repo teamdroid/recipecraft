@@ -19,10 +19,6 @@ class RecipesAdapter(
     : RecyclerView.Adapter<RecipesAdapter.ViewHolder>() {
 
     var listRecipes: MutableList<Recipe> = ArrayList()
-        set(value) {
-            field = value
-            notifyDataSetChanged()
-        }
 
     private lateinit var currentRecipe: Recipe
 
@@ -57,16 +53,27 @@ class RecipesAdapter(
     }
 
     fun updateRecipes(recipe: MutableList<Recipe>) {
-        if (listRecipes.isNotEmpty()) {
-            val diffCallback = RecipeDiffCallback(this.listRecipes, recipe)
-            val diffResult = DiffUtil.calculateDiff(diffCallback)
 
-            //this.listRecipes.clear()
-            this.listRecipes.addAll(recipe)
+        checkNewOrOldRecipe(recipe)
 
-            diffResult.dispatchUpdatesTo(this)
-        } else {
-            listRecipes = recipe
+        notifyDataSetChanged()
+    }
+
+    fun clear() {
+        listRecipes.clear();
+        notifyDataSetChanged()
+    }
+
+    fun checkNewOrOldRecipe(recipes: MutableList<Recipe>) {
+        recipes.forEach { recipe ->
+            if (!listRecipes.any { it.idRecipe == recipe.idRecipe })
+                listRecipes.add(recipe)
+            else {
+                listRecipes.forEachIndexed { index, it ->
+                    if (it.idRecipe == recipe.idRecipe && it.isBookmarked != recipe.isBookmarked)
+                        listRecipes[index] = recipe
+                }
+            }
         }
     }
 

@@ -3,7 +3,9 @@ package ru.teamdroid.recipecraft.ui.navigation.presenters
 import android.util.Log
 import com.arellomobile.mvp.InjectViewState
 import com.arellomobile.mvp.MvpPresenter
+import io.reactivex.Flowable
 import io.reactivex.Scheduler
+import io.reactivex.Single
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import ru.teamdroid.recipecraft.data.model.Recipe
@@ -24,12 +26,13 @@ class RecipesPresenter @Inject constructor(private var repository: RecipeReposit
     private var recipeDisposable: Disposable? = null
 
     fun loadRecipes(onlineRequired: Boolean, sortType: String, offset: Int) {
-        if (recipeDisposable != null) recipeDisposable?.dispose()
-        recipeDisposable = repository.loadRecipes(onlineRequired, sortType, offset)
+        //if (recipeDisposable != null) recipeDisposable?.dispose()
+        recipeDisposable = repository.loadRecipes(sortType, offset)
                 .subscribeOn(ioScheduler)
                 .observeOn(uiScheduler)
                 .subscribe({ handleSuccess(it, onlineRequired, sortType) }, { handleError(it) }, { })
         recipeDisposable?.let { compositeDisposable.add(it) }
+
     }
 
     fun bookmarkRecipe(recipe: Recipe) {
@@ -43,6 +46,17 @@ class RecipesPresenter @Inject constructor(private var repository: RecipeReposit
         if (list.isNotEmpty() || onlineRequired) viewState.showRecipes(list) else loadRecipes(true, sortType, 0)
     }
 
+
+    private fun countHandleSuccess(count: Int, offset: Int, sortType: String) {
+        if (offset < count)
+            loadRecipes(false, sortType, offset)
+    }
+
+    fun loadCount(offset: Int, sortType: String) {
+        recipeDisposable = repository.getRecipesCount().subscribeOn(ioScheduler).observeOn(uiScheduler)
+                .subscribe({ countHandleSuccess(it, offset, sortType) }, { handleError(it) })
+    }
+
     private fun handleError(error: Throwable) {
         Log.d(RecipesFragment.TAG, error.message)
         viewState.showRecipes(arrayListOf())
@@ -51,4 +65,5 @@ class RecipesPresenter @Inject constructor(private var repository: RecipeReposit
     override fun onDestroy() {
         compositeDisposable.dispose()
     }
+
 }
