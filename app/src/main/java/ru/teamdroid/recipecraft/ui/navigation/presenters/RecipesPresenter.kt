@@ -26,8 +26,7 @@ class RecipesPresenter @Inject constructor(private var repository: RecipeReposit
     private var recipeDisposable: Disposable? = null
 
     fun loadRecipes(onlineRequired: Boolean, sortType: String, offset: Int) {
-        //if (recipeDisposable != null) recipeDisposable?.dispose()
-        recipeDisposable = repository.loadRecipes(sortType, offset)
+        recipeDisposable = repository.loadRecipes(onlineRequired, sortType, offset)
                 .subscribeOn(ioScheduler)
                 .observeOn(uiScheduler)
                 .subscribe({ handleSuccess(it, onlineRequired, sortType) }, { handleError(it) }, { })
@@ -53,7 +52,10 @@ class RecipesPresenter @Inject constructor(private var repository: RecipeReposit
     }
 
     fun loadCount(offset: Int, sortType: String) {
-        recipeDisposable = repository.getRecipesCount().subscribeOn(ioScheduler).observeOn(uiScheduler)
+        recipeDisposable = repository
+                .getRecipesCount()
+                .subscribeOn(ioScheduler)
+                .observeOn(uiScheduler)
                 .subscribe({ countHandleSuccess(it, offset, sortType) }, { handleError(it) })
     }
 

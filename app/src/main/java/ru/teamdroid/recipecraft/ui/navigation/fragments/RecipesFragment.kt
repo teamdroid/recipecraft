@@ -10,7 +10,6 @@ import android.widget.Adapter
 import android.widget.AdapterView
 import android.widget.AdapterView.OnItemSelectedListener
 import android.widget.ArrayAdapter
-import androidx.paging.PagedList
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.SimpleItemAnimator
@@ -19,7 +18,7 @@ import com.arellomobile.mvp.presenter.ProvidePresenter
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_recipes.*
 import ru.teamdroid.recipecraft.R
-import ru.teamdroid.recipecraft.data.CustomLinearLayoutManager
+import ru.teamdroid.recipecraft.ui.base.customs.CustomLinearLayoutManager
 import ru.teamdroid.recipecraft.data.model.Recipe
 import ru.teamdroid.recipecraft.ui.base.BaseMoxyFragment
 import ru.teamdroid.recipecraft.ui.base.SortRecipes
@@ -70,8 +69,6 @@ class RecipesFragment : BaseMoxyFragment(), RecipeView {
             adapter = recipesAdapter
         }
 
-        //if (recipesAdapter.itemCount == 0) refresh(false, SortRecipes.ByNewer)
-
         sortAdapter = ArrayAdapter.createFromResource(
                 context,
                 R.array.sort_recipes,
@@ -81,7 +78,6 @@ class RecipesFragment : BaseMoxyFragment(), RecipeView {
             spinner_nav.adapter = adapter
         }
 
-        // TODO: NEED FIX IT
         spinner_nav.onItemSelectedListener = object : OnItemSelectedListener {
             override fun onItemSelected(adapter: AdapterView<*>, v: View?, i: Int, lng: Long) {
                 when (i) {
@@ -128,17 +124,18 @@ class RecipesFragment : BaseMoxyFragment(), RecipeView {
 
         val customLinearLayoutManager = CustomLinearLayoutManager(context)
 
-        recipesRecyclerView.layoutManager = customLinearLayoutManager
+        with(recipesRecyclerView) {
+            layoutManager = customLinearLayoutManager
+            addOnScrollListener(object : RecyclerView.OnScrollListener() {
 
-        recipesRecyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-
-            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                if (customLinearLayoutManager.isOnNextPagePosition()) {
-                    Log.d("Check", "adapter.itemCount: " + recipesAdapter.itemCount.toString())
-                    presenter.loadCount(recipesAdapter.itemCount, currentSort)
+                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                    if (customLinearLayoutManager.isOnNextPagePosition()) {
+                        Log.d("Check", "adapter.itemCount: " + recipesAdapter.itemCount.toString())
+                        presenter.loadCount(recipesAdapter.itemCount, currentSort)
+                    }
                 }
-            }
-        })
+            })
+        }
         (recipesRecyclerView.itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
     }
 

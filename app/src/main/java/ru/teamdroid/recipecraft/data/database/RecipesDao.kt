@@ -1,6 +1,5 @@
 package ru.teamdroid.recipecraft.data.database
 
-import androidx.paging.PagedList
 import androidx.room.*
 import androidx.sqlite.db.SupportSQLiteQuery
 import io.reactivex.Completable

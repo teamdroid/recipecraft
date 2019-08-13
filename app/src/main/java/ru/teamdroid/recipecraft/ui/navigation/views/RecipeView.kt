@@ -1,7 +1,5 @@
 package ru.teamdroid.recipecraft.ui.navigation.views
 
-import androidx.paging.PagedList
-import androidx.paging.PositionalDataSource
 import com.arellomobile.mvp.MvpView
 import com.arellomobile.mvp.viewstate.strategy.SkipStrategy
 import com.arellomobile.mvp.viewstate.strategy.StateStrategyType

@@ -52,29 +52,26 @@ class RecipesAdapter(
         }
     }
 
-    fun updateRecipes(recipe: MutableList<Recipe>) {
+    fun updateRecipes(recipes: MutableList<Recipe>) {
 
-        checkNewOrOldRecipe(recipe)
+        recipes.forEach { newRecipe ->
+            if (!listRecipes.any { oldRecipe -> oldRecipe.idRecipe == newRecipe.idRecipe })
+                listRecipes.add(newRecipe)
+            else {
+                listRecipes.forEachIndexed { index, oldRecipe ->
+                    if (oldRecipe.idRecipe == newRecipe.idRecipe &&
+                            oldRecipe.isBookmarked != newRecipe.isBookmarked)
+                        listRecipes[index] = newRecipe
+                }
+            }
+        }
 
         notifyDataSetChanged()
     }
 
     fun clear() {
-        listRecipes.clear();
+        listRecipes.clear()
         notifyDataSetChanged()
-    }
-
-    fun checkNewOrOldRecipe(recipes: MutableList<Recipe>) {
-        recipes.forEach { recipe ->
-            if (!listRecipes.any { it.idRecipe == recipe.idRecipe })
-                listRecipes.add(recipe)
-            else {
-                listRecipes.forEachIndexed { index, it ->
-                    if (it.idRecipe == recipe.idRecipe && it.isBookmarked != recipe.isBookmarked)
-                        listRecipes[index] = recipe
-                }
-            }
-        }
     }
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view)

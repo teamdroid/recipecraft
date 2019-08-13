@@ -18,7 +18,6 @@ class FavoritesAdapter(
         var onFavoriteClickListener: (recipes: Recipe) -> Unit)
     : RecyclerView.Adapter<FavoritesAdapter.ViewHolder>() {
 
-
     var listRecipes: MutableList<Recipe> = ArrayList()
         set(value) {
             field = value
@@ -29,7 +28,7 @@ class FavoritesAdapter(
 
     override fun getItemCount() = listRecipes.size
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FavoritesAdapter.ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.layout_list_recipes_item, parent, false)
         return ViewHolder(view)
     }

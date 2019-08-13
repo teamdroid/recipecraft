@@ -1,4 +1,4 @@
-package ru.teamdroid.recipecraft.data
+package ru.teamdroid.recipecraft.ui.base.customs
 
 import android.content.Context
 import android.util.AttributeSet
@@ -11,8 +11,7 @@ class CustomLinearLayoutManager constructor(context: Context) : LinearLayoutMana
         val totalItemCount = itemCount
         val pastVisibleItems = findFirstVisibleItemPosition()
 
-
-        return (visibleItemCount + pastVisibleItems) >= totalItemCount / 2//6+10,30/2 = 15
+        return (visibleItemCount + pastVisibleItems) >= totalItemCount
     }
 
 }

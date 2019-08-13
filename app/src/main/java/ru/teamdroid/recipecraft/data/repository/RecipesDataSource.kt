@@ -1,6 +1,5 @@
 package ru.teamdroid.recipecraft.data.repository
 
-import androidx.paging.PagedList
 import io.reactivex.Completable
 import io.reactivex.Flowable
 import io.reactivex.Single
@@ -11,7 +10,7 @@ import ru.teamdroid.recipecraft.data.model.Recipe
 
 interface RecipesDataSource {
     fun loadLocalRecipes(sortType: String, offset: Int): Flowable<MutableList<Recipe>>
-    fun loadRecipesCount(): Single<Int>
+    fun getRecipesCount(): Single<Int>
     fun loadBookmarkRecipes(): Flowable<MutableList<Recipe>>
     fun loadRemoteRecipes(): Flowable<MutableList<Recipe>>
     fun addRecipes(recipes: MutableList<Recipe>): Completable
