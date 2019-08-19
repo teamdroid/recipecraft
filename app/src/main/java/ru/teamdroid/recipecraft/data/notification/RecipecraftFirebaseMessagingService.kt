@@ -14,9 +14,7 @@ class RecipecraftFirebaseMessagingService : FirebaseMessagingService() {
 
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
         super.onMessageReceived(remoteMessage)
-
-        Log.d("wow","cool")
-
+        
         remoteMessage.data.isNotEmpty().let {
             val title = remoteMessage.data["title"]
             val description = remoteMessage.data["description"]
