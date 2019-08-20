@@ -106,7 +106,7 @@ class DetailRecipeFragment : BaseMoxyFragment(), DetailRecipeView {
             it.isBookmarked = isBookmark
             setShowBookmark(it.isBookmarked)
             val snackBar = Snackbar.make(coordinatorLayout, if (it.isBookmarked) getString(R.string.bookmarked) else getString(R.string.unbookmark_text), 500)
-            snackBar.setAction(getString(R.string.close_text)) { snackBar.dismiss() }.setActionTextColor(resources.getColor(R.color.textWhite)).show()
+            snackBar.setAction(getString(R.string.close_text)) { snackBar.dismiss() }.setActionTextColor(ContextCompat.getColor(context, R.color.textWhite)).show()
         }
     }
 

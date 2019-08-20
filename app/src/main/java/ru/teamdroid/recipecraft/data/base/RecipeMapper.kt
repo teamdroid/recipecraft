@@ -1,11 +1,8 @@
 package ru.teamdroid.recipecraft.data.base
 
-import android.provider.SyncStateContract
-import android.util.Log
 import ru.teamdroid.recipecraft.data.Config
 import ru.teamdroid.recipecraft.data.database.entities.*
 import ru.teamdroid.recipecraft.data.model.*
-import ru.teamdroid.recipecraft.ui.base.Constants
 import ru.teamdroid.recipecraft.util.FileUtils
 import java.net.URL
 import javax.inject.Inject
