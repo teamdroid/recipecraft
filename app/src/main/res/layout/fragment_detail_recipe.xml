@@ -64,13 +64,13 @@
                     android:maxLines="2"
                     android:textColor="@color/color_main_text"
                     android:textSize="@dimen/text_size_large"
-                    app:layout_constraintBottom_toTopOf="@id/ingredient_info_text"
+                    app:layout_constraintBottom_toTopOf="@id/ingredientInfoTextView"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toLeftOf="@+id/favoriteImageView"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
-                    android:id="@+id/ingredient_info_text"
+                    android:id="@+id/ingredientInfoTextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/size_small"
@@ -80,7 +80,7 @@
                     android:textAlignment="center"
                     android:textColor="@color/textWhite"
                     app:layout_constraintBottom_toTopOf="@id/favoriteRecipesRecyclerView"
-                    app:layout_constraintEnd_toStartOf="@+id/time_info_text"
+                    app:layout_constraintEnd_toStartOf="@+id/timeInfoTextView"
                     app:layout_constraintHorizontal_chainStyle="packed"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/titleTextView" />
@@ -91,7 +91,7 @@
                     android:layout_height="27dp"
                     android:layout_marginStart="@dimen/size_medium"
                     android:layout_marginEnd="@dimen/size_medium"
-                    android:src="@drawable/star_inactive"
+                    android:src="@drawable/ic_star_inactive"
                     app:layout_constraintBottom_toBottomOf="@+id/titleTextView"
                     app:layout_constraintLeft_toRightOf="@id/titleTextView"
                     app:layout_constraintRight_toRightOf="parent"
@@ -99,7 +99,7 @@
                     android:contentDescription="@string/star_inactive_content_description" />
 
                 <TextView
-                    android:id="@+id/time_info_text"
+                    android:id="@+id/timeInfoTextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@color/bright_orange_color"
@@ -107,14 +107,14 @@
                     android:padding="@dimen/size_medium"
                     android:textAlignment="center"
                     android:textColor="@color/textWhite"
-                    app:layout_constraintBottom_toBottomOf="@id/ingredient_info_text"
-                    app:layout_constraintEnd_toStartOf="@id/portion_info_text"
+                    app:layout_constraintBottom_toBottomOf="@id/ingredientInfoTextView"
+                    app:layout_constraintEnd_toStartOf="@id/portionInfoTextView"
                     app:layout_constraintHorizontal_chainStyle="packed"
-                    app:layout_constraintStart_toEndOf="@id/ingredient_info_text"
-                    app:layout_constraintTop_toTopOf="@id/ingredient_info_text" />
+                    app:layout_constraintStart_toEndOf="@id/ingredientInfoTextView"
+                    app:layout_constraintTop_toTopOf="@id/ingredientInfoTextView" />
 
                 <TextView
-                    android:id="@+id/portion_info_text"
+                    android:id="@+id/portionInfoTextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@drawable/bottom_right_rounded_corner"
@@ -122,11 +122,11 @@
                     android:padding="@dimen/size_medium"
                     android:textAlignment="center"
                     android:textColor="@color/textWhite"
-                    app:layout_constraintBottom_toBottomOf="@id/time_info_text"
+                    app:layout_constraintBottom_toBottomOf="@id/timeInfoTextView"
                     app:layout_constraintHorizontal_chainStyle="packed"
-                    app:layout_constraintLeft_toRightOf="@+id/time_info_text"
+                    app:layout_constraintLeft_toRightOf="@+id/timeInfoTextView"
                     app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toTopOf="@id/time_info_text" />
+                    app:layout_constraintTop_toTopOf="@id/timeInfoTextView" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/favoriteRecipesRecyclerView"
@@ -142,7 +142,7 @@
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/ingredient_info_text" />
+                    app:layout_constraintTop_toBottomOf="@+id/ingredientInfoTextView" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/instructionsRecyclerView"
