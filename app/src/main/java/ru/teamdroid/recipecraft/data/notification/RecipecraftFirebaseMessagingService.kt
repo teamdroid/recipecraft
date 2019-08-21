@@ -8,6 +8,7 @@ import ru.teamdroid.recipecraft.R
 import ru.teamdroid.recipecraft.ui.base.Constants
 import ru.teamdroid.recipecraft.ui.base.extensions.getProperty
 import java.util.*
+import android.media.RingtoneManager
 
 class RecipecraftFirebaseMessagingService : FirebaseMessagingService() {
 
@@ -25,6 +26,7 @@ class RecipecraftFirebaseMessagingService : FirebaseMessagingService() {
                         .setGroupSummary(true)
                         .setGroup(MAIN_GROUP)
                         .setSmallIcon(R.drawable.ic_about)
+                        .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
                         .build()
 
                 val manager = NotificationManagerCompat.from(applicationContext)

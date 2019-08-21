@@ -86,6 +86,7 @@
     <string name="error_auth_text">Ошибка авторизации</string>
     <string name="not_authorization_client_text">Неавторизованный</string>
     <string name="show_notifications_text">Показывать уведомления</string>
+    <string name="logo_description">logo</string>
 
     <string-array name="sort_recipes">
         <item>Рецепты (Cначала новые)</item>
