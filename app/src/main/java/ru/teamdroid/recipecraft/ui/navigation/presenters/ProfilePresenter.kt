@@ -48,6 +48,13 @@ class ProfilePresenter @Inject constructor(private var googleSignInClient: Googl
 
     override fun attachView(view: ProfileView?) {
         super.attachView(view)
+        firebaseAuth.also {
+            if (it.currentUser != null) {
+                viewState.showUserSignIn(it.currentUser?.displayName, it.currentUser?.photoUrl)
+            } else {
+                viewState.showUserSignOut()
+            }
+        }
         firebaseAuth.addAuthStateListener(firebaseAuthListener)
     }
 
