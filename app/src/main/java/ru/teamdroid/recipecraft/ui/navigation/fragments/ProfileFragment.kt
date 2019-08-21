@@ -11,6 +11,7 @@ import com.arellomobile.mvp.presenter.InjectPresenter
 import com.arellomobile.mvp.presenter.ProvidePresenter
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.common.api.ApiException
+import com.squareup.picasso.NetworkPolicy
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.fragment_favorites.toolbar
 import kotlinx.android.synthetic.main.fragment_profile.*
@@ -71,6 +72,7 @@ class ProfileFragment : BaseMoxyFragment(), ProfileView {
         Picasso.with(context)
                 .load(photoUrl)
                 .placeholder(R.drawable.ic_profile_placeholder)
+                .networkPolicy(NetworkPolicy.OFFLINE)
                 .transform(CircleTransform())
                 .into(profileImageView)
         signInTextView.visibility = View.GONE

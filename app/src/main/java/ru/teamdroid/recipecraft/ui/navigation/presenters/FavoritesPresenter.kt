@@ -42,8 +42,8 @@ class FavoritesPresenter @Inject constructor(private var repository: RecipeRepos
     }
 
     override fun destroyView(view: FavoritesView?) {
-        super.destroyView(view)
         compositeDisposable.dispose()
+        super.destroyView(view)
     }
 
 }
