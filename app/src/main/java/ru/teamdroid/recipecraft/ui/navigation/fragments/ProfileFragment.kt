@@ -71,8 +71,8 @@ class ProfileFragment : BaseMoxyFragment(), ProfileView {
         usernameTextView.text = displayName
         Picasso.with(context)
                 .load(photoUrl)
+
                 .placeholder(R.drawable.ic_profile_placeholder)
-                .networkPolicy(NetworkPolicy.OFFLINE)
                 .transform(CircleTransform())
                 .into(profileImageView)
         signInTextView.visibility = View.GONE
