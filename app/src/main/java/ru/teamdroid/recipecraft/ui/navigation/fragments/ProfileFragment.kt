@@ -71,7 +71,6 @@ class ProfileFragment : BaseMoxyFragment(), ProfileView {
         usernameTextView.text = displayName
         Picasso.with(context)
                 .load(photoUrl)
-
                 .placeholder(R.drawable.ic_profile_placeholder)
                 .transform(CircleTransform())
                 .into(profileImageView)
