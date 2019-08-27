@@ -19,7 +19,7 @@ class RecipeRepository @Inject constructor(private val recipeDataSource: Recipes
     }
 
     fun getRecipesCount(): Single<Int> {
-        return recipeDataSource.getRecipesCount();
+        return recipeDataSource.getRecipesCount()
     }
 
     private fun loadRemoteRecipes(sortType : String): Flowable<MutableList<Recipe>> {

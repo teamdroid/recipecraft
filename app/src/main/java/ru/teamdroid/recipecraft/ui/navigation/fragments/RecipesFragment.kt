@@ -1,7 +1,6 @@
 package ru.teamdroid.recipecraft.ui.navigation.fragments
 
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
@@ -10,7 +9,7 @@ import android.widget.Adapter
 import android.widget.AdapterView
 import android.widget.AdapterView.OnItemSelectedListener
 import android.widget.ArrayAdapter
-import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.SimpleItemAnimator
 import com.arellomobile.mvp.presenter.InjectPresenter
@@ -127,10 +126,8 @@ class RecipesFragment : BaseMoxyFragment(), RecipeView {
         with(recipesRecyclerView) {
             layoutManager = customLinearLayoutManager
             addOnScrollListener(object : RecyclerView.OnScrollListener() {
-
                 override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                     if (customLinearLayoutManager.isOnNextPagePosition()) {
-                        Log.d("Check", "adapter.itemCount: " + recipesAdapter.itemCount.toString())
                         presenter.loadCount(recipesAdapter.itemCount, currentSort)
                     }
                 }
@@ -153,7 +150,7 @@ class RecipesFragment : BaseMoxyFragment(), RecipeView {
 
     override fun showBookmarked(isBookmarked: Boolean) {
         val snackBar = Snackbar.make(constraintLayout, if (isBookmarked) getString(R.string.bookmarked) else getString(R.string.unbookmark_text), 500)
-        snackBar.setAction(getString(R.string.close_text)) { snackBar.dismiss() }.setActionTextColor(resources.getColor(R.color.textWhite)).show()
+        snackBar.setAction(getString(R.string.close_text)) { snackBar.dismiss() }.setActionTextColor(ContextCompat.getColor(context, R.color.textWhite)).show()
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -164,10 +161,6 @@ class RecipesFragment : BaseMoxyFragment(), RecipeView {
             }
             else -> super.onOptionsItemSelected(item)
         }
-    }
-
-    override fun onResume() {
-        super.onResume()
     }
 
     override fun onDestroyView() {

@@ -7,13 +7,13 @@ import com.arellomobile.mvp.viewstate.strategy.SkipStrategy
 import com.arellomobile.mvp.viewstate.strategy.StateStrategyType
 import ru.teamdroid.recipecraft.data.model.Recipe
 
-@StateStrategyType(AddToEndSingleStrategy::class)
 interface CraftRecipeView : MvpView {
     @StateStrategyType(SkipStrategy::class)
     fun setIngredientsTitle(listIngredientsTitle: List<String>)
 
-    @StateStrategyType(SingleStateStrategy::class)
+    @StateStrategyType(AddToEndSingleStrategy::class)
     fun showRecipes(listRecipe: MutableList<Recipe>)
+
     @StateStrategyType(SkipStrategy::class)
     fun showBookmarked(isBookmarked: Boolean)
 }

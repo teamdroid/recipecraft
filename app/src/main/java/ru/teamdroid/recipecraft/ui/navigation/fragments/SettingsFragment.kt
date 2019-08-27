@@ -15,6 +15,7 @@ class SettingsFragment : BaseMoxyFragment() {
     override val contentResId = R.layout.fragment_settings
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+       
         setupToolbar(toolbar, true, getString(R.string.fragment_settings_application_title))
 
         with(notificationSwitch) {

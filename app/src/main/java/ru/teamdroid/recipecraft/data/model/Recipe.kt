@@ -11,7 +11,7 @@ data class Recipe(
         var title: String = "",
         var time: Long = 0,
         var portion: Int = 0,
-        var type: String = "",
+        var type: String? = "",
         var image: String = "",
         var isBookmarked: Boolean = false,
         @SerializedName("ingredients")

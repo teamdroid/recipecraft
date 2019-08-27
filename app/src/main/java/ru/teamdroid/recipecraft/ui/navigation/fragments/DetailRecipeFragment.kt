@@ -91,9 +91,9 @@ class DetailRecipeFragment : BaseMoxyFragment(), DetailRecipeView {
         }
 
         titleTextView.text = recipe?.title
-        ingredient_info_text.text = resources.getString(R.string.ingredients_info_text, recipe?.ingredients?.size.toString())
-        time_info_text.text = resources.getString(R.string.time_info_text, recipe?.time.toString())
-        portion_info_text.text = resources.getString(R.string.portion_info_text, recipe?.portion.toString())
+        ingredientInfoTextView.text = resources.getString(R.string.ingredients_info_text, recipe?.ingredients?.size.toString())
+        timeInfoTextView.text = resources.getString(R.string.time_info_text, recipe?.time.toString())
+        portionInfoTextView.text = resources.getString(R.string.portion_info_text, recipe?.portion.toString())
         toolbarImage.setImageBitmap(BitmapFactory.decodeFile(recipe?.image))
         favoriteImageView.setOnClickListener {
             recipe?.let { presenter.bookmarkRecipe(it) }
@@ -106,13 +106,13 @@ class DetailRecipeFragment : BaseMoxyFragment(), DetailRecipeView {
             it.isBookmarked = isBookmark
             setShowBookmark(it.isBookmarked)
             val snackBar = Snackbar.make(coordinatorLayout, if (it.isBookmarked) getString(R.string.bookmarked) else getString(R.string.unbookmark_text), 500)
-            snackBar.setAction(getString(R.string.close_text)) { snackBar.dismiss() }.setActionTextColor(resources.getColor(R.color.textWhite)).show()
+            snackBar.setAction(getString(R.string.close_text)) { snackBar.dismiss() }.setActionTextColor(ContextCompat.getColor(context, R.color.textWhite)).show()
         }
     }
 
     private fun setShowBookmark(isBookmark: Boolean) {
-        if (isBookmark) favoriteImageView.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.star_active))
-        else favoriteImageView.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.star_inactive))
+        if (isBookmark) favoriteImageView.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_star_active))
+        else favoriteImageView.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_star_inactive))
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

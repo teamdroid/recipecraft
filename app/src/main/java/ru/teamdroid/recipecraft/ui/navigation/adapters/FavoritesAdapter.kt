@@ -48,7 +48,7 @@ class FavoritesAdapter(
                     .into(imageView)
 
             with(favoriteImageView) {
-                if (listRecipes[position].isBookmarked) setImageDrawable(ContextCompat.getDrawable(context, R.drawable.star_active)) else setImageDrawable(ContextCompat.getDrawable(context, R.drawable.star_inactive))
+                if (listRecipes[position].isBookmarked) setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_star_active)) else setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_star_inactive))
                 setOnClickListener {
                     onFavoriteClickListener.invoke(listRecipes[position].copy())
                 }
