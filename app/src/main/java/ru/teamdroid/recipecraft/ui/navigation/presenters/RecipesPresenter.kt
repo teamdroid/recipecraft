@@ -29,7 +29,16 @@ class RecipesPresenter @Inject constructor(private var repository: RecipeReposit
         compositeDisposable.add(repository.getRecipesCount()
                 .subscribeOn(ioScheduler)
                 .observeOn(uiScheduler)
-                .subscribe({ if (it > offset) loadRecipes(onlineRequired, sortType, offset+Config.LIMIT_RECIPES) }, { handleError(it) })
+                .subscribe({
+                    when {
+                        it > offset -> {
+                            loadRecipes(onlineRequired, sortType, offset + Config.LIMIT_RECIPES)
+                        }
+                        it == 0 -> {
+                            loadRecipes(true, sortType, offset + Config.LIMIT_RECIPES)
+                        }
+                    }
+                }, { handleError(it) })
         )
     }
 
