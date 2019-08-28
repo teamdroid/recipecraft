@@ -6,6 +6,7 @@ import com.arellomobile.mvp.MvpPresenter
 import io.reactivex.Scheduler
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
+import ru.teamdroid.recipecraft.data.Config
 import ru.teamdroid.recipecraft.data.model.Recipe
 import ru.teamdroid.recipecraft.data.repository.RecipeRepository
 import ru.teamdroid.recipecraft.ui.navigation.fragments.RecipesFragment
@@ -24,14 +25,22 @@ class RecipesPresenter @Inject constructor(private var repository: RecipeReposit
 
     private var recipeDisposable: Disposable? = null
 
-    fun loadRecipes(onlineRequired: Boolean, sortType: String, offset: Int) {
+    fun loadMoreRecipes(onlineRequired: Boolean, sortType: String, offset: Int) {
+        compositeDisposable.add(repository.getRecipesCount()
+                .subscribeOn(ioScheduler)
+                .observeOn(uiScheduler)
+                .subscribe({ if (it > offset) loadRecipes(onlineRequired, sortType, offset+Config.LIMIT_RECIPES) }, { handleError(it) })
+        )
+    }
+
+    private fun loadRecipes(onlineRequired: Boolean, sortType: String, offset: Int) {
 
         recipeDisposable?.dispose()
 
         recipeDisposable = repository.loadRecipes(onlineRequired, sortType, offset)
                 .subscribeOn(ioScheduler)
                 .observeOn(uiScheduler)
-                .subscribe({ handleSuccess(it, onlineRequired, sortType) }, { handleError(it) })
+                .subscribe({ handleSuccess(it, onlineRequired) }, { handleError(it) })
 
         recipeDisposable?.let { compositeDisposable.add(it) }
 
@@ -44,20 +53,8 @@ class RecipesPresenter @Inject constructor(private var repository: RecipeReposit
                 .subscribe({ viewState.showBookmarked(recipe.isBookmarked) }, { }))
     }
 
-    private fun handleSuccess(listRecipes: MutableList<Recipe>, onlineRequired: Boolean, sortType: String) {
+    private fun handleSuccess(listRecipes: MutableList<Recipe>, onlineRequired: Boolean) {
         if (listRecipes.isNotEmpty() || onlineRequired) viewState.showRecipes(listRecipes)
-    }
-
-    private fun countHandleSuccess(count: Int, offset: Int, sortType: String) {
-        if (offset < count)
-            loadRecipes(false, sortType, offset)
-    }
-
-    fun loadCount(offset: Int, sortType: String) {
-        compositeDisposable.add(repository.getRecipesCount()
-                .subscribeOn(ioScheduler)
-                .observeOn(uiScheduler)
-                .subscribe({ countHandleSuccess(it, offset, sortType) }, { handleError(it) }))
     }
 
     private fun handleError(error: Throwable) {

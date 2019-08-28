@@ -6,7 +6,6 @@ import io.reactivex.Completable
 import io.reactivex.Flowable
 import io.reactivex.Single
 import io.reactivex.functions.BiFunction
-import ru.teamdroid.recipecraft.data.Config
 import ru.teamdroid.recipecraft.data.api.RecipeService
 import ru.teamdroid.recipecraft.data.api.FeedbackMessage
 import ru.teamdroid.recipecraft.data.api.Response
@@ -78,8 +77,7 @@ class RecipeDataSourceImpl @Inject constructor(private val recipeDao: RecipesDao
     }
 
     override fun loadLocalRecipes(sortType: String, offset: Int): Flowable<MutableList<Recipe>> {
-        Log.d("wow",offset.toString())
-        val sqlQuery = "SELECT * FROM recipe ORDER BY $sortType DESC LIMIT ${Config.LIMIT_RECIPES} OFFSET $offset"
+        val sqlQuery = "SELECT * FROM recipe ORDER BY $sortType DESC LIMIT $offset"
         return recipeDao.getAllRecipes(SimpleSQLiteQuery(sqlQuery))
                 .flatMap {
                     Flowable.fromIterable(it).flatMapSingle { recipe ->

@@ -1,6 +1,5 @@
 package ru.teamdroid.recipecraft.ui.navigation.adapters
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -62,8 +61,6 @@ class RecipesAdapter(
                 }
             }
         }
-
-        Log.d("size", listRecipes.size.toString())
 
         notifyDataSetChanged()
     }
