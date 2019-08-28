@@ -4,5 +4,5 @@ object Config {
     const val API_HOST = "https://teamdroid.ru/api/"
     const val BASE_DOMAIN = "https://teamdroid.ru"
     const val DATABASE_NAME = "recipecraft.db"
-    const val LIMIT_RECIPES = 7
+    const val LIMIT_RECIPES = 5
 }

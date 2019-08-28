@@ -17,6 +17,7 @@ import com.arellomobile.mvp.presenter.ProvidePresenter
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_recipes.*
 import ru.teamdroid.recipecraft.R
+import ru.teamdroid.recipecraft.data.Config
 import ru.teamdroid.recipecraft.ui.base.customs.CustomLinearLayoutManager
 import ru.teamdroid.recipecraft.data.model.Recipe
 import ru.teamdroid.recipecraft.ui.base.BaseMoxyFragment
@@ -110,7 +111,7 @@ class RecipesFragment : BaseMoxyFragment(), RecipeView {
             swipeRefreshLayout.isRefreshing = false
             recipesAdapter.clear()
             recipesAdapter.notifyDataSetChanged()
-            presenter.loadRecipes(onlineRequired, currentSort, 0)
+            presenter.loadRecipes(onlineRequired, currentSort, Config.LIMIT_RECIPES)
         }
     }
 
@@ -128,7 +129,7 @@ class RecipesFragment : BaseMoxyFragment(), RecipeView {
             addOnScrollListener(object : RecyclerView.OnScrollListener() {
                 override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                     if (customLinearLayoutManager.isOnNextPagePosition()) {
-                        presenter.loadCount(recipesAdapter.itemCount, currentSort)
+                        presenter.loadCount(recipesAdapter.itemCount+Config.LIMIT_RECIPES, currentSort)
                     }
                 }
             })
