@@ -3,7 +3,6 @@ package ru.teamdroid.recipecraft.data.repository
 import io.reactivex.Completable
 import io.reactivex.Flowable
 import io.reactivex.Single
-import ru.teamdroid.recipecraft.data.Config
 import ru.teamdroid.recipecraft.data.api.FeedbackMessage
 import ru.teamdroid.recipecraft.data.api.Response
 import ru.teamdroid.recipecraft.data.model.Recipe
@@ -15,7 +14,7 @@ class RecipeRepository @Inject constructor(private val recipeDataSource: Recipes
         return if (forceRemote) {
             loadRemoteRecipes(sortType)
         } else {
-            recipeDataSource.loadLocalRecipes(sortType, offset)
+            recipeDataSource.loadLocalRecipes(sortType, offset + STEP_OFFSET)
         }
     }
 
@@ -25,7 +24,7 @@ class RecipeRepository @Inject constructor(private val recipeDataSource: Recipes
 
     private fun loadRemoteRecipes(sortType : String): Flowable<MutableList<Recipe>> {
         return recipeDataSource.loadRemoteRecipes().switchMap {
-            recipeDataSource.addRecipes(it).andThen(recipeDataSource.loadLocalRecipes(sortType, Config.LIMIT_RECIPES))
+            recipeDataSource.addRecipes(it).andThen(recipeDataSource.loadLocalRecipes(sortType, STEP_OFFSET))
         }
     }
 
@@ -42,4 +41,7 @@ class RecipeRepository @Inject constructor(private val recipeDataSource: Recipes
 
     fun sendReportMessage(feedbackMessage: FeedbackMessage): Single<Response> = recipeDataSource.sendReportMessage(feedbackMessage)
 
+    companion object {
+        const val STEP_OFFSET = 5
+    }
 }

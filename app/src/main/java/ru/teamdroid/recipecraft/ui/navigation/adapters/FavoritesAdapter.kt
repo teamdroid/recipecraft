@@ -44,7 +44,6 @@ class FavoritesAdapter(
 
             Picasso.with(context)
                     .load(File(listRecipes[position].image))
-                    .placeholder(R.drawable.ic_placeholder_recipes)
                     .into(imageView)
 
             with(favoriteImageView) {

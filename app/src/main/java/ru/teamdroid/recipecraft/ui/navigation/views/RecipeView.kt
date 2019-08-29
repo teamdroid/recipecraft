@@ -10,4 +10,11 @@ interface RecipeView : MvpView {
 
     @StateStrategyType(SkipStrategy::class)
     fun showBookmarked(isBookmarked: Boolean)
+
+    @StateStrategyType(SkipStrategy::class)
+    fun showLoadProgressBar()
+
+    @StateStrategyType(SkipStrategy::class)
+    fun hideLoadProgressBar()
+
 }

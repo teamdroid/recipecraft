@@ -38,7 +38,6 @@ class RecipesAdapter(
 
             Picasso.with(context)
                     .load(File(listRecipes[position].image))
-                    .placeholder(R.drawable.ic_placeholder_recipes)
                     .into(imageView)
 
             with(favoriteImageView) {
@@ -50,7 +49,8 @@ class RecipesAdapter(
         }
     }
 
-    fun updateRecipes(recipes: MutableList<Recipe>) {
+    fun updateListRecipes(recipes: MutableList<Recipe>) {
+
         recipes.forEach { newRecipe ->
             if (!listRecipes.any { oldRecipe -> oldRecipe.idRecipe == newRecipe.idRecipe })
                 listRecipes.add(newRecipe)

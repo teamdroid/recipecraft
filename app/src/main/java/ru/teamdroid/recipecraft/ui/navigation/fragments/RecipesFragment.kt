@@ -107,10 +107,11 @@ class RecipesFragment : BaseMoxyFragment(), RecipeView {
         if (onlineRequired || sort != currentSort) {
             currentSort = sort
             progressBar.visibility = View.VISIBLE
+            hintProgressTextView.visibility = View.VISIBLE
             swipeRefreshLayout.isRefreshing = false
             recipesAdapter.clear()
             recipesAdapter.notifyDataSetChanged()
-            presenter.loadMoreRecipes(onlineRequired, currentSort, 0)
+            presenter.loadMoreRecipes(onlineRequired, currentSort)
         }
     }
 
@@ -136,14 +137,23 @@ class RecipesFragment : BaseMoxyFragment(), RecipeView {
         (recipesRecyclerView.itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
     }
 
+    override fun hideLoadProgressBar() {
+       loadProgressBar.visibility = View.GONE
+    }
+
+    override fun showLoadProgressBar() {
+        loadProgressBar.visibility = View.VISIBLE
+    }
+
     override fun showRecipes(listRecipes: MutableList<Recipe>) {
-        recipesAdapter.updateRecipes(listRecipes)
+        recipesAdapter.updateListRecipes(listRecipes)
         setInvisibleRefreshing()
     }
 
     private fun setInvisibleRefreshing() {
         if (isResumed) {
             progressBar.visibility = View.GONE
+            hintProgressTextView.visibility = View.GONE
             swipeRefreshLayout.isRefreshing = false
         }
     }

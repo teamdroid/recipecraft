@@ -1,12 +1,12 @@
 package ru.teamdroid.recipecraft.ui.navigation.presenters
 
+import android.os.Handler
 import android.util.Log
 import com.arellomobile.mvp.InjectViewState
 import com.arellomobile.mvp.MvpPresenter
 import io.reactivex.Scheduler
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
-import ru.teamdroid.recipecraft.data.Config
 import ru.teamdroid.recipecraft.data.model.Recipe
 import ru.teamdroid.recipecraft.data.repository.RecipeRepository
 import ru.teamdroid.recipecraft.ui.navigation.fragments.RecipesFragment
@@ -25,17 +25,18 @@ class RecipesPresenter @Inject constructor(private var repository: RecipeReposit
 
     private var recipeDisposable: Disposable? = null
 
-    fun loadMoreRecipes(onlineRequired: Boolean, sortType: String, offset: Int) {
+    fun loadMoreRecipes(onlineRequired: Boolean, sortType: String, offset: Int = 0) {
         compositeDisposable.add(repository.getRecipesCount()
                 .subscribeOn(ioScheduler)
                 .observeOn(uiScheduler)
                 .subscribe({
                     when {
                         it > offset -> {
-                            loadRecipes(onlineRequired, sortType, offset + Config.LIMIT_RECIPES)
+                            viewState.showLoadProgressBar()
+                            loadRecipes(onlineRequired, sortType, offset)
                         }
                         it == 0 -> {
-                            loadRecipes(true, sortType, offset + Config.LIMIT_RECIPES)
+                            loadRecipes(true, sortType, offset)
                         }
                     }
                 }, { handleError(it) })
@@ -63,12 +64,16 @@ class RecipesPresenter @Inject constructor(private var repository: RecipeReposit
     }
 
     private fun handleSuccess(listRecipes: MutableList<Recipe>, onlineRequired: Boolean) {
-        if (listRecipes.isNotEmpty() || onlineRequired) viewState.showRecipes(listRecipes)
+        Handler().postDelayed({
+            if (listRecipes.isNotEmpty() || onlineRequired) viewState.showRecipes(listRecipes)
+            viewState.hideLoadProgressBar()
+        }, 5000)
     }
 
     private fun handleError(error: Throwable) {
         Log.d(RecipesFragment.TAG, error.message)
         viewState.showRecipes(arrayListOf())
+        viewState.hideLoadProgressBar()
     }
 
     override fun onDestroy() {
