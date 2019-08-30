@@ -1,6 +1,5 @@
 package ru.teamdroid.recipecraft.data.repository
 
-import android.util.Log
 import androidx.sqlite.db.SimpleSQLiteQuery
 import io.reactivex.Completable
 import io.reactivex.Flowable
