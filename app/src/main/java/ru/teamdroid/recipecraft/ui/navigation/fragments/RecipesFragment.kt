@@ -9,12 +9,15 @@ import android.widget.Adapter
 import android.widget.AdapterView
 import android.widget.AdapterView.OnItemSelectedListener
 import android.widget.ArrayAdapter
-import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.SimpleItemAnimator
 import com.arellomobile.mvp.presenter.InjectPresenter
 import com.arellomobile.mvp.presenter.ProvidePresenter
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_recipes.*
 import ru.teamdroid.recipecraft.R
+import ru.teamdroid.recipecraft.ui.base.customs.CustomLinearLayoutManager
 import ru.teamdroid.recipecraft.data.model.Recipe
 import ru.teamdroid.recipecraft.ui.base.BaseMoxyFragment
 import ru.teamdroid.recipecraft.ui.base.SortRecipes
@@ -43,8 +46,6 @@ class RecipesFragment : BaseMoxyFragment(), RecipeView {
 
     private var currentSort = ""
 
-    private var scrollViewPosition: Int = 0
-
     private val recipesAdapter by lazy {
         RecipesAdapter(
                 onItemClickListener = {
@@ -62,12 +63,10 @@ class RecipesFragment : BaseMoxyFragment(), RecipeView {
         super.onViewCreated(view, savedInstanceState)
         setupToolbar(toolbar, false, "")
 
+        setUpRecyclerView()
         with(recipesRecyclerView) {
             adapter = recipesAdapter
-            layoutManager = LinearLayoutManager(context)
         }
-
-        if (recipesAdapter.listRecipes.isEmpty()) refresh(false, SortRecipes.ByNewer)
 
         sortAdapter = ArrayAdapter.createFromResource(
                 context,
@@ -80,12 +79,12 @@ class RecipesFragment : BaseMoxyFragment(), RecipeView {
 
         spinner_nav.onItemSelectedListener = object : OnItemSelectedListener {
             override fun onItemSelected(adapter: AdapterView<*>, v: View?, i: Int, lng: Long) {
-                    when (i) {
-                        0 -> refresh(false, SortRecipes.ByNewer)
-                        1 -> refresh(false, SortRecipes.ByPortion)
-                        2 -> refresh(false, SortRecipes.ByIngredients)
-                        3 -> refresh(false, SortRecipes.ByTime)
-                    }
+                when (i) {
+                    0 -> refresh(false, SortRecipes.ByNewer)
+                    1 -> refresh(false, SortRecipes.ByPortion)
+                    2 -> refresh(false, SortRecipes.ByIngredients)
+                    3 -> refresh(false, SortRecipes.ByTime)
+                }
             }
 
             override fun onNothingSelected(parentView: AdapterView<*>) {}
@@ -108,10 +107,11 @@ class RecipesFragment : BaseMoxyFragment(), RecipeView {
         if (onlineRequired || sort != currentSort) {
             currentSort = sort
             progressBar.visibility = View.VISIBLE
+            hintProgressTextView.visibility = View.VISIBLE
             swipeRefreshLayout.isRefreshing = false
-            recipesAdapter.listRecipes.clear()
+            recipesAdapter.clear()
             recipesAdapter.notifyDataSetChanged()
-            presenter.loadRecipes(onlineRequired, currentSort)
+            presenter.loadMoreRecipes(onlineRequired, currentSort)
         }
     }
 
@@ -120,21 +120,39 @@ class RecipesFragment : BaseMoxyFragment(), RecipeView {
         super.onCreateOptionsMenu(menu, inflater)
     }
 
+    private fun setUpRecyclerView() {
+
+        val customLinearLayoutManager = CustomLinearLayoutManager(context)
+
+        with(recipesRecyclerView) {
+            layoutManager = customLinearLayoutManager
+            addOnScrollListener(object : RecyclerView.OnScrollListener() {
+                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                    if (customLinearLayoutManager.isOnNextPagePosition()) {
+                        presenter.loadMoreRecipes(false,currentSort, recipesAdapter.itemCount)
+                    }
+                }
+            })
+        }
+        (recipesRecyclerView.itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
+    }
+
     override fun showRecipes(listRecipes: MutableList<Recipe>) {
-        recipesAdapter.updateRecipes(listRecipes)
+        recipesAdapter.updateListRecipes(listRecipes)
         setInvisibleRefreshing()
     }
 
     private fun setInvisibleRefreshing() {
         if (isResumed) {
             progressBar.visibility = View.GONE
+            hintProgressTextView.visibility = View.GONE
             swipeRefreshLayout.isRefreshing = false
         }
     }
 
     override fun showBookmarked(isBookmarked: Boolean) {
         val snackBar = Snackbar.make(constraintLayout, if (isBookmarked) getString(R.string.bookmarked) else getString(R.string.unbookmark_text), 500)
-        snackBar.setAction(getString(R.string.close_text)) { snackBar.dismiss() }.setActionTextColor(resources.getColor(R.color.textWhite)).show()
+        snackBar.setAction(getString(R.string.close_text)) { snackBar.dismiss() }.setActionTextColor(ContextCompat.getColor(context, R.color.textWhite)).show()
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -147,15 +165,9 @@ class RecipesFragment : BaseMoxyFragment(), RecipeView {
         }
     }
 
-    override fun onResume() {
-        super.onResume()
-        nestedScrollView.verticalScrollbarPosition = scrollViewPosition
-    }
-
     override fun onDestroyView() {
         recipesRecyclerView.adapter = null
         spinner_nav.adapter = null
-        scrollViewPosition = nestedScrollView.verticalScrollbarPosition
         super.onDestroyView()
     }
 

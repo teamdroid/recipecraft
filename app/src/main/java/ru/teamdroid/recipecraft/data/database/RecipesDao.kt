@@ -67,4 +67,7 @@ interface RecipesDao {
     @Query("SELECT * FROM instruction WHERE idRecipe = :idRecipe")
     fun getInstructionsById(idRecipe: Int): Single<MutableList<InstructionEntity>>
 
+    @Query("SELECT COUNT(*) FROM recipe")
+    fun getRecipesCount(): Single<Int>
+
 }

@@ -10,4 +10,5 @@ interface RecipeView : MvpView {
 
     @StateStrategyType(SkipStrategy::class)
     fun showBookmarked(isBookmarked: Boolean)
+
 }

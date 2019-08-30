@@ -21,15 +21,37 @@ class RecipesPresenter @Inject constructor(private var repository: RecipeReposit
                                            @RunOn(UI) private var uiScheduler: Scheduler) : MvpPresenter<RecipeView>() {
 
     private var compositeDisposable: CompositeDisposable = CompositeDisposable()
+
     private var recipeDisposable: Disposable? = null
 
-    fun loadRecipes(onlineRequired: Boolean, sortType: String) {
-        if (recipeDisposable != null) recipeDisposable?.dispose()
-        recipeDisposable = repository.loadRecipes(onlineRequired, sortType)
+    fun loadMoreRecipes(onlineRequired: Boolean, sortType: String, offset: Int = 0) {
+        compositeDisposable.add(repository.getRecipesCount()
                 .subscribeOn(ioScheduler)
                 .observeOn(uiScheduler)
-                .subscribe({ handleSuccess(it, onlineRequired, sortType) }, { handleError(it) }, { })
+                .subscribe({
+                    when {
+                        it > offset -> {
+                            loadRecipes(onlineRequired, sortType, offset)
+                        }
+                        it == 0 -> {
+                            loadRecipes(true, sortType, offset)
+                        }
+                    }
+                }, { handleError(it) })
+        )
+    }
+
+    private fun loadRecipes(onlineRequired: Boolean, sortType: String, offset: Int) {
+
+        recipeDisposable?.dispose()
+
+        recipeDisposable = repository.loadRecipes(onlineRequired, sortType, offset)
+                .subscribeOn(ioScheduler)
+                .observeOn(uiScheduler)
+                .subscribe({ handleSuccess(it, onlineRequired) }, { handleError(it) })
+
         recipeDisposable?.let { compositeDisposable.add(it) }
+
     }
 
     fun bookmarkRecipe(recipe: Recipe) {
@@ -39,8 +61,8 @@ class RecipesPresenter @Inject constructor(private var repository: RecipeReposit
                 .subscribe({ viewState.showBookmarked(recipe.isBookmarked) }, { }))
     }
 
-    private fun handleSuccess(list: MutableList<Recipe>, onlineRequired: Boolean, sortType: String) {
-        if (list.isNotEmpty() || onlineRequired) viewState.showRecipes(list) else loadRecipes(true, sortType)
+    private fun handleSuccess(listRecipes: MutableList<Recipe>, onlineRequired: Boolean) {
+        if (listRecipes.isNotEmpty() || onlineRequired) viewState.showRecipes(listRecipes)
     }
 
     private fun handleError(error: Throwable) {
@@ -51,4 +73,5 @@ class RecipesPresenter @Inject constructor(private var repository: RecipeReposit
     override fun onDestroy() {
         compositeDisposable.dispose()
     }
+
 }

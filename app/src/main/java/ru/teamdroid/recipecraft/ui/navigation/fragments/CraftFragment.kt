@@ -18,6 +18,7 @@ import ru.teamdroid.recipecraft.ui.base.BaseMoxyFragment
 import ru.teamdroid.recipecraft.ui.base.Constants
 import ru.teamdroid.recipecraft.ui.base.customs.CustomGridLayoutManager
 import ru.teamdroid.recipecraft.ui.base.listeners.OnSubmitClickListener
+import ru.teamdroid.recipecraft.ui.navigation.adapters.FavoritesAdapter
 import ru.teamdroid.recipecraft.ui.navigation.adapters.RecipesAdapter
 import ru.teamdroid.recipecraft.ui.navigation.adapters.SimpleListAdapter
 import ru.teamdroid.recipecraft.ui.navigation.components.DaggerCraftComponent
@@ -51,7 +52,7 @@ class CraftFragment : BaseMoxyFragment(), CraftRecipeView, OnSubmitClickListener
     }
 
     private val recipesAdapter by lazy {
-        RecipesAdapter(
+        FavoritesAdapter(
                 onItemClickListener = {
                     onClick(it)
                 },

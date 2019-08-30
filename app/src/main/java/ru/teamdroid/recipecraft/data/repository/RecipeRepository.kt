@@ -10,17 +10,21 @@ import javax.inject.Inject
 
 class RecipeRepository @Inject constructor(private val recipeDataSource: RecipesDataSource) {
 
-    fun loadRecipes(forceRemote: Boolean, sortType : String): Flowable<MutableList<Recipe>> {
+    fun loadRecipes(forceRemote: Boolean, sortType: String, offset: Int): Flowable<MutableList<Recipe>> {
         return if (forceRemote) {
             loadRemoteRecipes(sortType)
         } else {
-            recipeDataSource.loadLocalRecipes(sortType)
+            recipeDataSource.loadLocalRecipes(sortType, offset + STEP_OFFSET)
         }
+    }
+
+    fun getRecipesCount(): Single<Int> {
+        return recipeDataSource.getRecipesCount()
     }
 
     private fun loadRemoteRecipes(sortType : String): Flowable<MutableList<Recipe>> {
         return recipeDataSource.loadRemoteRecipes().switchMap {
-            recipeDataSource.addRecipes(it).andThen(recipeDataSource.loadLocalRecipes(sortType))
+            recipeDataSource.addRecipes(it).andThen(recipeDataSource.loadLocalRecipes(sortType, STEP_OFFSET))
         }
     }
 
@@ -37,4 +41,7 @@ class RecipeRepository @Inject constructor(private val recipeDataSource: Recipes
 
     fun sendReportMessage(feedbackMessage: FeedbackMessage): Single<Response> = recipeDataSource.sendReportMessage(feedbackMessage)
 
+    companion object {
+        const val STEP_OFFSET = 10
+    }
 }
