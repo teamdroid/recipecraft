@@ -42,6 +42,6 @@ class RecipeRepository @Inject constructor(private val recipeDataSource: Recipes
     fun sendReportMessage(feedbackMessage: FeedbackMessage): Single<Response> = recipeDataSource.sendReportMessage(feedbackMessage)
 
     companion object {
-        const val STEP_OFFSET = 5
+        const val STEP_OFFSET = 10
     }
 }

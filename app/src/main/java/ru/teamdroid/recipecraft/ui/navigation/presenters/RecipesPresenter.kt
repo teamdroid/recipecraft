@@ -1,6 +1,5 @@
 package ru.teamdroid.recipecraft.ui.navigation.presenters
 
-import android.os.Handler
 import android.util.Log
 import com.arellomobile.mvp.InjectViewState
 import com.arellomobile.mvp.MvpPresenter
@@ -32,7 +31,6 @@ class RecipesPresenter @Inject constructor(private var repository: RecipeReposit
                 .subscribe({
                     when {
                         it > offset -> {
-                            viewState.showLoadProgressBar()
                             loadRecipes(onlineRequired, sortType, offset)
                         }
                         it == 0 -> {
@@ -64,16 +62,12 @@ class RecipesPresenter @Inject constructor(private var repository: RecipeReposit
     }
 
     private fun handleSuccess(listRecipes: MutableList<Recipe>, onlineRequired: Boolean) {
-        Handler().postDelayed({
-            if (listRecipes.isNotEmpty() || onlineRequired) viewState.showRecipes(listRecipes)
-            viewState.hideLoadProgressBar()
-        }, 5000)
+        if (listRecipes.isNotEmpty() || onlineRequired) viewState.showRecipes(listRecipes)
     }
 
     private fun handleError(error: Throwable) {
         Log.d(RecipesFragment.TAG, error.message)
         viewState.showRecipes(arrayListOf())
-        viewState.hideLoadProgressBar()
     }
 
     override fun onDestroy() {

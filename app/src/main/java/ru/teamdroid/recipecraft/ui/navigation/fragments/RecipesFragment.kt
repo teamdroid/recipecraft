@@ -137,14 +137,6 @@ class RecipesFragment : BaseMoxyFragment(), RecipeView {
         (recipesRecyclerView.itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
     }
 
-    override fun hideLoadProgressBar() {
-       loadProgressBar.visibility = View.GONE
-    }
-
-    override fun showLoadProgressBar() {
-        loadProgressBar.visibility = View.VISIBLE
-    }
-
     override fun showRecipes(listRecipes: MutableList<Recipe>) {
         recipesAdapter.updateListRecipes(listRecipes)
         setInvisibleRefreshing()
