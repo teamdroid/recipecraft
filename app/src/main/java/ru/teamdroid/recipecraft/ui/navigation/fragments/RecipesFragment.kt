@@ -61,12 +61,9 @@ class RecipesFragment : BaseMoxyFragment(), RecipeView {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setupToolbar(toolbar, false, "")
+        setupToolbar(toolbar, false)
 
-        setUpRecyclerView()
-        with(recipesRecyclerView) {
-            adapter = recipesAdapter
-        }
+        setupRecyclerView()
 
         sortAdapter = ArrayAdapter.createFromResource(
                 context,
@@ -103,14 +100,13 @@ class RecipesFragment : BaseMoxyFragment(), RecipeView {
         presenter.bookmarkRecipe(recipe)
     }
 
-    private fun refresh(onlineRequired: Boolean, sort : String = currentSort) {
+    private fun refresh(onlineRequired: Boolean, sort: String = currentSort) {
         if (onlineRequired || sort != currentSort) {
             currentSort = sort
             progressBar.visibility = View.VISIBLE
             hintProgressTextView.visibility = View.VISIBLE
             swipeRefreshLayout.isRefreshing = false
             recipesAdapter.clear()
-            recipesAdapter.notifyDataSetChanged()
             presenter.loadMoreRecipes(onlineRequired, currentSort)
         }
     }
@@ -120,16 +116,17 @@ class RecipesFragment : BaseMoxyFragment(), RecipeView {
         super.onCreateOptionsMenu(menu, inflater)
     }
 
-    private fun setUpRecyclerView() {
+    private fun setupRecyclerView() {
 
         val customLinearLayoutManager = CustomLinearLayoutManager(context)
 
         with(recipesRecyclerView) {
+            adapter = recipesAdapter
             layoutManager = customLinearLayoutManager
             addOnScrollListener(object : RecyclerView.OnScrollListener() {
                 override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                     if (customLinearLayoutManager.isOnNextPagePosition()) {
-                        presenter.loadMoreRecipes(false,currentSort, recipesAdapter.itemCount)
+                        presenter.loadMoreRecipes(false, currentSort, recipesAdapter.itemCount)
                     }
                 }
             })

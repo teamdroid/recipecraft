@@ -4,11 +4,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.layout_list_recipes_item.view.*
 import ru.teamdroid.recipecraft.R
 import ru.teamdroid.recipecraft.data.model.Recipe
+import ru.teamdroid.recipecraft.ui.base.RecipeDiffCallback
 import java.io.File
 
 class RecipesAdapter(
@@ -49,20 +51,18 @@ class RecipesAdapter(
         }
     }
 
-    fun updateListRecipes(recipes: MutableList<Recipe>) {
+    fun updateListRecipes(listRecipe: MutableList<Recipe>) {
+        if (listRecipes.isNotEmpty()) {
+            val diffCallback = RecipeDiffCallback(this.listRecipes, listRecipe)
+            val diffResult = DiffUtil.calculateDiff(diffCallback)
 
-        recipes.forEach { newRecipe ->
-            if (!listRecipes.any { oldRecipe -> oldRecipe.idRecipe == newRecipe.idRecipe })
-                listRecipes.add(newRecipe)
-            else {
-                listRecipes.forEachIndexed { index, oldRecipe ->
-                    if (oldRecipe.idRecipe == newRecipe.idRecipe && oldRecipe.isBookmarked != newRecipe.isBookmarked)
-                        listRecipes[index] = newRecipe
-                }
-            }
+            this.listRecipes.clear()
+            this.listRecipes.addAll(listRecipe)
+
+            diffResult.dispatchUpdatesTo(this)
+        } else {
+            listRecipes = listRecipe
         }
-
-        notifyDataSetChanged()
     }
 
     fun clear() {

@@ -31,17 +31,17 @@ class RecipesPresenter @Inject constructor(private var repository: RecipeReposit
                 .subscribe({
                     when {
                         it > offset -> {
-                            loadRecipes(onlineRequired, sortType, offset)
+                            observeRecipes(onlineRequired, sortType, offset)
                         }
                         it == 0 -> {
-                            loadRecipes(true, sortType, offset)
+                            observeRecipes(true, sortType, offset)
                         }
                     }
                 }, { handleError(it) })
         )
     }
 
-    private fun loadRecipes(onlineRequired: Boolean, sortType: String, offset: Int) {
+    private fun observeRecipes(onlineRequired: Boolean, sortType: String, offset: Int) {
 
         recipeDisposable?.dispose()
 
