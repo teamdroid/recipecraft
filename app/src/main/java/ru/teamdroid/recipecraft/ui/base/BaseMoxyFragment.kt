@@ -24,7 +24,7 @@ abstract class BaseMoxyFragment : MvpAppCompatFragment(), OnBackPressedListener 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? = inflater.inflate(contentResId, container, false)
 
-    protected fun setupToolbar(toolbar: Toolbar, needsUpButton: Boolean, title: String) {
+    protected fun setupToolbar(toolbar: Toolbar, needsUpButton: Boolean, title: String = "") {
         val activity = activity as AppCompatActivity
         activity.setSupportActionBar(toolbar)
         val actionBar = activity.supportActionBar
