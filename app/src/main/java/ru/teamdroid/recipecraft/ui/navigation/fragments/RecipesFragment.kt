@@ -44,7 +44,7 @@ class RecipesFragment : BaseMoxyFragment(), RecipeView {
 
     override val contentResId = R.layout.fragment_recipes
 
-    private var currentSort = ""
+    private var currentSort = SortRecipes.BLANK
 
     private val recipesAdapter by lazy {
         RecipesAdapter(
@@ -76,12 +76,7 @@ class RecipesFragment : BaseMoxyFragment(), RecipeView {
 
         spinner_nav.onItemSelectedListener = object : OnItemSelectedListener {
             override fun onItemSelected(adapter: AdapterView<*>, v: View?, i: Int, lng: Long) {
-                when (i) {
-                    0 -> refresh(false, SortRecipes.ByNewer)
-                    1 -> refresh(false, SortRecipes.ByPortion)
-                    2 -> refresh(false, SortRecipes.ByIngredients)
-                    3 -> refresh(false, SortRecipes.ByTime)
-                }
+                refresh(false, SortRecipes.sort[i])
             }
 
             override fun onNothingSelected(parentView: AdapterView<*>) {}
@@ -117,9 +112,7 @@ class RecipesFragment : BaseMoxyFragment(), RecipeView {
     }
 
     private fun setupRecyclerView() {
-
         val customLinearLayoutManager = CustomLinearLayoutManager(context)
-
         with(recipesRecyclerView) {
             adapter = recipesAdapter
             layoutManager = customLinearLayoutManager
@@ -173,3 +166,4 @@ class RecipesFragment : BaseMoxyFragment(), RecipeView {
         fun newInstance() = RecipesFragment()
     }
 }
+

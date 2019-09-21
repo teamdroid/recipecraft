@@ -27,7 +27,7 @@ class InstructionAdapter(var onItemClickListener: (position: Int) -> Unit) : Rec
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return when (viewType) {
-            ViewType.Header -> ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.layout_list_instructions_item_header, parent, false))
+            ViewType.HEADER -> ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.layout_list_instructions_item_header, parent, false))
             else -> ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.layout_list_instructions_item, parent, false))
         }
     }
@@ -56,8 +56,8 @@ class InstructionAdapter(var onItemClickListener: (position: Int) -> Unit) : Rec
 
     override fun getItemViewType(position: Int): Int {
         return when (position) {
-            ViewType.Header -> ViewType.Header
-            else -> ViewType.Normal
+            ViewType.HEADER -> ViewType.HEADER
+            else -> ViewType.NORMAL
         }
     }
 
