@@ -50,8 +50,8 @@ class NavigationFragment : BaseMoxyFragment() {
         }
     }
 
-    private fun setTabIcon(position: Int, isSelected: Boolean){
-        when(Screens.tabs[position]){
+    private fun setTabIcon(position: Int, isSelected: Boolean) {
+        when (Screens.tabs[position]) {
             Screens.CRAFT -> changeIcon(position, if (isSelected) R.drawable.ic_menu_craft_active else R.drawable.ic_menu_craft_inactive)
             Screens.RECIPES -> changeIcon(position, if (isSelected) R.drawable.ic_menu_recipe_active else R.drawable.ic_menu_recipe_inactive)
             Screens.PROFILE -> changeIcon(position, if (isSelected) R.drawable.ic_menu_profile_active else R.drawable.ic_menu_profile_inactive)
@@ -63,14 +63,16 @@ class NavigationFragment : BaseMoxyFragment() {
     }
 
     fun replaceScreen(screenKey: String) {
-        currentScreen = screenKey
-
-        val transaction = childFragmentManager.beginTransaction()
-        val fragment = childFragmentManager.findFragmentByTag(currentScreen)
-                ?: createFragment(currentScreen)
-
-        transaction.replace(R.id.navigationContainer, fragment, currentScreen)
-                .addToBackStack(currentScreen).commit()
+        childFragmentManager.beginTransaction().apply {
+            childFragmentManager.findFragmentByTag(currentScreen)?.let { if (it.isAdded) hide(it) }
+            currentScreen = screenKey
+            val fragment = childFragmentManager.findFragmentByTag(currentScreen) ?: createFragment(currentScreen)
+            if (fragment.isAdded) {
+                show(fragment)
+            } else {
+                add(R.id.navigationContainer, fragment, currentScreen).addToBackStack(currentScreen)
+            }
+        }.commit()
     }
 
     private fun createFragment(screenKey: String): Fragment {
