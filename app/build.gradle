@@ -45,6 +45,11 @@ dependencies {
     implementation 'androidx.cardview:cardview:1.0.0'
     implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.0.0'
 
+
+    debugImplementation 'com.facebook.flipper:flipper:0.23.5'
+    debugImplementation 'com.facebook.soloader:soloader:0.6.0'
+    releaseImplementation 'com.facebook.flipper:flipper-noop:0.23.5'
+
     /*Moxy AndroidX*/
     implementation 'tech.schoolhelper:moxy-x:1.7.0'
     implementation 'tech.schoolhelper:moxy-x-androidx:1.7.0'

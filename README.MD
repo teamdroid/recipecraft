@@ -15,7 +15,7 @@
 * Retrofit
 * Picasso
 * Anko
-* Stetho
+* Flipper
 * LeakCanary
 
 ### License
